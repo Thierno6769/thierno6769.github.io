@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galy Market — La boutique en ligne de Conakry</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MARCHÉ+ — SITE COMPLET
+   Pages : Accueil | Catalogue | Produit | Commande | Suivi | Auth | Admin
+   ============================================================ */
+:root {
+  --orange:#FF6B00; --orange-l:#FF8C35; --orange-d:#E05A00;
+  --orange-dim:rgba(255,107,0,0.12);
+  --black:#080808; --dark:#101010; --dark2:#181818;
+  --dark3:#222; --dark4:#2C2C2C;
+  --gray:#666; --gray2:#999; --white:#F0EBE3;
+  --green:#00C853; --green-dim:rgba(0,200,83,0.12);
+  --red:#FF3B3B; --red-dim:rgba(255,59,59,0.12);
+  --blue:#2979FF; --blue-dim:rgba(41,121,255,0.12);
+  --yellow:#FFB800;
+  --font:'Sora',sans-serif; --mono:'Space Mono',monospace;
+  --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--dark);color:var(--white);overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--dark);}
+::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px;}
+
+/* ===== PAGES ===== */
+.page{display:none;animation:fadeUp .35s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== NOTIFICATION ===== */
+.notif{position:fixed;bottom:24px;right:24px;background:var(--dark2);border:1px solid var(--orange);
+  color:var(--white);padding:14px 18px;border-radius:8px;font-size:13px;font-weight:600;
+  transform:translateX(200%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  z-index:9999;box-shadow:0 8px 30px rgba(255,107,0,.2);max-width:320px;}
+.notif.show{transform:translateX(0);}
+
+/* ===== TOPBAR ===== */
+.topbar{background:var(--black);padding:6px 0;text-align:center;font-size:12px;
+  font-family:var(--mono);color:var(--orange);letter-spacing:2px;
+  border-bottom:1px solid var(--dark3);}
+
+/* ===== HEADER ===== */
+header{background:var(--dark);border-bottom:2px solid var(--orange);
+  position:sticky;top:0;z-index:1000;padding:0 40px;}
+.header-inner{display:flex;align-items:center;gap:20px;height:68px;
+  max-width:1400px;margin:0 auto;}
+.logo{font-size:26px;font-weight:800;color:var(--orange);cursor:pointer;
+  letter-spacing:-1px;flex-shrink:0;}
+.logo span{color:var(--white);}
+.icon-btn{width:40px;height:40px;background:var(--dark3);border:none;
+  border-radius:50%;color:white;cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .2s;}
+.icon-btn:hover{background:var(--orange);}
+.search-bar{display:flex;align-items:center;position:relative;}
+.search-bar input{
+  width:0;opacity:0;padding:0;background:var(--dark2);border:none;
+  color:var(--white);font-family:var(--font);font-size:14px;outline:none;
+  border-radius:20px 0 0 20px;transition:width .3s ease,opacity .3s,padding .3s;}
+.search-bar input::placeholder{color:var(--gray);}
+.search-bar.open input{
+  width:220px;opacity:1;padding:9px 14px;
+  border:2px solid var(--orange);border-right:none;}
+.search-bar button{
+  width:40px;height:40px;background:var(--dark3);border:2px solid var(--dark3);
+  border-radius:50%;color:white;cursor:pointer;font-size:17px;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.search-bar.open button{border-radius:0 20px 20px 0;background:var(--orange);border-color:var(--orange);}
+.search-bar button:hover{background:var(--orange);border-color:var(--orange);}
+.header-actions{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.btn-icon{position:relative;background:var(--dark2);border:1px solid var(--dark3);
+  color:var(--white);padding:8px 14px;border-radius:4px;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;gap:6px;
+  font-family:var(--font);font-size:13px;font-weight:600;}
+.btn-icon:hover{background:var(--dark3);border-color:var(--orange);}
+.badge{position:absolute;top:-6px;right:-6px;background:var(--orange);color:white;
+  font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;}
+
+/* ===== NAV ===== */
+nav{background:var(--dark2);border-bottom:1px solid var(--dark3);padding:0 40px;}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
+.nav-inner a{color:var(--gray2);text-decoration:none;padding:12px 16px;
+  font-size:13px;font-weight:500;white-space:nowrap;
+  border-bottom:3px solid transparent;transition:all .2s;
+  display:flex;align-items:center;gap:5px;}
+.nav-inner a:hover,.nav-inner a.active{color:var(--orange);border-bottom-color:var(--orange);}
+
+/* ===== CONTAINER ===== */
+.container{max-width:1400px;margin:0 auto;padding:0 40px;}
+
+/* ===== BUTTONS ===== */
+.btn{padding:10px 20px;border-radius:6px;font-family:var(--font);font-size:13px;
+  font-weight:600;cursor:pointer;border:none;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;}
+.btn-orange{background:var(--orange);color:white;}
+.btn-orange:hover{background:var(--orange-l);transform:translateY(-1px);}
+.btn-ghost{background:var(--dark3);color:var(--gray2);border:1px solid var(--dark3);}
+.btn-ghost:hover{color:var(--white);border-color:var(--dark4);}
+.btn-outline{background:transparent;color:var(--white);border:2px solid var(--dark3);}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange);}
+
+/* ===== SECTION HEADER ===== */
+.section-head{display:flex;align-items:center;justify-content:space-between;
+  margin:32px 0 18px;}
+.section-head h2{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;}
+.section-head h2::before{content:'';display:block;width:5px;height:26px;
+  background:var(--orange);border-radius:2px;}
+.see-all{color:var(--orange);font-size:12px;font-weight:600;cursor:pointer;
+  text-decoration:none;font-family:var(--mono);letter-spacing:.5px;}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--black) 0%,var(--dark2) 100%);
+  padding:56px 40px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;right:-5%;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(255,107,0,.15) 0%,transparent 70%);
+  border-radius:50%;}
+.hero-inner{max-width:1400px;margin:0 auto;display:grid;
+  grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+.hero-text h1{font-size:48px;font-weight:800;line-height:1.1;
+  margin-bottom:14px;letter-spacing:-2px;}
+.hero-text h1 em{color:var(--orange);font-style:normal;display:block;}
+.hero-text p{color:var(--gray2);font-size:15px;margin-bottom:24px;line-height:1.6;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.hero-card{background:var(--dark3);border-radius:8px;padding:18px;
+  border:1px solid rgba(255,107,0,.2);cursor:pointer;transition:all .3s;}
+.hero-card:hover{border-color:var(--orange);transform:translateY(-3px);}
+.hero-card .card-icon{font-size:32px;margin-bottom:8px;}
+.hero-card h3{font-size:14px;font-weight:700;margin-bottom:3px;}
+.hero-card p{font-size:11px;color:var(--gray);}
+.hero-card .card-price{color:var(--orange);font-weight:700;font-size:13px;margin-top:6px;}
+
+/* ===== PROMO BANNERS ===== */
+.promo-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;margin:24px 0;}
+.promo-card{border-radius:8px;padding:24px;display:flex;flex-direction:column;
+  justify-content:space-between;min-height:150px;cursor:pointer;
+  transition:transform .3s;position:relative;overflow:hidden;}
+.promo-card:hover{transform:scale(1.02);}
+.promo-card.big{background:linear-gradient(135deg,var(--orange-d),var(--orange-l));}
+.promo-card.blue{background:linear-gradient(135deg,#003D99,#0066FF);}
+.promo-card.green{background:linear-gradient(135deg,#006633,#00AA55);}
+.promo-card h2{font-size:20px;font-weight:800;color:white;}
+.promo-card p{font-size:12px;color:rgba(255,255,255,.85);margin-top:5px;}
+.promo-tag{display:inline-block;background:rgba(0,0,0,.3);color:white;
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:1px;margin-bottom:6px;font-family:var(--mono);}
+.promo-emoji{font-size:40px;position:absolute;right:16px;bottom:12px;opacity:.7;}
+
+/* ===== CATEGORIES ===== */
+.categories-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin-bottom:36px;}
+.cat-card{background:var(--dark2);border:1px solid var(--dark3);border-radius:8px;
+  padding:18px 10px;text-align:center;cursor:pointer;transition:all .25s;}
+.cat-card:hover{border-color:var(--orange);background:var(--dark3);}
+.cat-card .cat-icon{font-size:28px;margin-bottom:7px;}
+.cat-card .cat-name{font-size:11px;font-weight:600;color:var(--gray2);}
+
+/* ===== FLASH SALES ===== */
+.flash-header{background:linear-gradient(90deg,var(--orange-d),var(--orange));
+  padding:14px 20px;border-radius:8px 8px 0 0;
+  display:flex;align-items:center;justify-content:space-between;}
+.flash-header h2{font-size:18px;font-weight:800;color:white;display:flex;align-items:center;gap:8px;}
+.countdown{display:flex;gap:6px;align-items:center;}
+.countdown-item{background:rgba(0,0,0,.3);color:white;padding:4px 8px;
+  border-radius:4px;font-family:var(--mono);font-size:17px;font-weight:700;
+  min-width:38px;text-align:center;}
+.countdown-sep{color:white;font-weight:700;font-size:17px;}
+
+/* ===== PRODUCTS GRID ===== */
+.products-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:36px;}
+.products-grid-4{grid-template-columns:repeat(4,1fr);}
+.products-grid-3{grid-template-columns:repeat(3,1fr);}
+.product-card{background:var(--dark2);border-radius:8px;overflow:hidden;
+  border:1px solid var(--dark3);cursor:pointer;transition:all .3s;position:relative;}
+.product-card:hover{border-color:var(--orange);transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(255,107,0,.15);}
+.product-img{width:100%;aspect-ratio:1;background:var(--dark3);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  transition:transform .3s;}
+.product-card:hover .product-img{transform:scale(1.05);}
+.product-info{padding:12px;}
+.product-name{font-size:12px;font-weight:600;margin-bottom:7px;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.product-price{color:var(--orange);font-weight:700;font-size:15px;margin-bottom:3px;}
+.product-old{color:var(--gray);font-size:11px;text-decoration:line-through;}
+.product-discount{position:absolute;top:8px;left:8px;background:var(--red);color:white;
+  font-size:10px;font-weight:700;padding:3px 7px;border-radius:3px;font-family:var(--mono);}
+.product-rating{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray);margin-top:5px;}
+.stars{color:#FFB800;}
+.add-to-cart{width:100%;padding:10px;background:var(--dark3);color:var(--white);
+  border:1px solid var(--dark3);font-family:var(--font);font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;
+  border-top:1px solid var(--dark3);}
+.add-to-cart:hover{background:var(--orange);border-color:var(--orange);}
+
+/* ===== PRODUCT DETAIL ===== */
+.product-detail{padding:36px 0;}
+.detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.detail-img-box{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:12px;aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;font-size:140px;}
+.detail-info .product-title{font-size:28px;font-weight:800;margin-bottom:10px;letter-spacing:-.5px;}
+.detail-info .detail-price{font-size:32px;font-weight:800;color:var(--orange);margin-bottom:5px;}
+.detail-info .detail-old{font-size:15px;color:var(--gray);text-decoration:line-through;margin-bottom:16px;}
+.detail-info .detail-desc{color:var(--gray2);font-size:14px;line-height:1.7;margin-bottom:20px;}
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.qty-control{display:flex;align-items:center;}
+.qty-btn{width:36px;height:36px;background:var(--dark3);border:1px solid var(--dark3);
+  color:var(--white);cursor:pointer;font-size:18px;display:flex;align-items:center;
+  justify-content:center;transition:all .2s;}
+.qty-btn:hover{background:var(--orange);border-color:var(--orange);}
+.qty-btn:first-child{border-radius:6px 0 0 6px;}
+.qty-btn:last-child{border-radius:0 6px 6px 0;}
+.qty-val{width:48px;height:36px;text-align:center;background:var(--dark2);
+  border:1px solid var(--dark3);border-left:none;border-right:none;
+  color:var(--white);font-family:var(--mono);font-size:14px;}
+.detail-btns{display:flex;gap:12px;}
+.detail-badges{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.detail-badge{display:flex;align-items:center;gap:6px;font-size:12px;
+  color:var(--gray2);background:var(--dark3);padding:6px 12px;border-radius:20px;}
+
+/* ===== CATALOGUE ===== */
+.catalogue-layout{display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 0;}
+.filters-panel{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);padding:22px;height:fit-content;}
+.filter-section{margin-bottom:24px;}
+.filter-section h4{font-size:11px;font-weight:700;color:var(--orange);
+  margin-bottom:12px;letter-spacing:.5px;font-family:var(--mono);}
+.filter-option{display:flex;align-items:center;gap:8px;margin-bottom:7px;cursor:pointer;}
+.filter-option input{accent-color:var(--orange);width:14px;height:14px;}
+.filter-option label{font-size:12px;color:var(--gray2);cursor:pointer;}
+.filter-option label:hover{color:var(--white);}
+.price-range{display:flex;gap:8px;align-items:center;}
+.price-range input{width:90px;padding:7px 10px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:4px;color:var(--white);
+  font-family:var(--mono);font-size:12px;outline:none;}
+.price-range input:focus{border-color:var(--orange);}
+.catalogue-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.catalogue-toolbar span{font-size:13px;color:var(--gray);font-family:var(--mono);}
+.sort-select{padding:8px 12px;background:var(--dark2);border:1px solid var(--dark3);
+  color:var(--white);border-radius:4px;font-family:var(--font);font-size:13px;
+  cursor:pointer;outline:none;}
+
+/* ===== CART ===== */
+.cart-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;padding:36px 0;}
+.cart-box{background:var(--dark2);border:1px solid var(--dark3);border-radius:var(--radius);overflow:hidden;}
+.cart-box-header{padding:18px 22px;border-bottom:1px solid var(--dark3);
+  display:flex;align-items:center;justify-content:space-between;}
+.cart-item{display:flex;gap:14px;padding:18px 22px;
+  border-bottom:1px solid var(--dark3);align-items:center;transition:background .2s;}
+.cart-item:hover{background:rgba(255,255,255,.02);}
+.cart-item:last-child{border-bottom:none;}
+.cart-item-img{width:72px;height:72px;background:var(--dark3);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.cart-item-details{flex:1;}
+.cart-item-name{font-size:13px;font-weight:600;margin-bottom:5px;}
+.cart-item-variant{font-size:11px;color:var(--gray);margin-bottom:9px;}
+.cart-item-price .price{font-size:15px;font-weight:700;color:var(--orange);}
+.cart-item-price .remove{font-size:11px;color:var(--gray);cursor:pointer;
+  margin-top:6px;display:block;text-align:right;transition:color .2s;}
+.cart-item-price .remove:hover{color:var(--red);}
+.order-summary{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);padding:22px;}
+.order-summary h3{font-size:15px;font-weight:700;margin-bottom:18px;
+  padding-bottom:14px;border-bottom:1px solid var(--dark3);}
+.summary-row{display:flex;justify-content:space-between;font-size:13px;
+  color:var(--gray2);margin-bottom:10px;}
+.summary-row.total{font-size:17px;font-weight:700;color:var(--white);
+  padding-top:14px;border-top:1px solid var(--dark3);margin-top:6px;}
+.summary-row.total span:last-child{color:var(--orange);}
+.promo-input{display:flex;gap:8px;margin-bottom:18px;}
+.promo-input input{flex:1;padding:9px 12px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:4px;color:var(--white);
+  font-family:var(--font);font-size:12px;outline:none;}
+.promo-input input:focus{border-color:var(--orange);}
+.promo-input button{padding:9px 12px;background:var(--dark3);
+  border:1px solid var(--dark3);color:var(--gray2);border-radius:4px;
+  cursor:pointer;font-size:12px;transition:all .2s;}
+.promo-input button:hover{border-color:var(--orange);color:var(--orange);}
+.checkout-btn{width:100%;padding:14px;font-size:15px;border-radius:6px;}
+.secure-badge{text-align:center;font-size:11px;color:var(--gray);
+  margin-top:10px;display:flex;align-items:center;justify-content:center;gap:4px;}
+
+/* ===== CHECKOUT ===== */
+.checkout-layout{display:grid;grid-template-columns:1fr 360px;gap:24px;
+  align-items:start;padding:32px 0;}
+.checkout-steps{display:flex;background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:24px;}
+.co-step{flex:1;padding:14px 10px;text-align:center;font-size:12px;font-weight:600;
+  color:var(--gray);border-right:1px solid var(--dark3);
+  display:flex;align-items:center;justify-content:center;gap:6px;}
+.co-step:last-child{border-right:none;}
+.co-step.active{color:var(--orange);background:var(--orange-dim);}
+.co-step.done{color:var(--green);}
+.co-step-num{width:22px;height:22px;border-radius:50%;background:var(--dark3);
+  color:var(--gray);font-size:11px;font-weight:700;font-family:var(--mono);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.co-step.active .co-step-num{background:var(--orange);color:white;}
+.co-step.done .co-step-num{background:var(--green);color:white;}
+.co-section{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+.co-section-head{padding:16px 20px;border-bottom:1px solid var(--dark3);
+  display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;background:var(--dark3);}
+.co-icon{width:30px;height:30px;border-radius:6px;background:var(--orange-dim);
+  display:flex;align-items:center;justify-content:center;font-size:15px;}
+.co-body{padding:20px;}
+.co-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.co-row.full{grid-template-columns:1fr;}
+.co-field{display:flex;flex-direction:column;}
+.co-label{font-size:11px;font-weight:700;color:var(--gray2);
+  font-family:var(--mono);letter-spacing:.5px;margin-bottom:6px;}
+.co-input{padding:10px 14px;background:var(--dark3);border:1px solid var(--dark3);
+  border-radius:6px;color:var(--white);font-family:var(--font);font-size:13px;
+  outline:none;transition:border-color .2s;}
+.co-input:focus{border-color:var(--orange);}
+.co-input::placeholder{color:var(--gray);}
+
+/* ===== PAYMENT METHOD CARDS ===== */
+.pay-methods{display:flex;flex-direction:column;gap:10px;}
+.pay-method{border:2px solid var(--dark3);border-radius:10px;padding:14px 16px;
+  cursor:pointer;transition:all .25s;background:var(--dark3);}
+.pay-method:hover{border-color:var(--orange);}
+.pay-method.selected{border-color:var(--orange);background:var(--orange-dim);}
+.pay-method-top{display:flex;align-items:center;gap:12px;}
+.pay-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--gray);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.pay-method.selected .pay-radio{border-color:var(--orange);}
+.pay-radio-dot{width:10px;height:10px;border-radius:50%;background:var(--orange);
+  opacity:0;transform:scale(0);transition:all .2s;}
+.pay-method.selected .pay-radio-dot{opacity:1;transform:scale(1);}
+.pay-icon-box{width:44px;height:30px;background:var(--dark2);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  border:1px solid var(--dark3);}
+.pay-info .pname{font-size:13px;font-weight:700;margin-bottom:2px;}
+.pay-info .pdesc{font-size:11px;color:var(--gray);}
+.pay-tag{margin-left:auto;background:var(--green);color:white;
+  font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;font-family:var(--mono);}
+.cod-box{margin-top:12px;padding:12px;background:var(--green-dim);
+  border:1px solid rgba(0,200,83,.25);border-radius:8px;display:none;}
+.cod-box.show{display:block;}
+.cod-steps{list-style:none;}
+.cod-steps li{display:flex;align-items:flex-start;gap:8px;font-size:12px;
+  color:var(--gray2);margin-bottom:7px;line-height:1.5;}
+.cod-step-n{width:20px;height:20px;background:var(--green);color:white;
+  border-radius:50%;font-size:10px;font-weight:700;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono);}
+.mobile-box{margin-top:12px;padding:12px;background:var(--orange-dim);
+  border:1px solid rgba(255,107,0,.2);border-radius:8px;display:none;}
+.mobile-box.show{display:block;}
+.mobile-ops{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.mobile-op{background:var(--dark2);border:2px solid var(--dark3);border-radius:6px;
+  padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;}
+.mobile-op:hover,.mobile-op.active{border-color:var(--orange);}
+.mobile-op .mo-icon{font-size:20px;margin-bottom:3px;}
+.mobile-op .mo-name{font-size:10px;font-weight:700;color:var(--gray2);}
+
+/* ===== CHECKOUT SUMMARY ===== */
+.co-summary{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);overflow:hidden;position:sticky;top:90px;}
+.co-sum-head{padding:16px 20px;background:var(--black);color:var(--orange);
+  font-size:14px;font-weight:700;}
+.co-sum-items{padding:14px 18px;border-bottom:1px solid var(--dark3);}
+.co-sum-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.co-sum-item:last-child{margin-bottom:0;}
+.co-sum-img{width:42px;height:42px;background:var(--dark3);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.co-sum-name{flex:1;font-size:11px;font-weight:600;line-height:1.4;}
+.co-sum-price{font-size:12px;font-weight:700;color:var(--orange);white-space:nowrap;}
+.co-sum-totals{padding:14px 18px;border-bottom:1px solid var(--dark3);}
+.co-sum-row{display:flex;justify-content:space-between;font-size:12px;
+  color:var(--gray2);margin-bottom:8px;}
+.co-sum-row.total{font-size:16px;font-weight:800;color:var(--white);
+  padding-top:10px;border-top:1px solid var(--dark3);margin-top:4px;}
+.co-sum-row.total span:last-child{color:var(--orange);}
+.co-sum-actions{padding:14px 18px;}
+.confirm-btn{width:100%;padding:14px;font-size:14px;border-radius:6px;}
+.trust-row{display:flex;gap:8px;margin-top:12px;}
+.trust-item{flex:1;text-align:center;font-size:10px;color:var(--gray);}
+.trust-item .ti{font-size:16px;display:block;margin-bottom:2px;}
+
+/* ===== SUIVI DE COMMANDE ===== */
+.tracking-page{padding:48px 0;}
+.tracking-box{max-width:680px;margin:0 auto;}
+.tracking-search{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);padding:28px;margin-bottom:24px;}
+.tracking-search h2{font-size:20px;font-weight:800;margin-bottom:6px;}
+.tracking-search p{font-size:13px;color:var(--gray2);margin-bottom:20px;}
+.tracking-input-row{display:flex;gap:10px;}
+.tracking-input{flex:1;padding:12px 16px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:6px;color:var(--white);
+  font-family:var(--font);font-size:14px;outline:none;transition:border-color .2s;}
+.tracking-input:focus{border-color:var(--orange);}
+.tracking-input::placeholder{color:var(--gray);}
+.tracking-result{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);overflow:hidden;display:none;}
+.tracking-result.show{display:block;animation:fadeUp .3s ease;}
+.tr-header{padding:18px 22px;border-bottom:1px solid var(--dark3);
+  display:flex;align-items:center;justify-content:space-between;}
+.tr-header h3{font-size:15px;font-weight:700;}
+.tr-order-info{padding:18px 22px;border-bottom:1px solid var(--dark3);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.tr-info-item .label{font-size:10px;font-family:var(--mono);color:var(--gray);
+  letter-spacing:.5px;margin-bottom:4px;}
+.tr-info-item .value{font-size:14px;font-weight:700;}
+.tracking-timeline{padding:22px;}
+.timeline-step{display:flex;gap:14px;margin-bottom:24px;position:relative;}
+.timeline-step:last-child{margin-bottom:0;}
+.timeline-step::before{content:'';position:absolute;left:15px;top:30px;
+  width:2px;height:calc(100% + 10px);background:var(--dark3);}
+.timeline-step:last-child::before{display:none;}
+.tl-dot{width:32px;height:32px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+  border:2px solid var(--dark3);background:var(--dark2);z-index:1;}
+.tl-dot.done{background:var(--green-dim);border-color:var(--green);}
+.tl-dot.active{background:var(--orange-dim);border-color:var(--orange);}
+.tl-content .tl-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+.tl-content .tl-date{font-size:11px;color:var(--gray);font-family:var(--mono);}
+.tl-content .tl-desc{font-size:12px;color:var(--gray2);margin-top:4px;}
+
+/* ===== AUTH ===== */
+.auth-container{min-height:calc(100vh - 200px);display:flex;align-items:center;
+  justify-content:center;padding:60px 20px;
+  background:radial-gradient(ellipse at center,rgba(255,107,0,.07) 0%,transparent 70%);}
+.auth-box{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:12px;padding:44px;width:100%;max-width:440px;}
+.auth-box h1{font-size:26px;font-weight:800;margin-bottom:6px;}
+.auth-box .sub{color:var(--gray2);font-size:13px;margin-bottom:28px;}
+.auth-tabs{display:flex;border-bottom:1px solid var(--dark3);margin-bottom:24px;}
+.auth-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:600;
+  font-size:13px;color:var(--gray);border-bottom:3px solid transparent;
+  transition:all .2s;margin-bottom:-1px;background:none;
+  border-left:none;border-right:none;border-top:none;font-family:var(--font);}
+.auth-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:11px;font-weight:700;color:var(--gray2);
+  margin-bottom:6px;letter-spacing:.5px;font-family:var(--mono);}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:6px;color:var(--white);
+  font-family:var(--font);font-size:13px;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--orange);}
+.form-group input::placeholder{color:var(--gray);}
+.btn-full{width:100%;padding:13px;font-size:14px;margin-top:6px;}
+.auth-divider{text-align:center;color:var(--gray);font-size:12px;margin:16px 0;position:relative;}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;
+  width:calc(50% - 28px);height:1px;background:var(--dark3);}
+.auth-divider::before{left:0;} .auth-divider::after{right:0;}
+.social-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-social{padding:10px;background:var(--dark3);border:1px solid var(--dark3);
+  border-radius:6px;color:var(--white);font-size:12px;font-weight:600;cursor:pointer;
+  font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
+.btn-social:hover{border-color:var(--orange);}
+
+/* ===== SUCCESS PAGE ===== */
+.success-container{min-height:calc(100vh - 200px);display:flex;align-items:center;
+  justify-content:center;padding:60px 20px;}
+.success-box{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:16px;padding:52px 44px;text-align:center;max-width:500px;width:100%;}
+.success-icon{width:80px;height:80px;background:var(--green-dim);border:3px solid var(--green);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:36px;margin:0 auto 22px;
+  animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.success-box h1{font-size:26px;font-weight:800;margin-bottom:8px;}
+.success-box .order-num{font-family:var(--mono);color:var(--orange);font-size:15px;
+  font-weight:700;margin-bottom:14px;}
+.success-box p{color:var(--gray2);font-size:13px;line-height:1.6;margin-bottom:24px;}
+.success-cod{background:var(--green-dim);border:1px solid rgba(0,200,83,.3);
+  border-radius:8px;padding:14px;margin-bottom:22px;text-align:left;}
+.success-cod h4{font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.success-cod p{font-size:12px;color:var(--gray2);margin:0;}
+
+/* ===== ADMIN PANEL ===== */
+.admin-layout{display:flex;min-height:100vh;}
+.admin-sidebar{width:230px;background:var(--black);border-right:1px solid var(--dark3);
+  position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;}
+.admin-logo{padding:20px;border-bottom:1px solid var(--dark3);display:flex;align-items:center;gap:10px;}
+.admin-logo-icon{width:34px;height:34px;background:var(--orange);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;}
+.admin-logo-text{font-size:16px;font-weight:800;color:var(--orange);letter-spacing:-.5px;}
+.admin-logo-sub{font-size:9px;font-family:var(--mono);color:var(--gray2);
+  letter-spacing:1px;display:block;margin-top:1px;}
+.admin-nav{flex:1;padding:14px 0;overflow-y:auto;}
+.admin-nav-group{margin-bottom:6px;}
+.admin-nav-label{padding:5px 18px;font-size:10px;font-family:var(--mono);
+  color:var(--gray);letter-spacing:1.5px;}
+.admin-nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;
+  color:var(--gray2);cursor:pointer;font-size:12px;font-weight:500;
+  border-left:3px solid transparent;transition:all .2s;}
+.admin-nav-item:hover{color:var(--white);background:var(--dark2);}
+.admin-nav-item.active{color:var(--orange);border-left-color:var(--orange);background:var(--orange-dim);}
+.admin-nav-badge{margin-left:auto;background:var(--orange);color:white;
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:var(--mono);}
+.admin-nav-badge.red{background:var(--red);}
+.admin-footer{padding:14px 18px;border-top:1px solid var(--dark3);}
+.admin-user{display:flex;align-items:center;gap:8px;}
+.admin-avatar{width:34px;height:34px;background:var(--orange-dim);
+  border:2px solid var(--orange);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:15px;}
+.admin-user-name{font-size:12px;font-weight:600;}
+.admin-user-role{font-size:10px;color:var(--gray2);font-family:var(--mono);}
+.admin-main{margin-left:230px;flex:1;display:flex;flex-direction:column;}
+.admin-topbar{background:var(--black);border-bottom:1px solid var(--dark3);
+  padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;}
+.admin-topbar h1{font-size:18px;font-weight:700;}
+.admin-topbar .breadcrumb{font-size:11px;color:var(--gray2);font-family:var(--mono);}
+.admin-content{padding:24px 28px;flex:1;}
+.admin-page{display:none;animation:fadeUp .3s ease;}
+.admin-page.active{display:block;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);padding:20px;transition:all .25s;position:relative;overflow:hidden;}
+.stat-card:hover{border-color:var(--orange);transform:translateY(-2px);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.s-orange::before{background:var(--orange);}
+.stat-card.s-green::before{background:var(--green);}
+.stat-card.s-blue::before{background:var(--blue);}
+.stat-card.s-yellow::before{background:var(--yellow);}
+.stat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.stat-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.stat-icon.s-orange{background:var(--orange-dim);}
+.stat-icon.s-green{background:var(--green-dim);}
+.stat-icon.s-blue{background:var(--blue-dim);}
+.stat-icon.s-yellow{background:rgba(255,184,0,.12);}
+.stat-change{font-size:11px;font-family:var(--mono);padding:3px 8px;border-radius:20px;font-weight:700;}
+.stat-change.up{background:var(--green-dim);color:var(--green);}
+.stat-change.down{background:var(--red-dim);color:var(--red);}
+.stat-value{font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:3px;}
+.stat-label{font-size:11px;color:var(--gray2);font-family:var(--mono);}
+
+/* CHART */
+.chart-box{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);padding:20px;margin-bottom:24px;}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:130px;margin-top:18px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.chart-bar{width:100%;background:var(--orange-dim);border-radius:4px 4px 0 0;
+  border-top:2px solid var(--orange);transition:all .3s;cursor:pointer;}
+.chart-bar:hover{background:var(--orange);}
+.chart-label{font-size:10px;color:var(--gray2);font-family:var(--mono);}
+
+/* TABLE */
+.table-wrap{background:var(--dark2);border:1px solid var(--dark3);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:24px;}
+.table-toolbar{padding:14px 18px;border-bottom:1px solid var(--dark3);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.t-search{flex:1;min-width:180px;padding:8px 12px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:6px;color:var(--white);
+  font-family:var(--font);font-size:12px;outline:none;transition:border-color .2s;}
+.t-search:focus{border-color:var(--orange);}
+.t-search::placeholder{color:var(--gray);}
+.t-filter{padding:8px 12px;background:var(--dark3);border:1px solid var(--dark3);
+  border-radius:6px;color:var(--white);font-family:var(--font);font-size:12px;
+  cursor:pointer;outline:none;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--dark3);}
+th{padding:11px 14px;text-align:left;font-size:10px;font-family:var(--mono);
+  color:var(--gray2);letter-spacing:.8px;text-transform:uppercase;font-weight:700;}
+td{padding:13px 14px;font-size:12px;border-bottom:1px solid var(--dark3);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+.prod-cell{display:flex;align-items:center;gap:10px;}
+.prod-thumb{width:40px;height:40px;background:var(--dark3);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.prod-cell-name{font-weight:600;font-size:12px;margin-bottom:2px;}
+.prod-cell-sku{font-size:10px;color:var(--gray2);font-family:var(--mono);}
+.badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;
+  font-family:var(--mono);display:inline-block;}
+.badge-green{background:var(--green-dim);color:var(--green);}
+.badge-red{background:var(--red-dim);color:var(--red);}
+.badge-yellow{background:rgba(255,184,0,.12);color:var(--yellow);}
+.badge-blue{background:var(--blue-dim);color:var(--blue);}
+.badge-gray{background:var(--dark4);color:var(--gray2);}
+.badge-orange{background:var(--orange-dim);color:var(--orange);}
+.action-btns{display:flex;gap:5px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);
+  backdrop-filter:blur(4px);z-index:2000;display:none;
+  align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;animation:fadeUp .2s ease;}
+.modal{background:var(--dark2);border:1px solid var(--dark3);border-radius:14px;
+  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes slideUp{from{transform:translateY(30px) scale(.97)}to{transform:translateY(0) scale(1)}}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--dark3);
+  display:flex;align-items:center;justify-content:space-between;}
+.modal-head h3{font-size:16px;font-weight:700;}
+.modal-close{width:30px;height:30px;background:var(--dark3);border:none;
+  border-radius:6px;color:var(--gray2);cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{background:var(--red-dim);color:var(--red);}
+.modal-body{padding:22px;}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--dark3);
+  display:flex;justify-content:flex-end;gap:10px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid .full{grid-column:1/-1;}
+.fg-label{display:block;font-size:10px;font-weight:700;color:var(--gray2);
+  font-family:var(--mono);letter-spacing:.8px;margin-bottom:6px;}
+.fg-input{width:100%;padding:10px 12px;background:var(--dark3);
+  border:1px solid var(--dark3);border-radius:6px;color:var(--white);
+  font-family:var(--font);font-size:13px;outline:none;transition:border-color .2s;}
+.fg-input:focus{border-color:var(--orange);}
+.fg-input::placeholder{color:var(--gray);}
+textarea.fg-input{resize:vertical;min-height:75px;}
+
+/* ===== FOOTER ===== */
+.site-footer{background:var(--black);border-top:2px solid var(--orange);
+  padding:48px 40px 24px;margin-top:60px;}
+.footer-grid{max-width:1400px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}
+.footer-brand .logo{font-size:26px;display:block;margin-bottom:10px;}
+.footer-brand p{color:var(--gray);font-size:12px;line-height:1.7;margin-bottom:16px;}
+.footer-social{display:flex;gap:10px;flex-wrap:nowrap;align-items:center;}
+.footer-social a{display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;text-decoration:none;color:white;flex-shrink:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.footer-social a:hover{transform:translateY(-3px) scale(1.15);box-shadow:0 8px 20px rgba(0,0,0,.4);}
+.fs-fb{background:#1877F2;} .fs-ig{background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);}
+.fs-tk{background:#010101;border:1px solid #333;} .fs-tg{background:#2AABEE;}
+.footer-col h4{color:var(--orange);font-size:11px;font-weight:700;
+  letter-spacing:1px;margin-bottom:14px;font-family:var(--mono);}
+.footer-col a{display:block;color:var(--gray);font-size:12px;text-decoration:none;
+  margin-bottom:7px;transition:color .2s;}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{max-width:1400px;margin:0 auto;border-top:1px solid var(--dark3);
+  padding-top:18px;display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--gray);flex-wrap:nowrap;gap:16px;}
+.footer-bottom .footer-social{margin:0;flex-shrink:0;}
+
+/* ===== WHATSAPP ===== */
+.wa-pulse{position:fixed;bottom:28px;right:28px;width:56px;height:56px;
+  border-radius:50%;background:rgba(37,211,102,.4);
+  animation:waPulse 2s ease-out infinite;pointer-events:none;z-index:9996;}
+@keyframes waPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.8);opacity:0}}
+.wa-widget{position:fixed;bottom:28px;right:28px;z-index:9997;}
+.wa-fab{width:56px;height:56px;background:#25D366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 6px 24px rgba(37,211,102,.5);border:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative;z-index:2;}
+.wa-fab:hover{transform:scale(1.1);}
+.wa-fab svg{width:28px;height:28px;fill:white;}
+.wa-tooltip{position:absolute;bottom:66px;right:0;background:#25D366;color:white;
+  padding:7px 13px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;
+  animation:tooltipBounce 3s ease-in-out infinite;pointer-events:none;font-family:var(--font);}
+.wa-tooltip::after{content:'';position:absolute;top:100%;right:16px;
+  border:6px solid transparent;border-top-color:#25D366;}
+@keyframes tooltipBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.wa-menu{position:absolute;bottom:70px;right:0;background:var(--dark2);
+  border:1px solid var(--dark3);border-radius:12px;padding:8px;min-width:255px;
+  box-shadow:0 16px 48px rgba(0,0,0,.5);
+  transform:scale(.8) translateY(20px);transform-origin:bottom right;
+  opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);}
+.wa-menu.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+.wa-menu-head{display:flex;align-items:center;gap:10px;padding:12px 14px 12px;
+  border-bottom:1px solid var(--dark3);margin-bottom:6px;}
+.wa-avatar{width:38px;height:38px;background:#25D366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.wa-name{font-size:13px;font-weight:700;}
+.wa-status{font-size:11px;color:#25D366;display:flex;align-items:center;gap:4px;}
+.wa-dot{width:7px;height:7px;background:#25D366;border-radius:50%;
+  animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.wa-item{display:flex;align-items:center;gap:10px;padding:10px 13px;
+  border-radius:7px;cursor:pointer;transition:all .2s;margin-bottom:2px;}
+.wa-item:hover{background:rgba(37,211,102,.1);}
+.wa-item-icon{width:34px;height:34px;border-radius:7px;display:flex;
+  align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.wa-item-text .wt{font-size:12px;font-weight:600;}
+.wa-item-text .ws{font-size:11px;color:var(--gray);}
+.wa-arrow{margin-left:auto;color:var(--gray);font-size:13px;}
+.wa-footer{padding:9px 13px 3px;border-top:1px solid var(--dark3);margin-top:6px;
+  text-align:center;font-size:10px;color:var(--gray);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){
+  .products-grid,.flash-products{grid-template-columns:repeat(3,1fr);}
+  .categories-grid{grid-template-columns:repeat(4,1fr);}
+  .promo-grid,.hero-inner{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  header,nav,.hero,.site-footer,footer{padding-left:16px;padding-right:16px;}
+  .container{padding:0 16px;}
+  .hero-text h1{font-size:30px;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .catalogue-layout,.cart-layout,.checkout-layout,.detail-layout{grid-template-columns:1fr;}
+  .admin-sidebar{transform:translateX(-100%);}
+  .admin-main{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<!-- WHATSAPP -->
+<div class="wa-pulse" id="wa-pulse"></div>
+<div class="wa-widget" id="wa-widget">
+  <div class="wa-tooltip" id="wa-tooltip">Besoin d'aide ? 💬</div>
+  <div class="wa-menu" id="wa-menu">
+    <div class="wa-menu-head">
+      <div class="wa-avatar">🛍️</div>
+      <div>
+        <div class="wa-name">Support Galy Market</div>
+        <div class="wa-status"><span class="wa-dot"></span> En ligne</div>
+      </div>
+    </div>
+    <div class="wa-item" onclick="openWA('produit')">
+      <div class="wa-item-icon" style="background:rgba(37,211,102,.1)">📦</div>
+      <div class="wa-item-text"><div class="wt">Infos produit</div><div class="ws">Prix, dispo, caractéristiques</div></div>
+      <span class="wa-arrow">→</span>
+    </div>
+    <div class="wa-item" onclick="openWA('commande')">
+      <div class="wa-item-icon" style="background:var(--orange-dim)">🛒</div>
+      <div class="wa-item-text"><div class="wt">Passer une commande</div><div class="ws">Commander via WhatsApp</div></div>
+      <span class="wa-arrow">→</span>
+    </div>
+    <div class="wa-item" onclick="openWA('livraison')">
+      <div class="wa-item-icon" style="background:var(--blue-dim)">🚚</div>
+      <div class="wa-item-text"><div class="wt">Suivi de livraison</div><div class="ws">Où est mon colis ?</div></div>
+      <span class="wa-arrow">→</span>
+    </div>
+    <div class="wa-item" onclick="openWA('faq')">
+      <div class="wa-item-icon" style="background:rgba(255,184,0,.1)">❓</div>
+      <div class="wa-item-text"><div class="wt">Question fréquente</div><div class="ws">Retour, remboursement...</div></div>
+      <span class="wa-arrow">→</span>
+    </div>
+    <div class="wa-footer">⚡ Réponse en moins de 5 minutes</div>
+  </div>
+  <button class="wa-fab" id="wa-fab" onclick="toggleWA()">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </button>
+</div>
+
+<!-- ==================== SITE HEADER ==================== -->
+<div id="site-wrapper">
+<div class="topbar">📦 LIVRAISON GRATUITE dès 15 000 FG &nbsp;|&nbsp; RETOUR 7 JOURS &nbsp;|&nbsp; PAIEMENT SÉCURISÉ</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="goPage('home')" ondblclick="secretAdmin()" title="">Galy <span>Market</span></div>
+    <button class="icon-btn" onclick="toggleSearch()" title="Rechercher">🔍</button>
+    <div class="header-actions">
+      <button class="btn-icon" onclick="goPage('auth')">👤 Compte</button>
+      <button class="btn-icon" onclick="goPage('cart')" style="position:relative;">
+        🛒 Panier <span class="badge" id="cartBadge">3</span>
+      </button>
+      <button class="btn-icon" onclick="goPage('tracking')" style="background:var(--orange-dim);border-color:var(--orange);color:var(--orange);">📦 Suivi</button>
+
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="nav-inner">
+    <a href="#" onclick="goPage('home')" id="nav-home">🏠 Accueil</a>
+    <a href="#" onclick="goPage('catalogue')" id="nav-catalogue">📱 Téléphones</a>
+    <a href="#" onclick="goPage('catalogue')">💻 Informatique</a>
+    <a href="#" onclick="goPage('catalogue')">👗 Mode & Beauté</a>
+    <a href="#" onclick="goPage('catalogue')">🏠 Maison</a>
+    <a href="#" onclick="goPage('catalogue')">⚡ Électroménager</a>
+    <a href="#" onclick="goPage('catalogue')">🎮 Gaming</a>
+    <a href="#" onclick="goPage('catalogue')">🏋️ Sport</a>
+    <a href="#" onclick="goPage('catalogue')" style="color:var(--orange)">🔥 Flash Sales</a>
+  </div>
+</nav>
+
+<!-- ==================== PAGES ==================== -->
+
+<!-- PAGE HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Tout ce dont tu as besoin, <em>livré chez toi.</em></h1>
+        <p>Des milliers de produits livrés partout en Afrique. Paiement à la livraison disponible.</p>
+        <div class="hero-btns">
+          <button class="btn btn-orange" style="padding:13px 26px;font-size:14px" onclick="goPage('catalogue')">🛍️ Découvrir</button>
+          <button class="btn btn-outline" style="padding:13px 26px;font-size:14px" onclick="goPage('auth')">Créer un compte</button>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="hero-card" onclick="addToCart()"><div class="card-icon">📱</div><h3>Smartphones</h3><p>iPhone, Samsung, Xiaomi</p><div class="card-price">Dès 45 000 FG</div></div>
+        <div class="hero-card" onclick="addToCart()"><div class="card-icon">👟</div><h3>Mode</h3><p>Vêtements & Chaussures</p><div class="card-price">Dès 5 000 FG</div></div>
+        <div class="hero-card" onclick="addToCart()"><div class="card-icon">🏠</div><h3>Maison</h3><p>Meubles & Déco</p><div class="card-price">Dès 8 000 FG</div></div>
+        <div class="hero-card" onclick="addToCart()"><div class="card-icon">⚡</div><h3>Électro</h3><p>TV, Frigos, Clim</p><div class="card-price">Dès 65 000 FG</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- PROMO -->
+    <div class="promo-grid">
+      <div class="promo-card big" onclick="goPage('catalogue')"><div><div class="promo-tag">OFFRE DU JOUR</div><h2>Jusqu'à -60% sur l'électronique</h2><p>Téléphones, tablettes, accessoires</p></div><span style="color:rgba(255,255,255,.9);font-size:13px;font-weight:600">Voir les offres →</span><div class="promo-emoji">📱</div></div>
+      <div class="promo-card blue" onclick="goPage('catalogue')"><div><div class="promo-tag">NOUVEAU</div><h2>Mode Femme</h2><p>Nouvelles collections</p></div><span style="color:rgba(255,255,255,.9);font-size:13px;font-weight:600">Explorer →</span><div class="promo-emoji">👗</div></div>
+      <div class="promo-card green" onclick="goPage('catalogue')"><div><div class="promo-tag">TOP VENTE</div><h2>Alimentaire</h2><p>Livraison en 2h</p></div><span style="color:rgba(255,255,255,.9);font-size:13px;font-weight:600">Commander →</span><div class="promo-emoji">🥑</div></div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="section-head"><h2>Catégories</h2><a class="see-all" onclick="goPage('catalogue')">VOIR TOUT →</a></div>
+    <div class="categories-grid">
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">📱</div><div class="cat-name">Téléphones</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">💻</div><div class="cat-name">Informatique</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">👗</div><div class="cat-name">Mode Femme</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">👔</div><div class="cat-name">Mode Homme</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">🏠</div><div class="cat-name">Maison & Déco</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">⚡</div><div class="cat-name">Électroménager</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">🎮</div><div class="cat-name">Gaming</div></div>
+      <div class="cat-card" onclick="goPage('catalogue')"><div class="cat-icon">🏋️</div><div class="cat-name">Sport</div></div>
+    </div>
+
+    <!-- FLASH SALES -->
+    <div class="flash-header"><h2>⚡ Flash Sales</h2><div class="countdown"><span style="color:white;font-size:12px;font-weight:600">FIN DANS :</span><div class="countdown-item" id="h">02</div><span class="countdown-sep">:</span><div class="countdown-item" id="m">47</div><span class="countdown-sep">:</span><div class="countdown-item" id="s">33</div></div></div>
+    <div style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.25);border-top:none;border-radius:0 0 8px 8px;padding:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:32px;">
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">📱</div><div class="product-discount">-45%</div><div class="product-info"><div class="product-name">Samsung Galaxy A54 5G 128GB</div><div class="product-price">149 000 FG</div><div class="product-old">270 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (842)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">🎧</div><div class="product-discount">-30%</div><div class="product-info"><div class="product-name">Écouteurs Sony WH-1000XM5</div><div class="product-price">89 000 FG</div><div class="product-old">127 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (1.2k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">⌚</div><div class="product-discount">-25%</div><div class="product-info"><div class="product-name">Apple Watch SE 2e génération</div><div class="product-price">95 000 FG</div><div class="product-old">127 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (567)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">💻</div><div class="product-discount">-20%</div><div class="product-info"><div class="product-name">Laptop Lenovo IdeaPad 15" i5</div><div class="product-price">310 000 FG</div><div class="product-old">388 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (234)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">📷</div><div class="product-discount">-35%</div><div class="product-info"><div class="product-name">Canon EOS M50 Mark II</div><div class="product-price">175 000 FG</div><div class="product-old">270 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (389)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+    </div>
+
+    <!-- BEST SELLERS -->
+    <div class="section-head"><h2>Meilleures ventes</h2><a class="see-all" onclick="goPage('catalogue')">VOIR TOUT →</a></div>
+    <div class="products-grid">
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">👟</div><div class="product-info"><div class="product-name">Nike Air Max 270 Hommes</div><div class="product-price">42 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (2.4k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">👜</div><div class="product-discount">-15%</div><div class="product-info"><div class="product-name">Sac à main Cuir Premium Femme</div><div class="product-price">28 000 FG</div><div class="product-old">33 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (876)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">🖥️</div><div class="product-info"><div class="product-name">TV Samsung 55" 4K UHD Smart</div><div class="product-price">285 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (1.1k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">❄️</div><div class="product-discount">-10%</div><div class="product-info"><div class="product-name">Climatiseur Hisense 1.5 CV Split</div><div class="product-price">185 000 FG</div><div class="product-old">205 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (445)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+      <div class="product-card" onclick="goPage('product')"><div class="product-img">🎮</div><div class="product-info"><div class="product-name">PlayStation 5 Standard Edition</div><div class="product-price">350 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (3.2k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Galy <span>Market</span></span>
+        <p>La première marketplace africaine pour des achats rapides, sécurisés et livrés chez vous partout en Afrique de l'Ouest.</p>
+
+      </div>
+      <div class="footer-col"><h4>LIENS UTILES</h4><a href="#">À propos</a><a href="#">Nos vendeurs</a><a href="#">Livraison</a><a href="#">Retours</a><a href="#">FAQ</a></div>
+      <div class="footer-col"><h4>MON COMPTE</h4><a href="#" onclick="goPage('auth')">Se connecter</a><a href="#" onclick="goPage('auth')">Créer un compte</a><a href="#" onclick="goPage('cart')">Mon panier</a><a href="#" onclick="goPage('tracking')">Mes commandes</a></div>
+      <div class="footer-col"><h4>CONTACT</h4><a href="#">📞 +225 07 00 00 00</a><a href="#">📧 <span class="__cf_email__" data-cfemail="0a797f7a7a65787e4a676b7869626f246963">[email&#160;protected]</span></a><a href="#">💬 Chat en direct</a><a href="#">📍 Abidjan, Côte d'Ivoire</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Galy Market — Tous droits réservés</span>
+      <div class="footer-social">
+        <a class="fs-fb" href="#" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a class="fs-ig" href="#" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a class="fs-tk" href="#" title="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+        <a class="fs-tg" href="#" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+      </div>
+      <span>💳 📱 🏦 💵 Paiement sécurisé</span>
+    </div>
+  </footer>
+</div>
+
+<!-- PAGE CATALOGUE -->
+<div id="page-catalogue" class="page">
+  <div class="container">
+    <div class="catalogue-layout">
+      <div class="filters-panel">
+        <div class="filter-section"><h4>CATÉGORIE</h4>
+          <div class="filter-option"><input type="checkbox" checked><label>Tous (1284)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Téléphones (234)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Informatique (189)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Mode Femme (567)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Mode Homme (423)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Électroménager (98)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Gaming (76)</label></div>
+        </div>
+        <div class="filter-section"><h4>PRIX (FG)</h4>
+          <div class="price-range"><input type="number" placeholder="Min" value="0"><span style="color:var(--gray)">—</span><input type="number" placeholder="Max" value="500000"></div>
+          <button class="btn btn-orange" style="margin-top:10px;padding:7px 14px;font-size:11px">Appliquer</button>
+        </div>
+        <div class="filter-section"><h4>MARQUE</h4>
+          <div class="filter-option"><input type="checkbox"><label>Samsung</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Apple</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Xiaomi</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Nike</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Sony</label></div>
+        </div>
+        <div class="filter-section"><h4>ÉVALUATION</h4>
+          <div class="filter-option"><input type="radio" name="r"><label>⭐⭐⭐⭐⭐</label></div>
+          <div class="filter-option"><input type="radio" name="r"><label>⭐⭐⭐⭐+</label></div>
+          <div class="filter-option"><input type="radio" name="r"><label>⭐⭐⭐+</label></div>
+        </div>
+        <div class="filter-section"><h4>LIVRAISON</h4>
+          <div class="filter-option"><input type="checkbox"><label>Livraison gratuite</label></div>
+          <div class="filter-option"><input type="checkbox"><label>Express (24h)</label></div>
+          <div class="filter-option"><input type="checkbox"><label>En stock</label></div>
+        </div>
+      </div>
+      <div>
+        <div class="catalogue-toolbar">
+          <span>1 284 produits trouvés</span>
+          <select class="sort-select"><option>Pertinence</option><option>Prix croissant</option><option>Prix décroissant</option><option>Meilleures notes</option><option>Nouveautés</option></select>
+        </div>
+        <div class="products-grid products-grid-4">
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">📱</div><div class="product-discount">-45%</div><div class="product-info"><div class="product-name">Samsung Galaxy A54 5G 128GB</div><div class="product-price">149 000 FG</div><div class="product-old">270 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (842)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">📱</div><div class="product-info"><div class="product-name">iPhone 15 Pro Max 256GB Titane</div><div class="product-price">680 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (2.1k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">📱</div><div class="product-discount">-20%</div><div class="product-info"><div class="product-name">Xiaomi Redmi Note 13 Pro 256GB</div><div class="product-price">95 000 FG</div><div class="product-old">119 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (1.4k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">💻</div><div class="product-info"><div class="product-name">MacBook Air M2 13" 8GB/256GB</div><div class="product-price">720 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (987)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">🎧</div><div class="product-discount">-30%</div><div class="product-info"><div class="product-name">Sony WH-1000XM5 Écouteurs</div><div class="product-price">89 000 FG</div><div class="product-old">127 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (1.2k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">⌚</div><div class="product-info"><div class="product-name">Samsung Galaxy Watch 6 Classic</div><div class="product-price">125 000 FG</div><div class="product-rating"><span class="stars">★★★★☆</span> (445)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">🎮</div><div class="product-info"><div class="product-name">PlayStation 5 Standard Edition</div><div class="product-price">350 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (3.2k)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+          <div class="product-card" onclick="goPage('product')"><div class="product-img">👟</div><div class="product-discount">-10%</div><div class="product-info"><div class="product-name">Nike Air Max 270 Blanc/Noir</div><div class="product-price">42 000 FG</div><div class="product-old">47 000 FG</div><div class="product-rating"><span class="stars">★★★★★</span> (789)</div></div><button class="add-to-cart" onclick="addToCart()">🛒 Ajouter</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE PRODUIT -->
+<div id="page-product" class="page">
+  <div class="container">
+    <div class="product-detail">
+      <p style="font-size:12px;color:var(--gray);margin-bottom:20px;font-family:var(--mono)">
+        <span onclick="goPage('home')" style="cursor:pointer;color:var(--orange)">Accueil</span> / <span onclick="goPage('catalogue')" style="cursor:pointer;color:var(--orange)">Téléphones</span> / Samsung Galaxy A54
+      </p>
+      <div class="detail-layout">
+        <div class="detail-img-box">📱</div>
+        <div class="detail-info">
+          <div class="product-title">Samsung Galaxy A54 5G 128GB — Noir</div>
+          <div class="detail-price">149 000 FG</div>
+          <div class="detail-old">Prix habituel : 270 000 FG &nbsp;<span style="background:var(--red);color:white;font-size:11px;padding:2px 7px;border-radius:4px;font-family:var(--mono)">-45%</span></div>
+          <div class="product-rating" style="margin-bottom:16px"><span class="stars" style="font-size:16px">★★★★☆</span> <span style="font-size:13px">(842 avis)</span></div>
+          <div class="detail-desc">Le Samsung Galaxy A54 5G offre une expérience premium avec son écran Super AMOLED 6.4", sa triple caméra 50MP et sa batterie longue durée 5000mAh. Compatible 5G pour des vitesses ultra-rapides.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+            <span style="padding:6px 14px;border:2px solid var(--orange);border-radius:20px;font-size:12px;font-weight:600;color:var(--orange)">Noir ✓</span>
+            <span style="padding:6px 14px;border:1px solid var(--dark3);border-radius:20px;font-size:12px;cursor:pointer" onclick="this.style.border='2px solid var(--orange)';this.style.color='var(--orange)'">Blanc</span>
+            <span style="padding:6px 14px;border:1px solid var(--dark3);border-radius:20px;font-size:12px;cursor:pointer" onclick="this.style.border='2px solid var(--orange)';this.style.color='var(--orange)'">Violet</span>
+          </div>
+          <div class="qty-row">
+            <span style="font-size:13px;font-weight:600">Quantité :</span>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQtyDetail(-1)">−</button>
+              <input class="qty-val" id="detail-qty" value="1" readonly>
+              <button class="qty-btn" onclick="changeQtyDetail(1)">+</button>
+            </div>
+          </div>
+          <div class="detail-btns">
+            <button class="btn btn-orange" style="padding:13px 28px;font-size:14px" onclick="addToCart();goPage('cart')">🛒 Ajouter au panier</button>
+            <button class="btn btn-ghost" style="padding:13px 28px;font-size:14px" onclick="goPage('checkout')">⚡ Acheter maintenant</button>
+          </div>
+          <div class="detail-badges">
+            <span class="detail-badge">🚚 Livraison gratuite</span>
+            <span class="detail-badge">↩️ Retour 7 jours</span>
+            <span class="detail-badge">🔒 Paiement sécurisé</span>
+            <span class="detail-badge">✅ Paiement à la livraison</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE PANIER -->
+<div id="page-cart" class="page">
+  <div class="container">
+    <div class="cart-layout">
+      <div>
+        <div class="cart-box">
+          <div class="cart-box-header"><h2 style="font-size:16px;font-weight:700">3 article(s)</h2><span style="font-size:12px;color:var(--gray)">Tout sélectionner</span></div>
+          <div class="cart-item"><div class="cart-item-img">📱</div><div class="cart-item-details"><div class="cart-item-name">Samsung Galaxy A54 5G 128GB — Noir</div><div class="cart-item-variant">Couleur: Noir • Stockage: 128GB</div><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><input class="qty-val" value="1" readonly><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div><div class="cart-item-price"><div class="price">149 000 FG</div><span class="remove" onclick="removeItem(this)">🗑 Supprimer</span></div></div>
+          <div class="cart-item"><div class="cart-item-img">🎧</div><div class="cart-item-details"><div class="cart-item-name">Sony WH-1000XM5 — Blanc</div><div class="cart-item-variant">Couleur: Blanc Platine</div><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><input class="qty-val" value="1" readonly><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div><div class="cart-item-price"><div class="price">89 000 FG</div><span class="remove" onclick="removeItem(this)">🗑 Supprimer</span></div></div>
+          <div class="cart-item"><div class="cart-item-img">👟</div><div class="cart-item-details"><div class="cart-item-name">Nike Air Max 270 — Pointure 42</div><div class="cart-item-variant">Taille: 42 • Coloris: Blanc/Noir</div><div class="qty-control"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><input class="qty-val" value="2" readonly><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div><div class="cart-item-price"><div class="price">84 000 FG</div><span class="remove" onclick="removeItem(this)">🗑 Supprimer</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="order-summary">
+          <h3>Récapitulatif</h3>
+          <div class="summary-row"><span>Sous-total (3 articles)</span><span>322 000 FG</span></div>
+          <div class="summary-row"><span>Livraison</span><span style="color:var(--green)">Gratuite</span></div>
+          <div class="summary-row"><span>Réduction</span><span style="color:var(--green)">- 0 FG</span></div>
+          <div class="summary-row total"><span>Total</span><span>322 000 FG</span></div>
+          <br>
+          <div class="promo-input"><input type="text" placeholder="Code promo"><button>Appliquer</button></div>
+          <button class="btn btn-orange checkout-btn" onclick="goPage('checkout')">🔒 Passer la commande</button>
+          <div class="secure-badge">🔒 Paiement 100% sécurisé</div>
+        </div>
+        <div style="background:var(--dark2);border:1px solid var(--dark3);border-radius:var(--radius);padding:18px;margin-top:14px;">
+          <p style="font-size:12px;font-weight:700;margin-bottom:10px">Modes de paiement</p>
+          <div style="display:flex;gap:10px;font-size:20px">💳📱🏦💵</div>
+          <p style="font-size:11px;color:var(--gray);margin-top:8px">Visa, Mastercard, Mobile Money, Wave, COD</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE CHECKOUT -->
+<div id="page-checkout" class="page">
+  <div class="container">
+    <div style="padding:32px 0 60px">
+      <div class="checkout-steps">
+        <div class="co-step done"><div class="co-step-num">✓</div> Panier</div>
+        <div class="co-step active"><div class="co-step-num">2</div> Livraison & Paiement</div>
+        <div class="co-step"><div class="co-step-num">3</div> Confirmation</div>
+      </div>
+      <div class="checkout-layout">
+        <div>
+          <div class="co-section">
+            <div class="co-section-head"><div class="co-icon">📍</div> Adresse de livraison</div>
+            <div class="co-body">
+              <div class="co-row"><div class="co-field"><label class="co-label">PRÉNOM *</label><input class="co-input" placeholder="Jean"></div><div class="co-field"><label class="co-label">NOM *</label><input class="co-input" placeholder="Dupont"></div></div>
+              <div class="co-row full"><div class="co-field"><label class="co-label">TÉLÉPHONE *</label><input class="co-input" type="tel" placeholder="+224 6X XX XX XX"></div></div>
+              <div class="co-row full"><div class="co-field">
+                <label class="co-label">VILLE / QUARTIER *</label>
+                <select class="co-input" id="co-commune" onchange="checkHorsConakry(this)">
+                  <option value="">— Choisir votre quartier —</option>
+                  <optgroup label="📍 Kaloum">
+                    <option>Almamya I</option><option>Almamya II</option><option>Boulbinet</option>
+                    <option>Coronthie I</option><option>Coronthie II</option><option>Fotoba</option>
+                    <option>Kassa</option><option>Koulewondy</option><option>Manquepas</option>
+                    <option>Sandervalia</option><option>Sans Fil</option><option>Tamara</option>
+                    <option>Téminetaye</option><option>Tombo</option>
+                  </optgroup>
+                  <optgroup label="📍 Dixinn">
+                    <option>Belle Vue École</option><option>Belle Vue Marché I</option><option>Belle Vue Marché II</option>
+                    <option>Camayenne</option><option>Cameroun</option><option>Dixinn Centre I</option>
+                    <option>Dixinn Centre II</option><option>Dixinn Gare</option><option>Dixinn Gare Rails</option>
+                    <option>Dixinn Mosquée</option><option>Dixinn Port</option><option>Hafia Château d'eau</option>
+                    <option>Hafia I</option><option>Hafia II</option><option>Hafia III</option>
+                    <option>Hafia Minière I</option><option>Hafia Minière II</option><option>Hafia Minière Centre</option>
+                    <option>Landréah</option><option>Minière Cité</option>
+                  </optgroup>
+                  <optgroup label="📍 Matam">
+                    <option>Bonfi</option><option>Bonfi Marché</option><option>Bonfi Routière</option>
+                    <option>Boussoura</option><option>Carrière Centre</option><option>Carrière Cité</option>
+                    <option>Coléah Centre</option><option>Coléah Cité</option><option>Coléah Domino</option>
+                    <option>Coléah Imprimerie</option><option>Hermakonon Mosquée</option><option>Hermakonon Centre</option>
+                  </optgroup>
+                  <optgroup label="📍 Ratoma">
+                    <option>Taouyah</option><option>Ratoma Dispensaire</option><option>Ratoma Centre</option>
+                    <option>Kaporo Rails</option><option>Hamdallaye I</option><option>Hamdallaye II</option>
+                    <option>Koloma Soloprimo</option><option>Kipé</option><option>Kaporo Centre</option>
+                  </optgroup>
+                  <optgroup label="📍 Lambanyi">
+                    <option>Nongo Centre</option><option>Nongo Taady</option><option>Lambanyi</option>
+                    <option>Yembeya</option><option>Waréah</option><option>Simbaya Gare</option>
+                    <option>Yattaya Centre</option><option>Nassouroulaye</option><option>Bantounka I</option>
+                    <option>Bantounka II</option><option>Soumambossia</option><option>Wanindara</option>
+                    <option>Wanindara Rails</option><option>Kinifi</option>
+                  </optgroup>
+                  <optgroup label="📍 Sonfonia">
+                    <option>Kobayah</option><option>Yattaya Fossidet</option><option>Sonfonia Gare I</option>
+                    <option>Sonfonia Gare II</option><option>Sonfonia Centre I</option><option>Sonfonia Centre II</option>
+                  </optgroup>
+                  <optgroup label="📍 Gbessia">
+                    <option>Dabondy I</option><option>Dabondy II</option><option>Dabondy III</option>
+                    <option>Dabondy École</option><option>Dabondy Rails</option><option>Gbessia Cité I</option>
+                    <option>Gbessia Cité II</option><option>Gbessia Cité III</option><option>Gbessia École</option>
+                    <option>Gbessia Centre</option><option>Gbessia Port I</option><option>Gbessia Port II</option>
+                    <option>Dar-Es-Salam</option><option>Cité de l'Air</option><option>Béhanzin</option>
+                    <option>Tanènè Marché</option><option>Tanènè Mosquée</option><option>Yimbaya École</option>
+                    <option>Yimbaya Permanence</option><option>Yimbaya Port</option><option>Hamdallaye Mosquée</option>
+                    <option>Yimbaya Tannerie</option><option>Simbaya I</option><option>Koloma I</option><option>Koloma II</option>
+                  </optgroup>
+                  <optgroup label="📍 Matoto">
+                    <option>Matoto Centre</option><option>Simbaya II</option><option>Simbaya École</option>
+                    <option>Matoto Marché</option><option>Matoto Khabitaya</option><option>Sangoyah Mosquée</option>
+                    <option>Sangoyah Marché</option><option>Kissosso</option><option>Kissosso Plateau</option>
+                    <option>Marché Enco 5</option><option>Wanindara Dispensaire</option><option>Wanindara Marché</option>
+                  </optgroup>
+                  <optgroup label="📍 Tombolia">
+                    <option>Enta Marché</option><option>Enta Fassa</option><option>Tombolia</option>
+                    <option>Tombolia Plateau</option><option>Dabompa Village</option><option>Dabompa Plateau</option>
+                    <option>Lansanayah</option>
+                  </optgroup>
+                  <optgroup label="🌍 Hors Conakry">
+                    <option value="hors">Je ne suis pas à Conakry</option>
+                  </optgroup>
+                </select>
+              </div></div>
+              <!-- HORS CONAKRY -->
+              <div class="co-row full" id="co-hors-row" style="display:none;">
+                <div class="co-field">
+                  <label class="co-label">VOTRE VILLE / LOCALITÉ *</label>
+                  <input class="co-input" id="co-ville-hors" placeholder="Ex: Kindia, Labé, Kankan...">
+                  <div style="margin-top:8px;padding:10px 14px;background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.3);border-radius:6px;font-size:12px;color:#FFE082;">
+                    ⚠️ Livraison hors Conakry : notre équipe vous contactera pour confirmer les frais et délais.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="co-section">
+            <div class="co-section-head"><div class="co-icon">💳</div> Mode de paiement</div>
+            <div class="co-body">
+              <div class="pay-methods">
+                <div class="pay-method selected" id="pm-cod" onclick="selPay('cod')">
+                  <div class="pay-method-top"><div class="pay-radio"><div class="pay-radio-dot"></div></div><div class="pay-icon-box">💵</div><div class="pay-info"><div class="pname">Paiement à la livraison (COD)</div><div class="pdesc">Payez en espèces à la réception</div></div><span class="pay-tag">✅ RECOMMANDÉ</span></div>
+                  <div class="cod-box show" id="cod-detail">
+                    <p style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px">Comment ça marche :</p>
+                    <ul class="cod-steps"><li><div class="cod-step-n">1</div><span>Vous commandez sans payer</span></li><li><div class="cod-step-n">2</div><span>Notre livreur vous appelle</span></li><li><div class="cod-step-n">3</div><span>Vous inspectez le colis</span></li><li><div class="cod-step-n">4</div><span>Vous payez en espèces</span></li></ul>
+                  </div>
+                </div>
+                <div class="pay-method" id="pm-mobile" onclick="selPay('mobile')">
+                  <div class="pay-method-top"><div class="pay-radio"><div class="pay-radio-dot"></div></div><div class="pay-icon-box">📱</div><div class="pay-info"><div class="pname">Mobile Money</div><div class="pdesc">Orange Money, MTN, Wave, Moov</div></div><span class="pay-tag" style="background:var(--orange)">POPULAIRE</span></div>
+                  <div class="mobile-box" id="mobile-detail">
+                    <div class="mobile-ops">
+                      <div class="mobile-op active" onclick="selMobile(this)"><div class="mo-icon">🟠</div><div class="mo-name">Orange Money</div></div>
+                      <div class="mobile-op" onclick="selMobile(this)"><div class="mo-icon">🟡</div><div class="mo-name">MTN MoMo</div></div>
+                      <div class="mobile-op" onclick="selMobile(this)"><div class="mo-icon">🔵</div><div class="mo-name">Wave</div></div>
+                      <div class="mobile-op" onclick="selMobile(this)"><div class="mo-icon">🟣</div><div class="mo-name">Moov</div></div>
+                      <div class="mobile-op" onclick="selMobile(this)"><div class="mo-icon">⚪</div><div class="mo-name">Wizall</div></div>
+                      <div class="mobile-op" onclick="selMobile(this)"><div class="mo-icon">🔴</div><div class="mo-name">Airtel</div></div>
+                    </div>
+                    <div class="co-field"><label class="co-label">NUMÉRO</label><input class="co-input" type="tel" placeholder="07 12 34 56 78"></div>
+                  </div>
+                </div>
+                <div class="pay-method" id="pm-card" onclick="selPay('card')">
+                  <div class="pay-method-top"><div class="pay-radio"><div class="pay-radio-dot"></div></div><div class="pay-icon-box">💳</div><div class="pay-info"><div class="pname">Carte bancaire</div><div class="pdesc">Visa, Mastercard — SSL sécurisé</div></div></div>
+                  <div class="mobile-box" id="card-detail">
+                    <div class="co-field" style="margin-bottom:12px"><label class="co-label">NUMÉRO DE CARTE</label><input class="co-input" placeholder="1234 5678 9012 3456"></div>
+                    <div class="co-row"><div class="co-field"><label class="co-label">EXPIRATION</label><input class="co-input" placeholder="MM/AA"></div><div class="co-field"><label class="co-label">CVV</label><input class="co-input" placeholder="123"></div></div>
+                  </div>
+                </div>
+                <div class="pay-method" id="pm-transfer" onclick="selPay('transfer')">
+                  <div class="pay-method-top"><div class="pay-radio"><div class="pay-radio-dot"></div></div><div class="pay-icon-box">🏦</div><div class="pay-info"><div class="pname">Virement bancaire</div><div class="pdesc">Traitement sous 24h ouvrables</div></div></div>
+                  <div class="mobile-box" id="transfer-detail">
+                    <div style="background:var(--dark2);border-radius:6px;padding:12px;font-size:12px;line-height:1.8">
+                      <p style="font-weight:700;color:var(--orange);margin-bottom:6px">Coordonnées bancaires :</p>
+                      <p>🏦 Ecobank Côte d'Ivoire</p>
+                      <p style="font-family:var(--mono)">💳 IBAN: CI93 0001 0001 2345 6789 012</p>
+                      <p style="font-family:var(--mono)">🔢 BIC: ECOCCIAB</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="co-summary">
+            <div class="co-sum-head">🛒 Récapitulatif (3 articles)</div>
+            <div class="co-sum-items">
+              <div class="co-sum-item"><div class="co-sum-img">📱</div><div class="co-sum-name">Samsung Galaxy A54 × 1</div><div class="co-sum-price">149 000</div></div>
+              <div class="co-sum-item"><div class="co-sum-img">🎧</div><div class="co-sum-name">Sony WH-1000XM5 × 1</div><div class="co-sum-price">89 000</div></div>
+              <div class="co-sum-item"><div class="co-sum-img">👟</div><div class="co-sum-name">Nike Air Max 270 × 2</div><div class="co-sum-price">84 000</div></div>
+            </div>
+            <div class="co-sum-totals">
+              <div class="co-sum-row"><span>Sous-total</span><span>322 000 FG</span></div>
+              <div class="co-sum-row"><span>Livraison</span><span style="color:var(--green)">Gratuite ✓</span></div>
+              <div class="co-sum-row total"><span>Total</span><span>322 000 FG</span></div>
+            </div>
+            <div class="co-sum-actions">
+              <button class="btn btn-orange confirm-btn" onclick="confirmOrder()">✅ Confirmer la commande</button>
+              <div class="trust-row">
+                <div class="trust-item"><span class="ti">🔒</span>Sécurisé</div>
+                <div class="trust-item"><span class="ti">↩️</span>Retour 7j</div>
+                <div class="trust-item"><span class="ti">📦</span>Livraison rapide</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE SUIVI -->
+<div id="page-tracking" class="page">
+  <div class="container">
+    <div class="tracking-page">
+      <div class="tracking-box">
+        <div class="section-head" style="margin-top:0"><h2>Suivi de commande</h2></div>
+        <div class="tracking-search">
+          <h2>📦 Où est mon colis ?</h2>
+          <p>Entrez votre numéro de commande ou votre numéro de téléphone pour suivre votre livraison.</p>
+          <div class="tracking-input-row">
+            <input class="tracking-input" id="track-input" placeholder="Ex: #CMD-2025-2402 ou +225 07...">
+            <button class="btn btn-orange" onclick="trackOrder()">Rechercher</button>
+          </div>
+        </div>
+        <div class="tracking-result" id="tracking-result">
+          <div class="tr-header">
+            <div>
+              <h3>Commande <span style="color:var(--orange);font-family:var(--mono)">#CMD-2025-2402</span></h3>
+              <p style="font-size:12px;color:var(--gray);margin-top:3px">Passée le 08/03/2025</p>
+            </div>
+            <span class="badge badge-yellow">🚚 En transit</span>
+          </div>
+          <div class="tr-order-info">
+            <div class="tr-info-item"><div class="label">CLIENT</div><div class="value">Kouamé Ange</div></div>
+            <div class="tr-info-item"><div class="label">TOTAL</div><div class="value" style="color:var(--orange)">322 000 FG</div></div>
+            <div class="tr-info-item"><div class="label">PAIEMENT</div><div class="value">💵 COD</div></div>
+          </div>
+          <div class="tracking-timeline">
+            <div class="timeline-step"><div class="tl-dot done">✓</div><div class="tl-content"><div class="tl-title">Commande confirmée</div><div class="tl-date">08/03/2025 — 14:32</div><div class="tl-desc">Votre commande a été reçue et confirmée</div></div></div>
+            <div class="timeline-step"><div class="tl-dot done">✓</div><div class="tl-content"><div class="tl-title">En préparation</div><div class="tl-date">08/03/2025 — 16:00</div><div class="tl-desc">Vos articles sont en cours de préparation</div></div></div>
+            <div class="timeline-step"><div class="tl-dot active">🚚</div><div class="tl-content"><div class="tl-title" style="color:var(--orange)">En cours de livraison</div><div class="tl-date">09/03/2025 — 09:15</div><div class="tl-desc">Votre colis est en route — livraison prévue aujourd'hui</div></div></div>
+            <div class="timeline-step"><div class="tl-dot">📦</div><div class="tl-content"><div class="tl-title" style="color:var(--gray)">Livraison</div><div class="tl-date">En attente</div><div class="tl-desc">Le livreur vous appellera avant d'arriver</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE AUTH -->
+<div id="page-auth" class="page">
+  <div class="auth-container">
+    <div class="auth-box">
+      <h1>👋 Bienvenue sur Galy Market</h1>
+      <p class="sub">Connectez-vous pour profiter de toutes nos offres.</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')" id="tab-login">Se connecter</button>
+        <button class="auth-tab" onclick="switchTab('register')" id="tab-register">Créer un compte</button>
+      </div>
+      <div id="form-login">
+        <div class="form-group"><label>EMAIL / TÉLÉPHONE</label><input type="email" placeholder="exemple@email.com"></div>
+        <div class="form-group"><label>MOT DE PASSE</label><input type="password" placeholder="••••••••"></div>
+        <div style="text-align:right;margin-bottom:16px"><a href="#" style="color:var(--orange);font-size:12px;text-decoration:none">Mot de passe oublié ?</a></div>
+        <button class="btn btn-orange btn-full" onclick="showNotif('✅ Connexion réussie !')">Se connecter</button>
+        <div class="auth-divider">ou</div>
+        <div class="social-btns"><button class="btn-social">🌐 Google</button><button class="btn-social">📘 Facebook</button></div>
+      </div>
+      <div id="form-register" style="display:none">
+        <div class="form-group"><label>NOM COMPLET</label><input type="text" placeholder="Jean Dupont"></div>
+        <div class="form-group"><label>EMAIL</label><input type="email" placeholder="exemple@email.com"></div>
+        <div class="form-group"><label>TÉLÉPHONE</label><input type="tel" placeholder="+225 07 XX XX XX XX"></div>
+        <div class="form-group"><label>MOT DE PASSE</label><input type="password" placeholder="Min. 8 caractères"></div>
+        <div class="form-group"><label>PAYS</label><select><option>Côte d'Ivoire</option><option>Sénégal</option><option>Guinée</option><option>Mali</option><option>Cameroun</option></select></div>
+        <button class="btn btn-orange btn-full" onclick="showNotif('🎉 Compte créé avec succès !')">Créer mon compte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE SUCCESS -->
+<div id="page-success" class="page">
+  <div class="success-container">
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <h1>Commande confirmée !</h1>
+      <div class="order-num" id="order-ref-num">#CMD-2025-2402</div>
+      <p>Merci pour votre commande ! Notre livreur vous contactera très bientôt pour organiser la livraison.</p>
+      <div class="success-cod">
+        <h4>💵 Paiement à la livraison</h4>
+        <p>Préparez <strong>322 000 FG</strong> en espèces. Notre livreur appellera avant d'arriver.</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-orange" style="flex:1;padding:12px" onclick="goPage('tracking')">📦 Suivre ma commande</button>
+        <button class="btn btn-outline" style="flex:1;padding:12px" onclick="goPage('home')">🏠 Accueil</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /site-wrapper -->
+
+<!-- ==================== ADMIN PANEL ==================== -->
+<div id="admin-wrapper" style="display:none">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        <div class="admin-logo-icon">🛍️</div>
+        <div><div class="admin-logo-text">Galy Market</div><span class="admin-logo-sub">ADMIN PANEL</span></div>
+      </div>
+      <nav class="admin-nav">
+        <div class="admin-nav-group">
+          <div class="admin-nav-label">PRINCIPAL</div>
+          <div class="admin-nav-item active" onclick="showAdminPage('dashboard',this)">📊 Tableau de bord</div>
+        </div>
+        <div class="admin-nav-group">
+          <div class="admin-nav-label">BOUTIQUE</div>
+          <div class="admin-nav-item" onclick="showAdminPage('products',this)">📦 Produits <span class="admin-nav-badge">124</span></div>
+          <div class="admin-nav-item" onclick="showAdminPage('orders',this)">🛒 Commandes <span class="admin-nav-badge red">8</span></div>
+          <div class="admin-nav-item" onclick="showAdminPage('customers',this)">👥 Clients</div>
+          <div class="admin-nav-item" onclick="showAdminPage('categories',this)">🗂️ Catégories</div>
+        </div>
+        <div class="admin-nav-group">
+          <div class="admin-nav-label">PARAMÈTRES</div>
+          <div class="admin-nav-item" onclick="showNotif('🚧 En développement')">⚙️ Paramètres</div>
+          <div class="admin-nav-item" onclick="hideAdmin()">🌐 Voir la boutique</div>
+          <div class="admin-nav-item" onclick="hideAdmin()">🚪 Déconnexion</div>
+        </div>
+      </nav>
+      <div class="admin-footer">
+        <div class="admin-user">
+          <div class="admin-avatar">👤</div>
+          <div><div class="admin-user-name">Admin Principal</div><div class="admin-user-role">SUPER ADMIN</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div><h1 id="admin-title">Tableau de bord</h1><div class="breadcrumb" id="admin-breadcrumb">Admin / Dashboard</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" style="font-size:12px" onclick="showNotif('🔔 Aucune notification')">🔔</button>
+          <button class="btn btn-orange" style="font-size:12px" onclick="hideAdmin()">🌐 Voir boutique</button>
+        </div>
+      </div>
+
+      <div class="admin-content">
+        <!-- DASHBOARD -->
+        <div id="admin-dashboard" class="admin-page active">
+          <div class="stats-grid">
+            <div class="stat-card s-orange"><div class="stat-header"><div class="stat-icon s-orange">💰</div><span class="stat-change up">↑ +12%</span></div><div class="stat-value">4 820 000</div><div class="stat-label">FG — Ce mois</div></div>
+            <div class="stat-card s-green"><div class="stat-header"><div class="stat-icon s-green">🛒</div><span class="stat-change up">↑ +8%</span></div><div class="stat-value">284</div><div class="stat-label">Commandes ce mois</div></div>
+            <div class="stat-card s-blue"><div class="stat-header"><div class="stat-icon s-blue">👥</div><span class="stat-change up">↑ +23%</span></div><div class="stat-value">1 847</div><div class="stat-label">Clients inscrits</div></div>
+            <div class="stat-card s-yellow"><div class="stat-header"><div class="stat-icon s-yellow">📦</div><span class="stat-change down">↓ -3%</span></div><div class="stat-value">124</div><div class="stat-label">Produits en ligne</div></div>
+          </div>
+          <div class="chart-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><span style="font-size:14px;font-weight:700">Ventes des 7 derniers jours</span><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px">Ce mois ▾</button></div>
+            <div class="chart-bars">
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:60%"></div><div class="chart-label">Lun</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:80%"></div><div class="chart-label">Mar</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:45%"></div><div class="chart-label">Mer</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:95%"></div><div class="chart-label">Jeu</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:70%"></div><div class="chart-label">Ven</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:100%"></div><div class="chart-label">Sam</div></div>
+              <div class="chart-bar-wrap"><div class="chart-bar" style="height:55%"></div><div class="chart-label">Dim</div></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 300px;gap:18px">
+            <div class="table-wrap">
+              <div style="padding:14px 18px;border-bottom:1px solid var(--dark3);display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:700">Commandes récentes</span><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showAdminPage('orders',null)">Voir tout →</button></div>
+              <table><thead><tr><th>Commande</th><th>Client</th><th>Montant</th><th>Statut</th></tr></thead><tbody>
+                <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2401</span></td><td>Kouamé A.</td><td>149 000 FG</td><td><span class="badge badge-green">Livré</span></td></tr>
+                <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2400</span></td><td>Fatou D.</td><td>89 000 FG</td><td><span class="badge badge-yellow">En transit</span></td></tr>
+                <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2399</span></td><td>Ibrahim S.</td><td>350 000 FG</td><td><span class="badge badge-blue">Confirmé</span></td></tr>
+                <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2398</span></td><td>Marie K.</td><td>42 000 FG</td><td><span class="badge badge-red">Annulé</span></td></tr>
+              </tbody></table>
+            </div>
+            <div style="background:var(--dark2);border:1px solid var(--dark3);border-radius:var(--radius);padding:18px">
+              <p style="font-size:13px;font-weight:700;margin-bottom:14px">🏆 Top produits</p>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--gray);width:18px">#1</span><span style="font-size:18px">📱</span><span style="font-size:12px;font-weight:600;flex:1">Samsung A54</span><span style="font-size:12px;color:var(--orange);font-family:var(--mono);font-weight:700">84</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--gray);width:18px">#2</span><span style="font-size:18px">🎮</span><span style="font-size:12px;font-weight:600;flex:1">PlayStation 5</span><span style="font-size:12px;color:var(--orange);font-family:var(--mono);font-weight:700">61</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--gray);width:18px">#3</span><span style="font-size:18px">🎧</span><span style="font-size:12px;font-weight:600;flex:1">Sony WH-1000XM5</span><span style="font-size:12px;color:var(--orange);font-family:var(--mono);font-weight:700">47</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--gray);width:18px">#4</span><span style="font-size:18px">👟</span><span style="font-size:12px;font-weight:600;flex:1">Nike Air Max 270</span><span style="font-size:12px;color:var(--orange);font-family:var(--mono);font-weight:700">39</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--gray);width:18px">#5</span><span style="font-size:18px">🖥️</span><span style="font-size:12px;font-weight:600;flex:1">TV Samsung 55"</span><span style="font-size:12px;color:var(--orange);font-family:var(--mono);font-weight:700">28</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div id="admin-products" class="admin-page">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-size:16px;font-weight:700">Gestion des produits</span>
+            <button class="btn btn-orange" style="font-size:12px" onclick="openModal('modal-product')">＋ Ajouter un produit</button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input type="text" class="t-search" placeholder="🔍 Rechercher un produit...">
+              <select class="t-filter"><option>Toutes catégories</option><option>Téléphones</option><option>Informatique</option><option>Mode</option><option>Gaming</option></select>
+              <select class="t-filter"><option>Tous statuts</option><option>En ligne</option><option>Hors ligne</option></select>
+            </div>
+            <table><thead><tr><th>Produit</th><th>Prix</th><th>Stock</th><th>Catégorie</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="products-tbody">
+              <tr><td><div class="prod-cell"><div class="prod-thumb">📱</div><div><div class="prod-cell-name">Samsung Galaxy A54 5G</div><div class="prod-cell-sku">SKU: SAM-A54-128</div></div></div></td><td><span style="color:var(--orange);font-weight:700">149 000 FG</span></td><td style="font-family:var(--mono)">42</td><td><span class="badge badge-blue">Téléphones</span></td><td><span class="badge badge-green">En ligne</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="showNotif('✏️ Modification...')">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)" onclick="deleteRow(this)">🗑️</button></div></td></tr>
+              <tr><td><div class="prod-cell"><div class="prod-thumb">📱</div><div><div class="prod-cell-name">iPhone 15 Pro Max 256GB</div><div class="prod-cell-sku">SKU: APL-15PM-256</div></div></div></td><td><span style="color:var(--orange);font-weight:700">680 000 FG</span></td><td style="font-family:var(--mono)">15</td><td><span class="badge badge-blue">Téléphones</span></td><td><span class="badge badge-green">En ligne</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="showNotif('✏️ Modification...')">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)" onclick="deleteRow(this)">🗑️</button></div></td></tr>
+              <tr><td><div class="prod-cell"><div class="prod-thumb">🎧</div><div><div class="prod-cell-name">Sony WH-1000XM5</div><div class="prod-cell-sku">SKU: SNY-WH1000XM5</div></div></div></td><td><span style="color:var(--orange);font-weight:700">89 000 FG</span></td><td style="font-family:var(--mono)">28</td><td><span class="badge badge-gray">Accessoires</span></td><td><span class="badge badge-green">En ligne</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="showNotif('✏️ Modification...')">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)" onclick="deleteRow(this)">🗑️</button></div></td></tr>
+              <tr><td><div class="prod-cell"><div class="prod-thumb">🎮</div><div><div class="prod-cell-name">PlayStation 5 Standard</div><div class="prod-cell-sku">SKU: SNY-PS5-STD</div></div></div></td><td><span style="color:var(--orange);font-weight:700">350 000 FG</span></td><td style="font-family:var(--mono);color:var(--red)">3</td><td><span class="badge badge-yellow">Gaming</span></td><td><span class="badge badge-yellow">Stock faible</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="showNotif('✏️ Modification...')">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)" onclick="deleteRow(this)">🗑️</button></div></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div id="admin-orders" class="admin-page">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-size:16px;font-weight:700">Gestion des commandes</span>
+            <button class="btn btn-orange" style="font-size:12px" onclick="showNotif('🔄 Actualisation...')">🔄 Actualiser</button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input type="text" class="t-search" placeholder="🔍 Rechercher une commande...">
+              <select class="t-filter"><option>Tous statuts</option><option>En attente</option><option>Confirmé</option><option>En transit</option><option>Livré</option><option>Annulé</option></select>
+            </div>
+            <table><thead><tr><th>N° Commande</th><th>Client</th><th>Produits</th><th>Montant</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead><tbody>
+              <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2401</span></td><td>Kouamé Ange</td><td>Samsung A54 × 1</td><td style="font-weight:700">149 000 FG</td><td style="color:var(--gray2);font-size:11px">08/03/2025</td><td><span class="badge badge-green">Livré</span></td><td><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showNotif('📋 Détails #2401')">Voir</button></td></tr>
+              <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2400</span></td><td>Fatou Diallo</td><td>Sony XM5 × 1</td><td style="font-weight:700">89 000 FG</td><td style="color:var(--gray2);font-size:11px">08/03/2025</td><td><span class="badge badge-yellow">En transit</span></td><td><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showNotif('📋 Détails #2400')">Voir</button></td></tr>
+              <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2399</span></td><td>Ibrahim Sow</td><td>PS5 × 1</td><td style="font-weight:700">350 000 FG</td><td style="color:var(--gray2);font-size:11px">07/03/2025</td><td><span class="badge badge-blue">Confirmé</span></td><td><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showNotif('📋 Détails #2399')">Voir</button></td></tr>
+              <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2398</span></td><td>Marie Koné</td><td>Nike Air Max × 1</td><td style="font-weight:700">42 000 FG</td><td style="color:var(--gray2);font-size:11px">07/03/2025</td><td><span class="badge badge-red">Annulé</span></td><td><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showNotif('📋 Détails #2398')">Voir</button></td></tr>
+              <tr><td><span style="font-family:var(--mono);color:var(--orange)">#2397</span></td><td>Moussa Traoré</td><td>TV Samsung 55" × 1</td><td style="font-weight:700">285 000 FG</td><td style="color:var(--gray2);font-size:11px">06/03/2025</td><td><span class="badge badge-green">Livré</span></td><td><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showNotif('📋 Détails #2397')">Voir</button></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div id="admin-customers" class="admin-page">
+          <div style="margin-bottom:18px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:16px;font-weight:700">Gestion des clients</span>
+            <span style="font-size:12px;color:var(--gray2);font-family:var(--mono)">1 847 clients inscrits</span>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar"><input type="text" class="t-search" placeholder="🔍 Rechercher un client..."></div>
+            <table><thead><tr><th>Client</th><th>Email</th><th>Téléphone</th><th>Commandes</th><th>Total dépensé</th><th>Statut</th></tr></thead><tbody>
+              <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;background:var(--orange-dim);border-radius:50%;display:flex;align-items:center;justify-content:center">👤</div><div><div style="font-size:12px;font-weight:600">Kouamé Ange</div><div style="font-size:10px;color:var(--gray2)">Abidjan, CI</div></div></div></td><td style="font-size:12px;color:var(--gray2)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="52397c333c353712373f333b3e7c313d3f">[email&#160;protected]</a></td><td style="font-family:var(--mono);font-size:11px">+225 07 12 34 56</td><td style="font-family:var(--mono);color:var(--orange);font-weight:700">12</td><td style="font-weight:700">890 000 FG</td><td><span class="badge badge-green">Actif</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;background:var(--blue-dim);border-radius:50%;display:flex;align-items:center;justify-content:center">👤</div><div><div style="font-size:12px;font-weight:600">Fatou Diallo</div><div style="font-size:10px;color:var(--gray2)">Dakar, SN</div></div></div></td><td style="font-size:12px;color:var(--gray2)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="385e594c574d165c785d55595154165b5755">[email&#160;protected]</a></td><td style="font-family:var(--mono);font-size:11px">+221 77 98 76 54</td><td style="font-family:var(--mono);color:var(--orange);font-weight:700">7</td><td style="font-weight:700">420 000 FG</td><td><span class="badge badge-green">Actif</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:32px;background:var(--green-dim);border-radius:50%;display:flex;align-items:center;justify-content:center">👤</div><div><div style="font-size:12px;font-weight:600">Ibrahim Sow</div><div style="font-size:10px;color:var(--gray2)">Conakry, GN</div></div></div></td><td style="font-size:12px;color:var(--gray2)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f565d4d5e114c50487f5a525e5653115c5052">[email&#160;protected]</a></td><td style="font-family:var(--mono);font-size:11px">+224 62 11 22 33</td><td style="font-family:var(--mono);color:var(--orange);font-weight:700">3</td><td style="font-weight:700">350 000 FG</td><td><span class="badge badge-gray">Inactif</span></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div id="admin-categories" class="admin-page">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-size:16px;font-weight:700">Gestion des catégories</span>
+            <button class="btn btn-orange" style="font-size:12px" onclick="showNotif('➕ Nouvelle catégorie')">＋ Nouvelle catégorie</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Catégorie</th><th>Icône</th><th>Produits</th><th>Statut</th><th>Actions</th></tr></thead><tbody>
+              <tr><td style="font-weight:600">Téléphones & Accessoires</td><td style="font-size:20px">📱</td><td style="font-family:var(--mono)">234</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)">🗑️</button></div></td></tr>
+              <tr><td style="font-weight:600">Informatique</td><td style="font-size:20px">💻</td><td style="font-family:var(--mono)">189</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)">🗑️</button></div></td></tr>
+              <tr><td style="font-weight:600">Mode Femme</td><td style="font-size:20px">👗</td><td style="font-family:var(--mono)">567</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)">🗑️</button></div></td></tr>
+              <tr><td style="font-weight:600">Gaming</td><td style="font-size:20px">🎮</td><td style="font-family:var(--mono)">76</td><td><span class="badge badge-yellow">Masquée</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)">🗑️</button></div></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+
+      </div><!-- /admin-content -->
+    </div><!-- /admin-main -->
+  </div><!-- /admin-layout -->
+</div><!-- /admin-wrapper -->
+
+<!-- MODAL AJOUTER PRODUIT -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal">
+    <div class="modal-head"><h3>➕ Ajouter un produit</h3><button class="modal-close" onclick="closeModal('modal-product')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="full"><label class="fg-label">NOM DU PRODUIT *</label><input class="fg-input" id="new-name" placeholder="Ex: Samsung Galaxy A54 5G 128GB"></div>
+        <div><label class="fg-label">PRIX (FG) *</label><input class="fg-input" id="new-price" type="number" placeholder="149000"></div>
+        <div><label class="fg-label">ANCIEN PRIX</label><input class="fg-input" type="number" placeholder="200000"></div>
+        <div><label class="fg-label">STOCK *</label><input class="fg-input" id="new-stock" type="number" placeholder="50"></div>
+        <div><label class="fg-label">CATÉGORIE *</label><select class="fg-input" id="new-cat"><option value="">Choisir...</option><option>Téléphones</option><option>Informatique</option><option>Mode Femme</option><option>Mode Homme</option><option>Électroménager</option><option>Gaming</option></select></div>
+        <div><label class="fg-label">ÉMOJI / ICÔNE</label><input class="fg-input" id="new-emoji" value="📦" placeholder="📦"></div>
+        <div class="full"><label class="fg-label">DESCRIPTION</label><textarea class="fg-input" placeholder="Décrivez votre produit..."></textarea></div>
+        <div class="full"><label class="fg-label">STATUT</label><select class="fg-input" id="new-status"><option>En ligne</option><option>Hors ligne</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-product')">Annuler</button>
+      <button class="btn btn-orange" onclick="addProduct()">✅ Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ===== CONFIG =====
+// ============================================================
+//  CONFIG VENDEUR — À MODIFIER
+// ============================================================
+const WA_VENDEUR   = '22507000000';    // ← Numéro WhatsApp du VENDEUR (avec indicatif, sans +)
+const SHOP_NAME    = 'Galy Market';        // ← Nom de la boutique
+const GOOGLE_SHEET = 'VOTRE_URL_ICI'; // ← URL du Google Apps Script (voir guide ci-dessous)
+// ============================================================
+
+const WA_NUMBER = WA_VENDEUR;
+let cartCount = 3;
+let currentPay = 'cod';
+
+// ===== COLLECTE DES INFOS COMMANDE =====
+function getOrderData() {
+  const prenom   = document.querySelector('#page-checkout input[placeholder="Jean"]')?.value || '—';
+  const nom      = document.querySelector('#page-checkout input[placeholder="Dupont"]')?.value || '—';
+  const tel      = document.querySelector('#page-checkout input[type="tel"]')?.value || '—';
+  const quartier = document.getElementById('co-commune')?.value || '—';
+  const villeHors= document.getElementById('co-ville-hors')?.value || '';
+  const localite = quartier === 'hors' ? villeHors : quartier;
+
+  const items = [
+    { name: 'Samsung Galaxy A54 × 1', price: 149000 },
+    { name: 'Sony WH-1000XM5 × 1',   price: 89000  },
+    { name: 'Nike Air Max 270 × 2',   price: 84000  }
+  ];
+  const total = items.reduce((s, i) => s + i.price, 0);
+  const paiement = currentPay === 'cod'      ? 'Paiement à la livraison (COD)'
+                 : currentPay === 'mobile'   ? 'Mobile Money'
+                 : currentPay === 'card'     ? 'Carte bancaire'
+                 : 'Virement bancaire';
+
+  const ref = '#CMD-' + Date.now().toString().slice(-6);
+  const date = new Date().toLocaleString('fr-FR');
+
+  return { prenom, nom, tel, localite, items, total, paiement, ref, date };
+}
+
+// ===== ENVOI WHATSAPP AU VENDEUR =====
+function notifyVendeurWA(d) {
+  const lignes = d.items.map(i => '  • ' + i.name + ' — ' + i.price.toLocaleString('fr-FR') + ' FG').join('
+');
+  const msg =
+    '🛒 *NOUVELLE COMMANDE — ' + SHOP_NAME + '*
+' +
+    '━━━━━━━━━━━━━━━━━━
+' +
+    '📋 Réf : ' + d.ref + '
+' +
+    '📅 Date : ' + d.date + '
+
+' +
+    '👤 *CLIENT*
+' +
+    '  • Nom : ' + d.prenom + ' ' + d.nom + '
+' +
+    '  • Téléphone : ' + d.tel + '
+' +
+    '  • Localité : ' + d.localite + '
+
+' +
+    '📦 *PRODUITS*
+' + lignes + '
+
+' +
+    '💰 *TOTAL : ' + d.total.toLocaleString('fr-FR') + ' FG*
+' +
+    '💳 Paiement : ' + d.paiement + '
+' +
+    '━━━━━━━━━━━━━━━━━━
+' +
+    '✅ Confirmer la livraison ?';
+  window.open('https://wa.me/' + WA_VENDEUR + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ===== ENVOI GOOGLE SHEETS =====
+async function saveToSheets(d) {
+  if (!GOOGLE_SHEET || GOOGLE_SHEET === 'VOTRE_URL_ICI') return;
+  try {
+    await fetch(GOOGLE_SHEET, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ref:       d.ref,
+        date:      d.date,
+        prenom:    d.prenom,
+        nom:       d.nom,
+        telephone: d.tel,
+        localite:  d.localite,
+        produits:  d.items.map(i => i.name).join(' | '),
+        total:     d.total,
+        paiement:  d.paiement,
+        statut:    'En attente'
+      })
+    });
+  } catch(e) { console.warn('Google Sheets non connecté', e); }
+}
+
+// ===== NAVIGATION =====
+function goPage(id) {
+  document.querySelectorAll('#site-wrapper .page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  if (pg) { pg.classList.add('active'); window.scrollTo(0,0); }
+}
+
+function showAdmin() {
+  document.getElementById('site-wrapper').style.display = 'none';
+  document.getElementById('admin-wrapper').style.display = 'block';
+  document.getElementById('wa-widget').style.display = 'none';
+  document.getElementById('wa-pulse').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+function hideAdmin() {
+  document.getElementById('site-wrapper').style.display = 'block';
+  document.getElementById('admin-wrapper').style.display = 'none';
+  document.getElementById('wa-widget').style.display = 'block';
+  document.getElementById('wa-pulse').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+const adminPages = {
+  dashboard: {title:'Tableau de bord', bc:'Admin / Dashboard'},
+  products:  {title:'Produits', bc:'Admin / Boutique / Produits'},
+  orders:    {title:'Commandes', bc:'Admin / Boutique / Commandes'},
+  customers: {title:'Clients', bc:'Admin / Boutique / Clients'},
+  categories:{title:'Catégories', bc:'Admin / Boutique / Catégories'}
+};
+
+function showAdminPage(id, navEl) {
+  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('admin-' + id);
+  if (pg) pg.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  if (adminPages[id]) {
+    document.getElementById('admin-title').textContent = adminPages[id].title;
+    document.getElementById('admin-breadcrumb').textContent = adminPages[id].bc;
+  }
+}
+
+// ===== CART =====
+function addToCart(e) {
+  if(e) e.stopPropagation();
+  cartCount++;
+  document.getElementById('cartBadge').textContent = cartCount;
+  showNotif('🛒 Produit ajouté au panier !');
+}
+
+function changeQty(btn, delta) {
+  const input = btn.parentElement.querySelector('.qty-val');
+  input.value = Math.max(1, parseInt(input.value) + delta);
+}
+
+function changeQtyDetail(delta) {
+  const input = document.getElementById('detail-qty');
+  input.value = Math.max(1, parseInt(input.value) + delta);
+}
+
+function removeItem(btn) {
+  const item = btn.closest('.cart-item');
+  item.style.opacity = '0';
+  item.style.transform = 'translateX(30px)';
+  item.style.transition = 'all .3s';
+  setTimeout(() => item.remove(), 300);
+  cartCount = Math.max(0, cartCount - 1);
+  document.getElementById('cartBadge').textContent = cartCount;
+  showNotif('🗑 Article retiré du panier');
+}
+
+// ===== HORS CONAKRY =====
+function checkHorsConakry(sel) {
+  const row = document.getElementById('co-hors-row');
+  if (sel.value === 'hors') {
+    row.style.display = 'flex';
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    row.style.display = 'none';
+    const v = document.getElementById('co-ville-hors');
+    if(v) v.value = '';
+  }
+}
+
+// ===== PAYMENT =====
+function selPay(type) {
+  currentPay = type;
+  ['cod','mobile','card','transfer'].forEach(t => {
+    document.getElementById('pm-' + t).classList.remove('selected');
+    const det = document.getElementById(t === 'cod' ? 'cod-detail' : t + '-detail');
+    if (det) { det.classList.remove('show'); }
+  });
+  document.getElementById('pm-' + type).classList.add('selected');
+  const detId = type === 'cod' ? 'cod-detail' : type + '-detail';
+  const det = document.getElementById(detId);
+  if (det) det.classList.add('show');
+}
+
+function selMobile(el) {
+  el.closest('.mobile-ops').querySelectorAll('.mobile-op').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function confirmOrder() {
+  // Validation basique
+  const prenom = document.querySelector('#page-checkout input[placeholder="Jean"]')?.value.trim();
+  const tel    = document.querySelector('#page-checkout input[type="tel"]')?.value.trim();
+  const quartier = document.getElementById('co-commune')?.value;
+  if (!prenom) { showNotif('⚠️ Entrez votre prénom'); return; }
+  if (!tel)    { showNotif('⚠️ Entrez votre téléphone'); return; }
+  if (!quartier) { showNotif('⚠️ Choisissez votre quartier'); return; }
+
+  // Collecte des données
+  const order = getOrderData();
+
+  // Afficher la page succès
+  goPage('success');
+  document.getElementById('order-ref-num').textContent = order.ref;
+  showNotif('✅ Commande ' + order.ref + ' confirmée !');
+
+  // Envoyer WhatsApp au vendeur
+  setTimeout(() => notifyVendeurWA(order), 800);
+
+  // Enregistrer dans Google Sheets
+  saveToSheets(order);
+}
+
+// ===== TRACKING =====
+function trackOrder() {
+  const val = document.getElementById('track-input').value.trim();
+  if (!val) { showNotif('⚠️ Entrez un numéro de commande'); return; }
+  document.getElementById('tracking-result').classList.add('show');
+  showNotif('📦 Commande trouvée !');
+}
+
+// ===== AUTH =====
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+// ===== ADMIN PRODUCTS =====
+function addProduct() {
+  const name = document.getElementById('new-name').value.trim();
+  const price = document.getElementById('new-price').value.trim();
+  const stock = document.getElementById('new-stock').value.trim();
+  const cat = document.getElementById('new-cat').value;
+  const emoji = document.getElementById('new-emoji').value || '📦';
+  const status = document.getElementById('new-status').value;
+  if (!name || !price || !stock || !cat) { showNotif('⚠️ Remplissez tous les champs'); return; }
+  const fp = parseInt(price).toLocaleString('fr-FR');
+  const row = document.createElement('tr');
+  row.innerHTML = `<td><div class="prod-cell"><div class="prod-thumb">${emoji}</div><div><div class="prod-cell-name">${name}</div><div class="prod-cell-sku">SKU: NOUVEAU</div></div></div></td><td><span style="color:var(--orange);font-weight:700">${fp} FG</span></td><td style="font-family:var(--mono)">${stock}</td><td><span class="badge badge-blue">${cat}</span></td><td><span class="badge ${status==='En ligne'?'badge-green':'badge-gray'}">${status}</span></td><td><div class="action-btns"><button class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="showNotif('✏️ Modification...')">✏️</button><button class="btn" style="font-size:11px;padding:5px 9px;background:var(--red-dim);color:var(--red)" onclick="deleteRow(this)">🗑️</button></div></td>`;
+  document.getElementById('products-tbody').prepend(row);
+  ['new-name','new-price','new-stock'].forEach(id => document.getElementById(id).value = '');
+  closeModal('modal-product');
+  showNotif('✅ "' + name + '" ajouté avec succès !');
+}
+
+function deleteRow(btn) {
+  const row = btn.closest('tr');
+  row.style.opacity = '0';
+  row.style.transform = 'translateX(20px)';
+  row.style.transition = 'all .3s';
+  setTimeout(() => row.remove(), 300);
+  showNotif('🗑️ Produit supprimé');
+}
+
+// ===== MODALS =====
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ===== WHATSAPP =====
+const WA_MSGS = {
+  produit:   'Bonjour Galy Market 👋\nJe voudrais des infos sur un produit.',
+  commande:  'Bonjour Galy Market 👋\nJe voudrais passer une commande :\n',
+  livraison: 'Bonjour Galy Market 👋\nJe voudrais suivre ma commande.\nN° de commande : #',
+  faq:       'Bonjour Galy Market 👋\nJ\'ai une question :'
+};
+function toggleWA() {
+  const menu = document.getElementById('wa-menu');
+  const tooltip = document.getElementById('wa-tooltip');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open');
+  tooltip.style.display = isOpen ? 'block' : 'none';
+}
+function openWA(type) {
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(WA_MSGS[type] || ''), '_blank');
+  document.getElementById('wa-menu').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const w = document.getElementById('wa-widget');
+  if (w && !w.contains(e.target)) document.getElementById('wa-menu').classList.remove('open');
+});
+
+// ===== RECHERCHE =====
+function toggleSearch() {
+  const bar = document.getElementById('searchBar');
+  const input = document.getElementById('searchInput');
+  bar.classList.toggle('open');
+  if (bar.classList.contains('open')) {
+    setTimeout(() => input.focus(), 300);
+  }
+}
+// Fermer si clic ailleurs
+document.addEventListener('click', function(e) {
+  const bar = document.getElementById('searchBar');
+  if (bar && !bar.contains(e.target)) bar.classList.remove('open');
+});
+
+// ===== ACCÈS SECRET ADMIN =====
+let clickCount = 0, clickTimer;
+function secretAdmin() {
+  clickCount++;
+  clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => clickCount = 0, 1500);
+  if (clickCount >= 3) {
+    clickCount = 0;
+    const pwd = prompt('🔐 Mot de passe admin :');
+    if (pwd === 'admin2025') {
+      showAdmin();
+    } else if (pwd !== null) {
+      showNotif('❌ Mot de passe incorrect');
+    }
+  }
+}
+
+// ===== NOTIFICATIONS =====
+function showNotif(msg) {
+  const n = document.getElementById('notif');
+  n.textContent = msg; n.classList.add('show');
+  clearTimeout(n._t);
+  n._t = setTimeout(() => n.classList.remove('show'), 3500);
+}
+
+// ===== COUNTDOWN =====
+let totalSec = 2 * 3600 + 47 * 60 + 33;
+setInterval(() => {
+  totalSec = Math.max(0, totalSec - 1);
+  const hEl = document.getElementById('h');
+  const mEl = document.getElementById('m');
+  const sEl = document.getElementById('s');
+  if (hEl) hEl.textContent = String(Math.floor(totalSec/3600)).padStart(2,'0');
+  if (mEl) mEl.textContent = String(Math.floor((totalSec%3600)/60)).padStart(2,'0');
+  if (sEl) sEl.textContent = String(totalSec%60).padStart(2,'0');
+}, 1000);
+</script>
+
+<!--
+=================================================================
+GUIDE CONFIGURATION VENDEUR
+=================================================================
+
+1. WHATSAPP VENDEUR :
+   Trouve : const WA_VENDEUR = '22507000000';
+   Change le numéro par celui du vendeur (avec indicatif, sans +)
+
+2. MOT DE PASSE ADMIN :
+   Trouve : if (pwd === 'admin2025')
+   Change 'admin2025' par un mot de passe fort
+
+3. ACCÉDER AU PANNEAU ADMIN (invisible pour les clients) :
+   → Triple-clic rapide sur le logo "Galy Market" en haut à gauche
+   → Saisir le mot de passe
+
+4. CONNECTER GOOGLE SHEETS :
+
+   ÉTAPE A - Créer le Google Sheet :
+   sheets.google.com > Nouveau tableau
+   Colonnes : Ref | Date | Prénom | Nom | Téléphone | Localité | Produits | Total | Paiement | Statut
+
+   ÉTAPE B - Apps Script :
+   Extensions > Apps Script > coller ce code :
+
+   function doPost(e) {
+     var sheet = SpreadsheetApp.getActiveSheet();
+     var data = JSON.parse(e.postData.contents);
+     sheet.appendRow([data.ref, data.date, data.prenom, data.nom,
+       data.telephone, data.localite, data.produits,
+       data.total, data.paiement, data.statut]);
+     return ContentService.createTextOutput('OK');
+   }
+
+   ÉTAPE C - Déployer :
+   Déployer > Nouveau déploiement > Application Web > Accès: Tout le monde
+   Copier l'URL
+
+   ÉTAPE D - Coller dans le site :
+   Trouve : const GOOGLE_SHEET = 'VOTRE_URL_ICI';
+   Remplace par l'URL copiée
+
+5. NOM DE LA BOUTIQUE :
+   Trouve : const SHOP_NAME = 'Galy Market';
+   Change par le vrai nom
+=================================================================
+-->
+</body>
+</html>
