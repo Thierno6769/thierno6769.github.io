@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/404.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+</head>
+<body class="page-404">
+</div>
+  </div>
+
+
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">GALY<span>MARKET</span></a>
+      <div class="header-actions">
+        <a href="wishlist.html" class="haction"><i class="far fa-heart"></i><span class="haction-label">Favoris</span></a>
+        <a href="account.html" class="haction"><i class="far fa-user-circle"></i><span class="haction-label">Compte</span></a>
+        <a href="panier.html" class="haction"><i class="fas fa-bag-shopping"></i><span class="haction-label">Panier</span><span class="badge" id="cartBadge"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="err-page">
+    <!-- Fond animé -->
+    <div class="err-bg">
+      <div class="err-circle c1"></div>
+      <div class="err-circle c2"></div>
+      <div class="err-circle c3"></div>
+    </div>
+
+    <div class="err-content">
+      <!-- 404 géant -->
+      <div class="err-num">
+        <span class="en-4 left">4</span>
+        <span class="en-0">
+          <div class="en-0-inner">
+            <i class="fas fa-bag-shopping"></i>
+          </div>
+        </span>
+        <span class="en-4 right">4</span>
+      </div>
+
+      <h1 class="err-title">Oups ! Page introuvable</h1>
+      <p class="err-sub">La page que vous cherchez n'existe pas ou a été déplacée.<br/>Pas de panique, votre boutique préférée est toujours là !</p>
+
+      <!-- Barre de recherche -->
+      <div class="err-search">
+        <div class="err-search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="errSearch" placeholder="Chercher un produit…" />
+          <button id="errSearchBtn">Rechercher</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="err-actions">
+        <a href="index.html" class="btn-primary">
+          <i class="fas fa-home"></i> Retour à l'accueil
+        </a>
+        <a href="catalogue.html" class="btn-outline">
+          <i class="fas fa-grid-2"></i> Voir le catalogue
+        </a>
+        <a href="contact.html" class="btn-outline">
+          <i class="fas fa-headset"></i> Contacter le support
+        </a>
+      </div>
+
+      <!-- Liens rapides -->
+      <div class="err-quick">
+        <span>Pages populaires :</span>
+        <a href="catalogue.html?cat=phones">📱 Téléphones</a>
+        <a href="catalogue.html?cat=mode">👗 Mode</a>
+        <a href="catalogue.html?promo=1">⚡ Flash Sale</a>
+        <a href="catalogue.html?cat=bijoux">💍 Bijoux</a>
+      </div>
+
+      <!-- Countdown retour auto -->
+      <div class="err-countdown">
+        Redirection automatique dans <strong id="errTimer">15</strong>s
+        <button id="errCancel">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <script src="js/404.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/footer.js"></script>
+</body>
+</html>

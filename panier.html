@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Votre panier Galy Market. Commandez avec livraison rapide à Conakry et partout en Guinée. Paiement sécurisé."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Mon Panier — Galy Market"/>
+  <meta property="og:description" content="Votre panier Galy Market. Commandez avec livraison rapide à Conakry et partout en Guinée. Paiement sécurisé."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/panier.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Mon Panier — Galy Market"/>
+  <meta name="twitter:description" content="Votre panier Galy Market. Commandez avec livraison rapide à Conakry et partout en Guinée. Paiement sécurisé."/>
+  <title>Mon Panier — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:80px}
+    /* HEADER */
+    .gz-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+    .gz-back{background:rgba(255,255,255,.2);border:none;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;text-decoration:none}
+    .gz-header-title{color:#fff;font-size:16px;font-weight:800;flex:1}
+    .gz-header-count{background:rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:12px}
+    /* STEPS */
+    .gz-steps{background:#1a1206;padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:0;border-bottom:1px solid #eee}
+    .gz-step{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+    .gz-step-num{width:28px;height:28px;border-radius:50%;background:rgba(246,139,30,.2);color:#8a7560;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+    .gz-step.active .gz-step-num{background:#f68b1e;color:#fff}
+    .gz-step.done .gz-step-num{background:#f68b1e;color:#fff}
+    .gz-step-lbl{font-size:10px;color:#8a7560;font-weight:600}
+    .gz-step.active .gz-step-lbl{color:#f68b1e;font-weight:700}
+    .gz-step-line{flex:1;height:2px;background:rgba(246,139,30,.2);margin-bottom:14px}
+    .gz-step-line.done{background:#f68b1e}
+    /* ITEMS */
+    .gz-cart-item{background:#1a1206;margin:8px 12px;border-radius:12px;padding:12px;display:flex;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .gz-item-img{width:72px;height:72px;border-radius:8px;object-fit:cover;background:rgba(246,139,30,.06);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;overflow:hidden}
+    .gz-item-img img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .gz-item-info{flex:1;min-width:0}
+    .gz-item-name{font-size:13px;font-weight:600;color:#fdf8f0;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .gz-item-prix{font-size:16px;font-weight:800;color:#f68b1e;margin-bottom:6px}
+    .gz-item-prix-unit{font-size:10px;color:#8a7560;margin-left:4px}
+    .gz-item-actions{display:flex;align-items:center;justify-content:space-between}
+    .gz-qty-ctrl{display:flex;align-items:center;gap:0;border:1.5px solid rgba(246,139,30,.2);border-radius:8px;overflow:hidden}
+    .gz-qty-btn{background:rgba(246,139,30,.06);border:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;color:#fdf8f0}
+    .gz-qty-val{width:36px;text-align:center;font-size:13px;font-weight:700;border:none;outline:none;background:#fff}
+    .gz-item-del{background:#ffebee;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#e53935;font-size:14px}
+    /* COUPON */
+    .gz-coupon{background:#1a1206;margin:8px 12px;border-radius:12px;padding:14px}
+    .gz-coupon-row{display:flex;gap:8px}
+    .gz-coupon-input{flex:1;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif}
+    .gz-coupon-input:focus{border-color:#f68b1e}
+    .gz-coupon-btn{background:#f68b1e;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer}
+    .gz-coupon-msg{font-size:12px;margin-top:8px;font-weight:600}
+    /* RÉSUMÉ */
+    .gz-summary{background:#1a1206;margin:8px 12px;border-radius:12px;padding:16px}
+    .gz-summary-title{font-size:14px;font-weight:800;margin-bottom:12px}
+    .gz-sum-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;color:#8a7560;border-bottom:1px solid #f5f5f5}
+    .gz-sum-row:last-of-type{border:none}
+    .gz-sum-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;font-size:16px;font-weight:800;color:#fdf8f0;border-top:2px solid #f68b1e;margin-top:4px}
+    .gz-sum-total span:last-child{color:#f68b1e}
+    /* BARRE LIVRAISON */
+    .gz-free-bar{background:#fff3e0;border-radius:8px;padding:10px 12px;margin:10px 0}
+    .gz-free-bar-txt{font-size:11px;color:#f68b1e;font-weight:600;margin-bottom:6px}
+    .gz-free-bar-track{background:#fde8c0;border-radius:3px;height:5px;overflow:hidden}
+    .gz-free-bar-fill{background:#f68b1e;height:100%;border-radius:3px;transition:width .4s}
+    /* PAIEMENTS */
+    .gz-pay-methods{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+    .gz-pay-badge{background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.15);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;color:#8a7560;display:flex;align-items:center;gap:4px}
+    /* GARANTIES */
+    .gz-guarantees{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5}
+    .gz-guarantee{display:flex;align-items:center;gap:8px;font-size:11px;color:#8a7560}
+    .gz-guarantee i{color:#f68b1e;font-size:13px}
+    /* BTN COMMANDER */
+    .gz-checkout-btn{position:fixed;bottom:0;left:0;right:0;background:#1a1206;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:100}
+    .gz-checkout-btn a{display:flex;align-items:center;justify-content:center;gap:10px;background:#f68b1e;color:#fff;border-radius:12px;padding:15px;font-size:15px;font-weight:800;text-decoration:none}
+    /* EMPTY */
+    .gz-empty{text-align:center;padding:60px 20px;background:#1a1206;margin:12px;border-radius:12px}
+    .gz-empty i{font-size:56px;color:rgba(246,139,30,.2);display:block;margin-bottom:16px}
+    .gz-empty h3{font-size:18px;font-weight:800;margin-bottom:8px}
+    .gz-empty p{font-size:13px;color:#8a7560;margin-bottom:16px}
+    .gz-empty a{display:inline-flex;align-items:center;gap:6px;background:#f68b1e;color:#fff;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;text-decoration:none}
+    /* TOAST */
+    .gz-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,.8);color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap;pointer-events:none}
+    .gz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<!-- HEADER -->
+<header class="gz-header">
+  <a href="annonces.html" class="gz-back"><i class="fas fa-arrow-left"></i></a>
+  <span class="gz-header-title">Mon Panier</span>
+  <span class="gz-header-count" id="cartCount">0 article</span>
+</header>
+
+<!-- STEPS -->
+<div class="gz-steps">
+  <div class="gz-step active"><div class="gz-step-num"><i class="fas fa-check" style="font-size:11px"></i></div><span class="gz-step-lbl">Panier</span></div>
+  <div class="gz-step-line"></div>
+  <div class="gz-step"><div class="gz-step-num">2</div><span class="gz-step-lbl">Livraison</span></div>
+  <div class="gz-step-line"></div>
+  <div class="gz-step"><div class="gz-step-num">3</div><span class="gz-step-lbl">Paiement</span></div>
+  <div class="gz-step-line"></div>
+  <div class="gz-step"><div class="gz-step-num">4</div><span class="gz-step-lbl">Confirmation</span></div>
+</div>
+
+<!-- CONTENU -->
+<div id="gzCartContent"></div>
+
+<!-- TOAST -->
+<div class="gz-toast" id="gzToast"></div>
+
+<script>document.body.style.opacity="0";</script>
+  <script src="js/products.js"></script>
+<script src="js/commande.js"></script>
+<script>
+const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+const FREE_SEUIL = 2000000;
+const EMOJI_MAP={phones:'📱',mode:'👗',beaute:'💄',maison:'🏠',sport:'⚽',bijoux:'💍',autres:'📦'};
+
+function gzToast(msg){
+  const t=document.getElementById('gzToast');
+  if(!t)return;
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function getCart(){ return JSON.parse(localStorage.getItem('GM_CART')||'[]'); }
+function saveCart(c){ localStorage.setItem('GM_CART',JSON.stringify(c)); }
+function getCoupon(){ return JSON.parse(localStorage.getItem('GM_COUPON')||'null'); }
+
+const COUPONS = {
+  'GALY10':{type:'percent',value:10,label:'-10%'},
+  'GALY20':{type:'percent',value:20,label:'-20%'},
+  'BIENVENUE':{type:'percent',value:15,label:'-15%'},
+  'PROMO50K':{type:'fixed',value:50000,label:'-50 000 GNF'},
+  'LIVRAISON':{type:'delivery',value:0,label:'Livraison offerte'},
+};
+
+function getSubtotal(cart){ return cart.reduce((a,i)=>a+i.price*i.qty,0); }
+function getDiscount(sub,coupon){
+  if(!coupon) return 0;
+  const c=COUPONS[coupon];if(!c)return 0;
+  if(c.type==='percent') return Math.round(sub*c.value/100);
+  if(c.type==='fixed') return Math.min(c.value,sub);
+  return 0;
+}
+function getDelivery(sub,coupon){
+  if(coupon&&COUPONS[coupon]?.type==='delivery') return 0;
+  if(sub>=FREE_SEUIL) return 0;
+  return 25000;
+}
+
+function render(){
+  const cart = getCart();
+  const coupon = getCoupon();
+  const sub = getSubtotal(cart);
+  const disc = getDiscount(sub,coupon);
+  const del = getDelivery(sub,coupon);
+  const total = Math.max(0,sub-disc+del);
+  const countEl = document.getElementById('cartCount');
+  const qty = cart.reduce((a,i)=>a+i.qty,0);
+  if(countEl) countEl.textContent = qty+' article'+(qty>1?'s':'');
+
+  const content = document.getElementById('gzCartContent');
+  if(!content) return;
+
+  if(!cart.length){
+    content.innerHTML=`
+      <div class="gz-empty">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Votre panier est vide</h3>
+        <p>Découvrez nos produits et ajoutez vos coups de cœur !</p>
+        <a href="annonces.html"><i class="fas fa-arrow-left"></i> Continuer mes achats</a>
+      </div>`;
+    return;
+  }
+
+  // Items
+  let html = cart.map(item => {
+    const prod = typeof GM_PRODUCTS!=='undefined' ? GM_PRODUCTS.find(p=>p.id===item.id) : null;
+    const emoji = item.em || (prod ? prod.em : '📦') || '📦';
+    const photo = prod?.img || item.img;
+    const imgHtml = photo ? `<img src="${photo}" alt="${item.name}">` : emoji;
+    return `
+    <div class="gz-cart-item" id="item-${item.id}">
+      <div class="gz-item-img">${imgHtml}</div>
+      <div class="gz-item-info">
+        <div class="gz-item-name">${item.name}</div>
+        <div class="gz-item-prix">${fmt(item.price*item.qty)} <span class="gz-item-prix-unit">(${fmt(item.price)}/u)</span></div>
+        <div class="gz-item-actions">
+          <div class="gz-qty-ctrl">
+            <button class="gz-qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+            <span class="gz-qty-val">${item.qty}</span>
+            <button class="gz-qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          </div>
+          <button class="gz-item-del" onclick="removeItem('${item.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Coupon
+  html += `
+  <div class="gz-coupon">
+    <div class="gz-coupon-row">
+      <input class="gz-coupon-input" type="text" id="couponInput" placeholder="Code promo (ex: GALY10)" value="${coupon||''}">
+      <button class="gz-coupon-btn" onclick="applyCoupon()">Appliquer</button>
+    </div>
+    <div class="gz-coupon-msg" id="couponMsg" style="color:${coupon?'#f68b1e':'#e53935'}">${coupon?'✅ Code '+coupon+' appliqué !':''}</div>
+  </div>`;
+
+  // Barre livraison
+  const pct = Math.min(100, Math.round(sub/FREE_SEUIL*100));
+  const reste = FREE_SEUIL-sub;
+  const freeBarHtml = sub < FREE_SEUIL ? `
+    <div class="gz-free-bar">
+      <div class="gz-free-bar-txt">Plus que <strong>${fmt(reste)}</strong> pour la livraison gratuite !</div>
+      <div class="gz-free-bar-track"><div class="gz-free-bar-fill" style="width:${pct}%"></div></div>
+    </div>` : `<div class="gz-free-bar"><div class="gz-free-bar-txt">🎉 Livraison gratuite !</div><div class="gz-free-bar-track"><div class="gz-free-bar-fill" style="width:100%"></div></div></div>`;
+
+  // Résumé
+  html += `
+  <div class="gz-summary">
+    <div class="gz-summary-title">📋 Résumé de commande</div>
+    <div class="gz-sum-row"><span>Sous-total (${qty} article${qty>1?'s':''})</span><span>${fmt(sub)}</span></div>
+    ${disc>0?`<div class="gz-sum-row"><span>Réduction promo</span><span style="color:#f68b1e;font-weight:700">− ${fmt(disc)}</span></div>`:''}
+    <div class="gz-sum-row"><span>Livraison</span><span style="color:${del===0?'#f68b1e':'#1a1a1a'};font-weight:700">${del===0?'Gratuite ✓':fmt(del)}</span></div>
+    ${freeBarHtml}
+    <div class="gz-sum-total"><span>Total TTC</span><span>${fmt(total)}</span></div>
+    <div class="gz-pay-methods">
+      <div class="gz-pay-badge"><span>🟠</span> Orange Money</div>
+      <div class="gz-pay-badge"><span>🟡</span> MTN MoMo</div>
+      <div class="gz-pay-badge"><span>💵</span> À la livraison</div>
+    </div>
+    <div class="gz-guarantees">
+      <div class="gz-guarantee"><i class="fas fa-shield-check"></i> Paiement 100% sécurisé</div>
+      <div class="gz-guarantee"><i class="fas fa-rotate-left"></i> Retour & Garantie 72 heures</div>
+      <div class="gz-guarantee"><i class="fas fa-truck-fast"></i> Livraison 24h Centre Conakry</div>
+    </div>
+  </div>`;
+
+  content.innerHTML = html;
+
+  // Bouton commander fixe
+  const existing = document.getElementById('gzCheckoutBar');
+  if(existing) existing.remove();
+  const bar = document.createElement('div');
+  bar.id = 'gzCheckoutBar';
+  bar.className = 'gz-checkout-btn';
+  bar.innerHTML = `<a href="commande.html"><i class="fas fa-lock"></i> Commander — ${fmt(total)}</a>`;
+  document.body.appendChild(bar);
+}
+
+window.changeQty = function(id, delta) {
+  const cart = getCart();
+  const item = cart.find(i=>i.id===id||i.id===parseInt(id));
+  if(!item) return;
+  item.qty = Math.max(1, item.qty+delta);
+  saveCart(cart); render();
+};
+
+window.removeItem = function(id) {
+  let cart = getCart().filter(i=>i.id!==id && i.id!==parseInt(id));
+  saveCart(cart); render();
+  gzToast('🗑️ Article retiré du panier');
+};
+
+window.applyCoupon = function() {
+  const code = document.getElementById('couponInput')?.value.trim().toUpperCase();
+  const msg = document.getElementById('couponMsg');
+  if(!code){if(msg)msg.textContent='⚠️ Entrez un code promo';return;}
+  if(COUPONS[code]){
+    localStorage.setItem('GM_COUPON',JSON.stringify(code));
+    if(msg){msg.textContent='✅ Code '+code+' appliqué ! ('+COUPONS[code].label+')';msg.style.color='#f68b1e';}
+    render(); gzToast('✅ Code promo appliqué !');
+  } else {
+    if(msg){msg.textContent='❌ Code promo invalide';msg.style.color='#e53935';}
+  }
+};
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+<script>window.addEventListener("load",()=>{document.body.style.opacity="1";document.body.style.transition="opacity .3s";});</script>
+</body>
+</html>

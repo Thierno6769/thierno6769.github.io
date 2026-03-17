@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gérez vos annonces, suivez vos ventes et performances. Espace vendeur Galy Market Guinée."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Espace Vendeur — Galy Market"/>
+  <meta property="og:description" content="Gérez vos annonces, suivez vos ventes et performances. Espace vendeur Galy Market Guinée."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/dashboard-vendeur.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Espace Vendeur — Galy Market"/>
+  <meta name="twitter:description" content="Gérez vos annonces, suivez vos ventes et performances. Espace vendeur Galy Market Guinée."/>
+  <title>Mon Espace Vendeur — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:70px}
+
+    /* ── HEADER ── */
+    .dv-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .dv-header-left{display:flex;align-items:center;gap:10px}
+    .dv-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;overflow:hidden}
+    .dv-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .dv-user-info{color:#fff}
+    .dv-user-nom{font-size:14px;font-weight:700}
+    .dv-user-plan{font-size:10px;opacity:.8;margin-top:1px}
+    .dv-header-right{display:flex;gap:10px;align-items:center}
+    .dv-notif-btn{background:rgba(255,255,255,.2);border:none;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;position:relative}
+    .dv-notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #f68b1e}
+    .dv-btn-pub{background:#1a1206;color:#f68b1e;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:5px}
+    .dv-btn-decon{background:rgba(255,255,255,.15);border:none;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
+
+    /* ── TABS ── */
+    .dv-tabs{background:#1a1206;overflow-x:auto;white-space:nowrap;border-bottom:2px solid rgba(246,139,30,.2);scrollbar-width:none}
+    .dv-tabs::-webkit-scrollbar{display:none}
+    .dv-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 16px;font-size:12px;font-weight:600;color:#8a7560;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .dv-tab-btn.active{color:#f68b1e;border-bottom-color:#f68b1e}
+    .dv-tab-btn i{font-size:14px}
+    .dv-tab-badge{background:#ef4444;color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px}
+
+    /* ── CONTENU ── */
+    .dv-content{display:none;padding:12px}
+    .dv-content.active{display:block}
+
+    /* ── KPIs ── */
+    .dv-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+    .dv-kpi{background:#1a1206;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px}
+    .dv-kpi-icon{font-size:22px;margin-bottom:2px}
+    .dv-kpi-val{font-size:20px;font-weight:800;color:#fdf8f0}
+    .dv-kpi-lbl{font-size:11px;color:#8a7560}
+    .dv-kpi.green .dv-kpi-val{color:#f68b1e}
+    .dv-kpi.orange .dv-kpi-val{color:#f59e0b}
+    .dv-kpi.blue .dv-kpi-val{color:#1565c0}
+    .dv-kpi.red .dv-kpi-val{color:#e53935}
+
+    /* ── CARDS ── */
+    .dv-card{background:#1a1206;border-radius:12px;padding:14px;margin-bottom:12px}
+    .dv-card-title{font-size:14px;font-weight:800;color:#fdf8f0;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+    /* ── ANNONCE ITEM ── */
+    .dv-ann-item{background:#1a1206;border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .dv-ann-img{width:70px;height:70px;border-radius:8px;object-fit:cover;background:rgba(246,139,30,.06);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden}
+    .dv-ann-img img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .dv-ann-info{flex:1;min-width:0}
+    .dv-ann-titre{font-size:13px;font-weight:700;color:#fdf8f0;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dv-ann-prix{font-size:15px;font-weight:800;color:#f68b1e;margin-bottom:4px}
+    .dv-ann-meta{font-size:10px;color:#8a7560;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+    .dv-ann-actions{display:flex;gap:6px;flex-wrap:wrap}
+    .dv-btn-sm{border:none;border-radius:6px;padding:5px 10px;font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif}
+    .dv-btn-edit{background:#e3f2fd;color:#1565c0}
+    .dv-btn-del{background:#ffebee;color:#e53935}
+    .dv-btn-boost{background:#fff8e1;color:#f59e0b}
+    .dv-btn-vendu{background:#fff3e0;color:#f68b1e}
+    .dv-badge-boost{background:#ff6f00;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;margin-left:4px}
+    .dv-badge-vendu{background:#f68b1e;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;margin-left:4px}
+
+    /* ── BOOST MODAL ── */
+    .dv-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-end}
+    .dv-modal.open{display:flex}
+    .dv-modal-box{background:#1a1206;border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:20px}
+    .dv-modal-handle{width:36px;height:4px;background:rgba(246,139,30,.2);border-radius:2px;margin:0 auto 16px}
+    .dv-modal-title{font-size:16px;font-weight:800;color:#fdf8f0;margin-bottom:16px;text-align:center}
+
+    /* Options Boost */
+    .dv-boost-option{background:rgba(246,139,30,.04);border:2px solid rgba(246,139,30,.2);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+    .dv-boost-option:hover{border-color:#f68b1e}
+    .dv-boost-option.selected{border-color:#f68b1e;background:rgba(246,139,30,.08)}
+    .dv-boost-option-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .dv-boost-option-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .dv-boost-option-title{font-size:14px;font-weight:800;color:#fdf8f0}
+    .dv-boost-option-sub{font-size:11px;color:#8a7560}
+    .dv-boost-option-desc{font-size:12px;color:#8a7560;line-height:1.6}
+
+    /* Réseaux sociaux */
+    .dv-social-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    .dv-social-btn{border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;color:#fff;text-decoration:none}
+    .dv-social-fb{background:#1877f2}
+    .dv-social-ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+    .dv-social-wa{background:#25d366}
+    .dv-social-tt{background:#1a1a1a}
+
+    /* ── PROFIL ── */
+    .dv-profil-header{background:linear-gradient(135deg,#f68b1e,#e07b0e);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative}
+    .dv-profil-avatar{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.5);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:36px;background:rgba(255,255,255,.2);overflow:hidden;cursor:pointer}
+    .dv-profil-avatar img{width:100%;height:100%;object-fit:cover}
+    .dv-profil-nom{font-size:18px;font-weight:800;margin-bottom:4px}
+    .dv-profil-plan{font-size:11px;opacity:.85}
+    .dv-profil-stats{display:flex;gap:20px;justify-content:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)}
+    .dv-profil-stat{text-align:center}
+    .dv-profil-stat-val{font-size:18px;font-weight:800}
+    .dv-profil-stat-lbl{font-size:9px;opacity:.8}
+
+    /* ── INPUT ── */
+    .dv-input{width:100%;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:10px}
+    .dv-input:focus{border-color:#f68b1e}
+    .dv-label{font-size:11px;font-weight:700;color:#8a7560;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+
+    /* ── BOUTONS ── */
+    .dv-btn-primary{background:linear-gradient(135deg,#f68b1e,#e07b0e) !important;color:#fff !important;border:none;border-radius:10px;padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;text-decoration:none;margin-top:4px}
+    .dv-btn-primary:hover{opacity:.88}
+    .dv-btn-secondary{background:rgba(246,139,30,.06);color:#fdf8f0 !important;border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;text-align:center;text-decoration:none;display:block}
+
+    /* ── LOGIN ── */
+    .dv-login{min-height:100vh;background:#0f0c08;display:flex;align-items:center;justify-content:center;padding:20px}
+    .dv-login-card{background:#1a1206;border-radius:20px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+    .dv-login-logo{text-align:center;margin-bottom:24px}
+    .dv-login-logo-icon{width:64px;height:64px;background:#f68b1e;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 12px}
+    .dv-login-logo h2{font-size:20px;font-weight:800;color:#fdf8f0;margin-bottom:4px}
+    .dv-login-logo p{font-size:12px;color:#8a7560}
+    .dv-login-tabs{display:flex;background:rgba(246,139,30,.06);border-radius:10px;padding:3px;margin-bottom:20px}
+    .dv-login-tab{flex:1;padding:9px;font-size:13px;font-weight:700;border:none;background:none;cursor:pointer;border-radius:8px;color:#8a7560;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .dv-login-tab.active{background:#1a1206;color:#f68b1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+    /* ── BOTTOM NAV ── */
+    .gz-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);display:flex;z-index:200;box-shadow:0 -2px 6px rgba(0,0,0,.06)}
+    .gz-nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;cursor:pointer;text-decoration:none;color:#999;font-size:9px;font-weight:600;gap:2px}
+    .gz-nitem.active{color:#f68b1e}
+    .gz-nitem i{font-size:19px}
+    .gz-npub{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none}
+    .gz-npub-icon{width:42px;height:42px;background:#f68b1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 3px 10px rgba(246,139,30,.4)}
+    .gz-npub-icon i{font-size:19px;color:#fff}
+    .gz-npub span{font-size:9px;font-weight:600;color:#f68b1e}
+
+    /* ── TOAST ── */
+    .dv-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(0,0,0,.8);color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap;pointer-events:none}
+    .dv-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* ── ABONNEMENT ── */
+    .dv-abo-card{background:#1a1206;border-radius:14px;padding:16px;margin-bottom:12px;border:2px solid rgba(246,139,30,.2)}
+    .dv-abo-card.actif{border-color:#f68b1e;background:rgba(246,139,30,.08)}
+    .dv-abo-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .dv-abo-plan{font-size:16px;font-weight:800}
+    .dv-abo-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px}
+    .dv-abo-badge.actif{background:#fff3e0;color:#f68b1e}
+    .dv-abo-badge.expire{background:#ffebee;color:#e53935}
+    .dv-abo-prix{font-size:22px;font-weight:800;color:#f68b1e;margin-bottom:4px}
+    .dv-abo-desc{font-size:12px;color:#8a7560;margin-bottom:12px}
+    .dv-abo-features{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+    .dv-abo-feature{font-size:12px;color:#8a7560;display:flex;align-items:center;gap:6px}
+    .dv-abo-feature i{color:#f68b1e;font-size:12px}
+
+    /* ── ÉVALUATIONS ── */
+    .dv-eval-item{background:rgba(246,139,30,.04);border-radius:10px;padding:12px;margin-bottom:8px}
+    .dv-eval-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .dv-eval-stars{color:#f59e0b;font-size:13px}
+    .dv-eval-date{font-size:10px;color:#6b5d4f}
+    .dv-eval-comment{font-size:12px;color:#8a7560;line-height:1.5}
+    .dv-eval-auteur{font-size:11px;font-weight:700;color:#fdf8f0;margin-bottom:3px}
+
+    /* ── EMPTY ── */
+    .dv-empty{text-align:center;padding:40px 20px;color:#6b5d4f}
+    .dv-empty i{font-size:40px;display:block;margin-bottom:10px;opacity:.4}
+    .dv-empty p{font-size:13px}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<!-- ══ PAGE LOGIN ══ -->
+<div id="dvLoginPage">
+  <div class="dv-login">
+    <div class="dv-login-card">
+      <div class="dv-login-logo">
+        <div class="dv-login-logo-icon">🛍️</div>
+        <h2>Espace Vendeur</h2>
+        <p>Gérez vos annonces sur Galy Market</p>
+      </div>
+
+      <div class="dv-login-tabs">
+        <button class="dv-login-tab active" id="tabConnBtn" onclick="switchLoginTab('conn')">Connexion</button>
+        <button class="dv-login-tab" id="tabRegBtn" onclick="switchLoginTab('reg')">S'inscrire</button>
+      </div>
+
+      <!-- CONNEXION -->
+      <div id="formConn">
+        <label class="dv-label">Téléphone</label>
+        <input class="dv-input" type="tel" id="loginTel" placeholder="626 72 25 57">
+        <label class="dv-label">Mot de passe</label>
+        <div style="position:relative;margin-bottom:10px">
+          <input class="dv-input" type="password" id="loginPass" placeholder="••••••••" style="margin:0;padding-right:42px" onkeydown="if(event.key==='Enter')dvConnexion()">
+          <button onclick="togglePass('loginPass')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b5d4f;cursor:pointer"><i class="fas fa-eye" id="loginPassIcon"></i></button>
+        </div>
+        <p id="loginErr" style="color:#e53935;font-size:12px;text-align:center;margin-bottom:10px;display:none"></p>
+        <button class="dv-btn-primary" onclick="dvConnexion()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+      </div>
+
+      <!-- INSCRIPTION -->
+      <div id="formReg" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label class="dv-label">Prénom</label><input class="dv-input" type="text" id="regPrenom" placeholder="Mamadou"></div>
+          <div><label class="dv-label">Nom</label><input class="dv-input" type="text" id="regNom" placeholder="Diallo"></div>
+        </div>
+        <label class="dv-label">Téléphone</label>
+        <input class="dv-input" type="tel" id="regTel" placeholder="626 72 25 57">
+        <label class="dv-label">Ville</label>
+        <select class="dv-input" id="regVille" style="margin-bottom:10px">
+          <option value="">Choisir...</option>
+          <option>Conakry</option><option>Labé</option><option>Kankan</option>
+          <option>N'Zérékoré</option><option>Kindia</option><option>Boké</option>
+          <option>Faranah</option><option>Mamou</option><option>Siguiri</option>
+        </select>
+        <label class="dv-label">Mot de passe</label>
+        <div style="position:relative;margin-bottom:10px">
+          <input class="dv-input" type="password" id="regPass" placeholder="Min 6 caractères" style="margin:0;padding-right:42px">
+          <button onclick="togglePass('regPass')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b5d4f;cursor:pointer"><i class="fas fa-eye" id="regPassIcon"></i></button>
+        </div>
+        <p id="regErr" style="color:#e53935;font-size:12px;text-align:center;margin-bottom:10px;display:none"></p>
+        <button class="dv-btn-primary" onclick="dvInscription()"><i class="fas fa-user-plus"></i> Créer mon compte vendeur</button>
+      </div>
+
+      <div style="text-align:center;margin-top:14px">
+        <a href="annonces.html" style="font-size:12px;color:#8a7560;text-decoration:none">Voir les annonces sans connexion →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dvDashboard" style="display:none">
+
+  <!-- HEADER -->
+  <header class="dv-header">
+    <div class="dv-header-left">
+      <div class="dv-avatar" id="dvAvatar" onclick="dvChoisirPhoto()">👤</div>
+      <input type="file" id="dvAvatarInput" accept="image/*" style="display:none" onchange="dvChargerPhoto(this)">
+      <div class="dv-user-info">
+        <div class="dv-user-nom" id="dvUserNom">Chargement...</div>
+        <div class="dv-user-plan" id="dvUserPlan">Plan Gratuit</div>
+      </div>
+    </div>
+    <div class="dv-header-right">
+      <button class="dv-notif-btn" onclick="dvToggleNotifs()">
+        <i class="fas fa-bell"></i>
+        <span class="dv-notif-dot" id="dvNotifDot" style="display:none"></span>
+      </button>
+      <a href="publier-annonce.html" class="dv-btn-pub"><i class="fas fa-plus"></i> Publier</a>
+      <button class="dv-btn-decon" onclick="dvDeconnexion()"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="dv-tabs">
+    <button class="dv-tab-btn active" onclick="dvTab('apercu',this)"><i class="fas fa-chart-bar"></i> Aperçu</button>
+    <button class="dv-tab-btn" onclick="dvTab('annonces',this)"><i class="fas fa-tag"></i> Mes annonces <span class="dv-tab-badge" id="dvBadgeAnn">0</span></button>
+    <button class="dv-tab-btn" onclick="dvTab('boost',this)"><i class="fas fa-rocket"></i> Booster</button>
+    <button class="dv-tab-btn" onclick="dvTab('messages',this)"><i class="fas fa-comment-dots"></i> Messages <span class="dv-tab-badge" id="dvBadgeMsg" style="display:none">0</span></button>
+    <button class="dv-tab-btn" onclick="dvTab('evaluations',this)"><i class="fas fa-star"></i> Évaluations</button>
+    <button class="dv-tab-btn" onclick="dvTab('abonnement',this)"><i class="fas fa-crown"></i> Abonnement</button>
+    <button class="dv-tab-btn" onclick="dvTab('profil',this)"><i class="fas fa-user"></i> Profil</button>
+  </div>
+
+  <!-- ══ APERÇU ══ -->
+  <div class="dv-content active" id="tab-apercu">
+    <div class="dv-kpis" id="dvKpis"></div>
+    <div class="dv-card">
+      <div class="dv-card-title"><i class="fas fa-tag" style="color:#f68b1e"></i> Mes annonces récentes</div>
+      <div id="dvAnnRecentes"></div>
+      <a href="publier-annonce.html" class="dv-btn-primary" style="margin-top:10px;text-decoration:none"><i class="fas fa-plus"></i> Publier une nouvelle annonce</a>
+    </div>
+    <!-- Alerte abonnement -->
+    <div id="dvAlerteAbo" style="display:none;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:14px;padding:16px;margin-bottom:12px;color:#fff">
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px">⭐ Passez au plan Pro ou Premium !</div>
+      <div style="font-size:12px;opacity:.9;margin-bottom:10px">Boostez vos annonces et gagnez plus de visibilité</div>
+      <a href="abonnements.html" style="background:#1a1206;color:#d97706;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:800;text-decoration:none;display:inline-block">Voir les plans →</a>
+    </div>
+  </div>
+
+  <!-- ══ MES ANNONCES ══ -->
+  <div class="dv-content" id="tab-annonces">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h2 style="font-size:16px;font-weight:800">Mes annonces</h2>
+      <a href="publier-annonce.html" class="dv-btn-primary" style="width:auto;padding:8px 14px;font-size:12px;text-decoration:none"><i class="fas fa-plus"></i> Nouvelle</a>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none">
+      <button class="dv-btn-sm dv-btn-edit" style="white-space:nowrap" onclick="dvFiltreAnn('',this)">Toutes</button>
+      <button class="dv-btn-sm dv-btn-vendu" style="white-space:nowrap;background:rgba(246,139,30,.06);color:#8a7560" onclick="dvFiltreAnn('dispo',this)">Disponibles</button>
+      <button class="dv-btn-sm" style="background:#fff8e1;color:#f59e0b;white-space:nowrap" onclick="dvFiltreAnn('boost',this)">🚀 Boostées</button>
+      <button class="dv-btn-sm dv-btn-vendu" style="white-space:nowrap" onclick="dvFiltreAnn('vendu',this)">Vendues</button>
+    </div>
+    <div id="dvMesAnnonces"></div>
+  </div>
+
+  <!-- ══ BOOSTER ══ -->
+  <div class="dv-content" id="tab-boost">
+    <div style="text-align:center;padding:20px 0 16px">
+      <div style="font-size:48px;margin-bottom:10px">🚀</div>
+      <h2 style="font-size:20px;font-weight:800;margin-bottom:6px">Booster mes produits</h2>
+      <p style="font-size:13px;color:#8a7560;margin-bottom:20px;line-height:1.6">Augmentez vos ventes en boostant vos produits sur les réseaux sociaux</p>
+    </div>
+
+    <!-- OPTION 1 : Galy Market booste -->
+    <div class="dv-boost-option" style="margin-bottom:12px" onclick="window.location.href='boost-produit.html?type=galy'">
+      <div class="dv-boost-option-hdr">
+        <div class="dv-boost-option-icon" style="background:rgba(246,139,30,.15)">🚀</div>
+        <div style="flex:1">
+          <div class="dv-boost-option-title">Galy Market booste mon produit</div>
+          <div class="dv-boost-option-sub">Notre équipe gère tout • Dès 50 000 GNF</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:#f68b1e"></i>
+      </div>
+      <div class="dv-boost-option-desc">
+        Notre équipe publie et promeut votre produit sur <strong style="color:#fdf8f0">Facebook, Instagram, TikTok, WhatsApp et Telegram</strong>. Visuels professionnels, textes accrocheurs, résultats garantis.
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <span style="background:rgba(24,119,242,.1);color:#1877f2;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700"><i class="fab fa-facebook-f"></i> Facebook</span>
+        <span style="background:rgba(225,48,108,.1);color:#e1306c;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700"><i class="fab fa-instagram"></i> Instagram</span>
+        <span style="background:rgba(255,255,255,.08);color:#fdf8f0;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700"><i class="fab fa-tiktok"></i> TikTok</span>
+        <span style="background:rgba(37,211,102,.1);color:#25d366;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700"><i class="fab fa-whatsapp"></i> WhatsApp</span>
+        <span style="background:rgba(0,136,204,.1);color:#0088cc;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700"><i class="fab fa-telegram"></i> Telegram</span>
+      </div>
+    </div>
+
+    <!-- OPTION 2 : Je booste moi-même -->
+    <div class="dv-boost-option" onclick="window.location.href='boost-produit.html?type=self'">
+      <div class="dv-boost-option-hdr">
+        <div class="dv-boost-option-icon" style="background:rgba(59,130,246,.1)">🛠️</div>
+        <div style="flex:1">
+          <div class="dv-boost-option-title">Je booste moi-même</div>
+          <div class="dv-boost-option-sub">Outils professionnels • Autonomie totale</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:#f68b1e"></i>
+      </div>
+      <div class="dv-boost-option-desc">
+        Accédez à nos outils de marketing professionnel pour créer vos propres publications, visuels et messages sur tous les réseaux sociaux.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MESSAGES ══ -->
+  <div class="dv-content" id="tab-messages">
+    <h2 style="font-size:16px;font-weight:800;margin-bottom:12px">Messages reçus</h2>
+    <div id="dvMessages">
+      <div class="dv-empty"><i class="fas fa-comment-dots"></i><p>Aucun message pour l'instant</p></div>
+    </div>
+  </div>
+
+  <!-- ══ ÉVALUATIONS ══ -->
+  <div class="dv-content" id="tab-evaluations">
+    <div class="dv-card" style="text-align:center;margin-bottom:12px">
+      <div style="font-size:48px;font-weight:800;color:#f59e0b" id="dvNoteVal">—</div>
+      <div style="color:#f59e0b;font-size:20px;margin:4px 0" id="dvNoteStars">☆☆☆☆☆</div>
+      <div style="font-size:12px;color:#8a7560" id="dvNoteNb">Pas encore d'évaluations</div>
+    </div>
+    <div id="dvCommentaires">
+      <div class="dv-empty"><i class="fas fa-star"></i><p>Pas encore d'évaluations</p></div>
+    </div>
+  </div>
+
+  <!-- ══ ABONNEMENT ══ -->
+  <div class="dv-content" id="tab-abonnement">
+    <div id="dvAbonnementContent"></div>
+  </div>
+
+  <!-- ══ PROFIL ══ -->
+  <div class="dv-content" id="tab-profil">
+    <div class="dv-profil-header" id="dvProfilHeader">
+      <div class="dv-profil-avatar" id="dvProfilAvatar" onclick="dvChoisirPhoto()">👤</div>
+      <div class="dv-profil-nom" id="dvProfilNom">Chargement...</div>
+      <div class="dv-profil-plan" id="dvProfilPlan">Plan Gratuit</div>
+      <div class="dv-profil-stats">
+        <div class="dv-profil-stat"><div class="dv-profil-stat-val" id="dvProfilAnns">0</div><div class="dv-profil-stat-lbl">Annonces</div></div>
+        <div class="dv-profil-stat"><div class="dv-profil-stat-val" id="dvProfilVentes">0</div><div class="dv-profil-stat-lbl">Ventes</div></div>
+        <div class="dv-profil-stat"><div class="dv-profil-stat-val" id="dvProfilNote">—</div><div class="dv-profil-stat-lbl">Note</div></div>
+      </div>
+    </div>
+    <div class="dv-card">
+      <div class="dv-card-title"><i class="fas fa-edit" style="color:#f68b1e"></i> Modifier mon profil</div>
+      <label class="dv-label">Nom complet</label>
+      <input class="dv-input" type="text" id="editNom" placeholder="Votre nom">
+      <label class="dv-label">Téléphone</label>
+      <input class="dv-input" type="tel" id="editTel" placeholder="626 72 25 57">
+      <label class="dv-label">Ville</label>
+      <select class="dv-input" id="editVille">
+        <option>Conakry</option><option>Labé</option><option>Kankan</option>
+        <option>N'Zérékoré</option><option>Kindia</option><option>Boké</option>
+      </select>
+      <label class="dv-label">Description boutique</label>
+      <textarea class="dv-input" id="editDesc" rows="3" placeholder="Décrivez votre boutique..." style="resize:none"></textarea>
+      <button class="dv-btn-primary" onclick="dvSauvegarderProfil()"><i class="fas fa-save"></i> Sauvegarder</button>
+    </div>
+    <div class="dv-card" style="margin-top:12px">
+      <div class="dv-card-title"><i class="fas fa-lock" style="color:#e53935"></i> Changer le mot de passe</div>
+      <input class="dv-input" type="password" id="oldPass" placeholder="Ancien mot de passe">
+      <input class="dv-input" type="password" id="newPass" placeholder="Nouveau mot de passe">
+      <button class="dv-btn-primary" onclick="dvChangerMdp()"><i class="fas fa-key"></i> Mettre à jour</button>
+    </div>
+    <button onclick="dvDeconnexion()" style="width:100%;background:#ffebee;color:#e53935;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;font-family:'DM Sans',sans-serif">
+      <i class="fas fa-sign-out-alt"></i> Se déconnecter
+    </button>
+  </div>
+
+</div><!-- fin dvDashboard -->
+
+<!-- ── NOTIFICATIONS ── -->
+<div id="dvNotifPanel" style="display:none;position:fixed;top:62px;right:12px;left:12px;background:#1a1206;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:9998;max-height:60vh;overflow-y:auto">
+  <div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:14px;font-weight:800">🔔 Notifications</span>
+    <button onclick="dvMarquerLues()" style="font-size:11px;color:#8a7560;background:none;border:none;cursor:pointer">Tout lu</button>
+  </div>
+  <div id="dvNotifsListe" style="padding:8px"></div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="dv-toast" id="dvToast"></div>
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="gz-nav">
+  <a href="index.html" class="gz-nitem"><i class="fas fa-home"></i><span>Accueil</span></a>
+  <a href="annonces.html" class="gz-nitem"><i class="fas fa-tag"></i><span>Offres</span></a>
+  <a href="publier-annonce.html" class="gz-npub">
+    <div class="gz-npub-icon"><i class="fas fa-plus"></i></div>
+    <span>Publier</span>
+  </a>
+  <a href="boutiques.html" class="gz-nitem"><i class="fas fa-store"></i><span>Boutiques</span></a>
+  <a href="dashboard-vendeur.html" class="gz-nitem active"><i class="fas fa-user"></i><span>Compte</span></a>
+</nav>
+
+<script src="js/annonces.js"></script>
+<script src="js/abonnements.js"></script>
+<script src="js/dashboard-vendeur.js"></script>
+<script>
+const DV_KEY = 'GM_DV_SESSION';
+const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function() {
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  if(session.id) {
+    document.getElementById('dvLoginPage').style.display = 'none';
+    document.getElementById('dvDashboard').style.display = 'block';
+    chargerDashboard(session);
+  }
+});
+
+// ── LOGIN TABS ──
+window.switchLoginTab = function(tab) {
+  document.getElementById('formConn').style.display = tab==='conn'?'block':'none';
+  document.getElementById('formReg').style.display  = tab==='reg' ?'block':'none';
+  document.getElementById('tabConnBtn').classList.toggle('active', tab==='conn');
+  document.getElementById('tabRegBtn').classList.toggle('active',  tab==='reg');
+};
+
+// ── TOGGLE PASSWORD ──
+window.togglePass = function(id) {
+  const inp = document.getElementById(id);
+  const ico = document.getElementById(id+'Icon');
+  if(!inp) return;
+  inp.type = inp.type==='password' ? 'text' : 'password';
+  if(ico) ico.className = inp.type==='password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+};
+
+// ── CONNEXION ──
+window.dvConnexion = function() {
+  const tel  = document.getElementById('loginTel')?.value.trim().replace(/[^0-9]/g,'');
+  const pass = document.getElementById('loginPass')?.value.trim();
+  const err  = document.getElementById('loginErr');
+  if(!tel||tel.length<8){showErr(err,'⚠️ Entrez un numéro valide.');return;}
+  if(!pass){showErr(err,'⚠️ Entrez votre mot de passe.');return;}
+  const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  const vend  = vends.find(v=>(v.tel||'').replace(/[^0-9]/g,'')=== tel);
+  if(!vend){showErr(err,'❌ Aucun compte trouvé.');return;}
+  if(vend.password && vend.password!==pass){showErr(err,'❌ Mot de passe incorrect.');return;}
+  localStorage.setItem(DV_KEY, JSON.stringify({id:vend.id,tel,nom:vend.nom,prenom:vend.prenom||''}));
+  location.reload();
+};
+
+// ── INSCRIPTION ──
+window.dvInscription = function() {
+  const prenom = document.getElementById('regPrenom')?.value.trim();
+  const nom    = document.getElementById('regNom')?.value.trim();
+  const tel    = document.getElementById('regTel')?.value.trim().replace(/[^0-9]/g,'');
+  const ville  = document.getElementById('regVille')?.value;
+  const pass   = document.getElementById('regPass')?.value.trim();
+  const err    = document.getElementById('regErr');
+  if(!prenom){showErr(err,'⚠️ Entrez votre prénom.');return;}
+  if(!nom)   {showErr(err,'⚠️ Entrez votre nom.');return;}
+  if(!tel||tel.length<8){showErr(err,'⚠️ Numéro invalide.');return;}
+  if(!pass||pass.length<6){showErr(err,'⚠️ Mot de passe min 6 caractères.');return;}
+  const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  if(vends.find(v=>(v.tel||'').replace(/[^0-9]/g,'')=== tel)){showErr(err,'❌ Numéro déjà utilisé.');return;}
+  const nv = {id:'v'+Date.now(),prenom,nom,tel,ville,password:pass,wa:tel,membre:new Date().toISOString().slice(0,7),premium:false,verifie:false,ventes:0,note:null,avatar:'👤'};
+  vends.push(nv);
+  localStorage.setItem('GM_VENDEURS',JSON.stringify(vends));
+  localStorage.setItem(DV_KEY,JSON.stringify({id:nv.id,tel,nom:prenom+' '+nom,prenom}));
+  // Rediriger vers abonnements pour choisir un forfait
+  window.location.href = 'abonnements.html';
+};
+
+function showErr(el,msg){if(el){el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}}
+
+// ── CHARGER DASHBOARD ──
+function chargerDashboard(session) {
+  const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  const vend  = vends.find(v=>v.id===session.id)||{};
+  const anns  = typeof getAnnonces==='function' ? getAnnonces().filter(a=>a.vendeurId===session.id) : [];
+  const abo   = getAboActif(session.id);
+  const forfait = abo?.planId||'gratuit';
+
+  // Header
+  const nomComplet = (vend.prenom||'')+' '+(vend.nom||session.nom||'Vendeur');
+  document.getElementById('dvUserNom').textContent = nomComplet.trim();
+  document.getElementById('dvUserPlan').textContent = '⭐ Plan '+(forfait.charAt(0).toUpperCase()+forfait.slice(1));
+
+  // Avatar
+  if(session.avatar) {
+    ['dvAvatar','dvProfilAvatar'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.innerHTML = `<img src="${session.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    });
+  }
+
+  // KPIs
+  const kpis = document.getElementById('dvKpis');
+  if(kpis) kpis.innerHTML = `
+    <div class="dv-kpi green"><div class="dv-kpi-icon">📢</div><div class="dv-kpi-val">${anns.length}</div><div class="dv-kpi-lbl">Mes annonces</div></div>
+    <div class="dv-kpi orange"><div class="dv-kpi-icon">👁️</div><div class="dv-kpi-val">${anns.reduce((a,b)=>a+(b.vues||0),0)}</div><div class="dv-kpi-lbl">Vues totales</div></div>
+    <div class="dv-kpi blue"><div class="dv-kpi-icon">🛒</div><div class="dv-kpi-val">${vend.ventes||0}</div><div class="dv-kpi-lbl">Ventes</div></div>
+    <div class="dv-kpi red"><div class="dv-kpi-icon">🚀</div><div class="dv-kpi-val">${anns.filter(a=>a.boost).length}</div><div class="dv-kpi-lbl">Boostées</div></div>`;
+
+  // Badge annonces
+  const badge = document.getElementById('dvBadgeAnn');
+  if(badge) badge.textContent = anns.length;
+
+  // Annonces récentes
+  renderMesAnnoncesDans('dvAnnRecentes', anns.slice(0,3), session);
+  renderMesAnnoncesDans('dvMesAnnonces', anns, session);
+
+  // Profil
+  document.getElementById('dvProfilNom').textContent = nomComplet.trim();
+  document.getElementById('dvProfilPlan').textContent = 'Plan '+(forfait.charAt(0).toUpperCase()+forfait.slice(1));
+  document.getElementById('dvProfilAnns').textContent = anns.length;
+  document.getElementById('dvProfilVentes').textContent = vend.ventes||0;
+  document.getElementById('dvProfilNote').textContent = vend.note||'—';
+  if(document.getElementById('editNom')) document.getElementById('editNom').value = nomComplet.trim();
+  if(document.getElementById('editTel')) document.getElementById('editTel').value = vend.tel||'';
+  if(document.getElementById('editVille')) document.getElementById('editVille').value = vend.ville||'Conakry';
+
+  // Peupler selects boost
+  peuplerSelectBoost(anns);
+
+  // Alerte abo gratuit
+  if(forfait==='gratuit') document.getElementById('dvAlerteAbo').style.display='block';
+
+  // Abonnement
+  renderAbonnement(session.id, forfait, abo);
+
+  // Note
+  if(vend.note) {
+    document.getElementById('dvNoteVal').textContent = vend.note;
+    document.getElementById('dvNoteStars').textContent = '★'.repeat(Math.round(vend.note)) + '☆'.repeat(5-Math.round(vend.note));
+    document.getElementById('dvNoteNb').textContent = (vend.nbEvals||0)+' évaluation(s)';
+  }
+}
+
+function getAboActif(vendeurId) {
+  const abos = JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+  return abos.find(a=>a.vendeurId===vendeurId&&a.statut==='actif')||null;
+}
+
+// ── RENDER ANNONCES ──
+let filtreAnnActif = '';
+function renderMesAnnoncesDans(containerId, anns, session) {
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  let list = anns;
+  if(filtreAnnActif==='dispo') list = anns.filter(a=>a.dispo!==false);
+  if(filtreAnnActif==='boost') list = anns.filter(a=>a.boost);
+  if(filtreAnnActif==='vendu') list = anns.filter(a=>a.dispo===false);
+
+  if(!list.length) {
+    c.innerHTML = `<div class="dv-empty"><i class="fas fa-tag"></i><p>Aucune annonce</p></div>`;
+    return;
+  }
+  const EMOJI_MAP={immobilier:'🏠',vehicules:'🚗',phones:'📱',informatique:'💻',mode:'👕',electromenager:'🔌',emploi:'💼',meubles:'🛋️',bijoux:'💍',beaute:'💄',autres:'📦'};
+  c.innerHTML = list.map(a=>`
+    <div class="dv-ann-item">
+      <div class="dv-ann-img">${a.photos&&a.photos[0]?`<img src="${a.photos[0]}" alt="${a.titre}">`:(EMOJI_MAP[a.cat]||'📦')}</div>
+      <div class="dv-ann-info">
+        <div class="dv-ann-titre">${a.titre}${a.boost?'<span class="dv-badge-boost">🚀 Boostée</span>':''}</div>
+        <div class="dv-ann-prix">${a.prix>0?fmt(a.prix):'Gratuit'}</div>
+        <div class="dv-ann-meta">
+          <span><i class="fas fa-map-marker-alt"></i> ${a.ville}</span>
+          <span><i class="fas fa-eye"></i> ${a.vues||0} vues</span>
+          <span><i class="fas fa-clock"></i> ${timeAgo(a.date)}</span>
+        </div>
+        <div class="dv-ann-actions">
+          <button class="dv-btn-sm dv-btn-edit" onclick="dvEditerAnn('${a.id}')"><i class="fas fa-edit"></i> Modifier</button>
+          <button class="dv-btn-sm dv-btn-boost" onclick="dvBoosterAnn('${a.id}')"><i class="fas fa-rocket"></i> Booster</button>
+          <button class="dv-btn-sm dv-btn-vendu" onclick="dvMarquerVendu('${a.id}')"><i class="fas fa-check"></i> Vendu</button>
+          <button class="dv-btn-sm dv-btn-del" onclick="dvSupprimerAnn('${a.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+const timeAgo = d => {
+  const diff = Date.now()-new Date(d).getTime();
+  const h = Math.floor(diff/3600000);
+  if(h<1) return "À l'instant";
+  if(h<24) return `Il y a ${h}h`;
+  const j = Math.floor(h/24);
+  if(j<7) return `Il y a ${j}j`;
+  return new Date(d).toLocaleDateString('fr-FR');
+};
+
+// ── TABS ──
+window.dvTab = function(tab, btn) {
+  document.querySelectorAll('.dv-content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.dv-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  btn.classList.add('active');
+};
+
+window.dvFiltreAnn = function(filtre, btn) {
+  filtreAnnActif = filtre;
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const anns = typeof getAnnonces==='function' ? getAnnonces().filter(a=>a.vendeurId===session.id) : [];
+  renderMesAnnoncesDans('dvMesAnnonces', anns, session);
+};
+
+// ── ACTIONS ANNONCES ──
+window.dvEditerAnn = function(id) { window.location.href='publier-annonce.html?edit='+id; };
+
+window.dvMarquerVendu = function(id) {
+  const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+  const a = anns.find(x=>x.id===id);
+  if(a) { a.dispo=false; localStorage.setItem('GM_ANNONCES',JSON.stringify(anns)); dvToast('✅ Marquée comme vendue !'); location.reload(); }
+};
+
+window.dvSupprimerAnn = function(id) {
+  if(!confirm('Supprimer cette annonce ?')) return;
+  let anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+  anns = anns.filter(a=>a.id!==id);
+  localStorage.setItem('GM_ANNONCES',JSON.stringify(anns));
+  dvToast('🗑️ Annonce supprimée'); location.reload();
+};
+
+window.dvBoosterAnn = function(id) {
+  // Aller sur onglet boost et présélectionner l'annonce
+  document.querySelectorAll('.dv-content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.dv-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-boost')?.classList.add('active');
+  document.querySelector('[onclick="dvTab(\'boost\',this)"]')?.classList.add('active');
+  setTimeout(()=>{
+    const sel = document.getElementById('opt2Annonce');
+    if(sel) { sel.value=id; selectBoostOption(2); }
+  },100);
+};
+
+// ── BOOST OPTIONS ──
+let boostOptSel = 0;
+window.selectBoostOption = function(n) {
+  boostOptSel = n;
+  document.getElementById('opt1').classList.toggle('selected', n===1);
+  document.getElementById('opt2').classList.toggle('selected', n===2);
+  document.getElementById('opt1Details').style.display = n===1?'block':'none';
+  document.getElementById('opt2Details').style.display = n===2?'block':'none';
+};
+
+function peuplerSelectBoost(anns) {
+  ['opt1Annonce','opt2Annonce'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">Choisir une annonce...</option>' +
+      anns.filter(a=>a.dispo!==false).map(a=>`<option value="${a.id}">${a.titre} — ${a.prix>0?fmt(a.prix):'Gratuit'}</option>`).join('');
+  });
+}
+
+// ── PARTAGER SUR RÉSEAUX ──
+window.partagerSocial = function(reseau) {
+  const annId = document.getElementById('opt1Annonce')?.value;
+  if(!annId) { dvToast('⚠️ Choisissez une annonce d\'abord'); return; }
+  const anns = typeof getAnnonces==='function' ? getAnnonces() : [];
+  const ann  = anns.find(a=>a.id===annId);
+  if(!ann) return;
+
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const url  = `${window.location.origin}/annonces.html?ann=${annId}`;
+  const texte = `🛍️ ${ann.titre}\n💰 ${ann.prix>0?fmt(ann.prix):'Gratuit'}\n📍 ${ann.ville}\n\n👉 Voir l'annonce : ${url}\n\n#GalyMarket #Guinée #Vente`;
+
+  const urls = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(texte)}`,
+    instagram: null, // Instagram ne supporte pas le partage URL direct → on copie le texte
+    whatsapp:  `https://wa.me/?text=${encodeURIComponent(texte)}`,
+    tiktok:    null,
+  };
+
+  if(reseau==='instagram' || reseau==='tiktok') {
+    navigator.clipboard?.writeText(texte).then(()=>dvToast(`✅ Texte copié ! Collez-le sur ${reseau==='instagram'?'Instagram':'TikTok'}`))
+    .catch(()=>dvToast(`Copiez ce texte sur ${reseau==='instagram'?'Instagram':'TikTok'}`));
+    return;
+  }
+
+  window.open(urls[reseau], '_blank');
+  dvToast(`✅ Partage ${reseau} ouvert !`);
+};
+
+// ── BOOST GALY MARKET ──
+window.demanderBoostGaly = function() {
+  const annId = document.getElementById('opt2Annonce')?.value;
+  if(!annId) { dvToast('⚠️ Choisissez une annonce à booster'); return; }
+  const anns = typeof getAnnonces==='function' ? getAnnonces() : [];
+  const ann  = anns.find(a=>a.id===annId);
+  if(!ann) return;
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+  const waNum = (s.shopWa||'224627900578').replace(/[^0-9]/g,'');
+
+  const msg = `🚀 *DEMANDE DE BOOST — GALY MARKET*\n\n👤 Vendeur : ${session.nom||'—'}\n📞 Tél : ${session.tel||'—'}\n\n📢 Annonce à booster :\n*${ann.titre}*\n💰 ${ann.prix>0?fmt(ann.prix):'Gratuit'}\n📍 ${ann.ville}\n\n💳 Paiement : 50 000 GNF\n⏱️ Durée demandée : 7 jours\n\nMerci de confirmer le paiement et d'activer le boost !`;
+
+  window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`, '_blank');
+  dvToast('✅ Demande envoyée via WhatsApp !');
+};
+
+// ── PROFIL ──
+window.dvSauvegarderProfil = function() {
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const vends   = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  const idx     = vends.findIndex(v=>v.id===session.id);
+  if(idx<0) return;
+  vends[idx].nom   = document.getElementById('editNom')?.value||vends[idx].nom;
+  vends[idx].tel   = document.getElementById('editTel')?.value||vends[idx].tel;
+  vends[idx].ville = document.getElementById('editVille')?.value||vends[idx].ville;
+  vends[idx].desc  = document.getElementById('editDesc')?.value||'';
+  localStorage.setItem('GM_VENDEURS',JSON.stringify(vends));
+  session.nom = vends[idx].nom;
+  localStorage.setItem(DV_KEY,JSON.stringify(session));
+  dvToast('✅ Profil mis à jour !');
+};
+
+window.dvChangerMdp = function() {
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const vends   = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  const vend    = vends.find(v=>v.id===session.id);
+  if(!vend) return;
+  const old = document.getElementById('oldPass')?.value;
+  const nw  = document.getElementById('newPass')?.value;
+  if(!old||!nw) { dvToast('⚠️ Remplissez les deux champs'); return; }
+  if(vend.password && vend.password!==old) { dvToast('❌ Ancien mot de passe incorrect'); return; }
+  if(nw.length<6) { dvToast('⚠️ Min 6 caractères'); return; }
+  vend.password = nw;
+  localStorage.setItem('GM_VENDEURS',JSON.stringify(vends));
+  dvToast('✅ Mot de passe mis à jour !');
+};
+
+// ── AVATAR ──
+window.dvChoisirPhoto = function() { document.getElementById('dvAvatarInput')?.click(); };
+window.dvChargerPhoto = function(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result;
+    const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+    session.avatar = b64;
+    localStorage.setItem(DV_KEY,JSON.stringify(session));
+    ['dvAvatar','dvProfilAvatar'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.innerHTML=`<img src="${b64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    });
+    dvToast('✅ Photo mise à jour !');
+  };
+  reader.readAsDataURL(file);
+};
+
+// ── DÉCONNEXION ──
+window.dvDeconnexion = function() {
+  localStorage.removeItem(DV_KEY);
+  window.location.href='annonces.html';
+};
+
+// ── NOTIFICATIONS ──
+window.dvToggleNotifs = function() {
+  const p = document.getElementById('dvNotifPanel');
+  p.style.display = p.style.display==='none'?'block':'none';
+};
+window.dvMarquerLues = function() {
+  document.getElementById('dvNotifDot').style.display='none';
+  document.getElementById('dvNotifsListe').innerHTML='<p style="text-align:center;padding:16px;color:#6b5d4f;font-size:12px">Aucune nouvelle notification</p>';
+};
+
+// ── ABONNEMENT ──
+function renderAbonnement(vendeurId, forfait, abo) {
+  const c = document.getElementById('dvAbonnementContent');
+  if(!c) return;
+  const PLANS = [
+    {id:'gratuit',nom:'Gratuit',prix:0,color:'#888',features:['3 annonces','Visibilité standard']},
+    {id:'basic',  nom:'Basic',  prix:50000,color:'#1565c0',features:['20 annonces','1 boost/mois','Badge Vendeur pro']},
+    {id:'pro',    nom:'Pro',    prix:100000,color:'#7c3aed',features:['50 annonces','5 boosts/mois','Badge vérifié','Stats avancées']},
+    {id:'premium',nom:'Premium',prix:200000,color:'#f59e0b',features:['Illimité','Boosts illimités','Support prioritaire','Pub interne']},
+  ];
+  let html = '';
+  if(abo) {
+    const plan = PLANS.find(p=>p.id===abo.planId)||PLANS[0];
+    html += `<div class="dv-abo-card actif" style="border-color:${plan.color}">
+      <div class="dv-abo-hdr"><span class="dv-abo-plan" style="color:${plan.color}">⭐ Plan ${plan.nom}</span><span class="dv-abo-badge actif">Actif</span></div>
+      <div class="dv-abo-prix">${plan.prix>0?fmt(plan.prix)+'/mois':'Gratuit'}</div>
+      <div class="dv-abo-features">${plan.features.map(f=>`<div class="dv-abo-feature"><i class="fas fa-check-circle"></i>${f}</div>`).join('')}</div>
+      <div style="font-size:11px;color:#8a7560">Expire le : ${abo.fin?new Date(abo.fin).toLocaleDateString('fr-FR'):'—'}</div>
+    </div>`;
+  } else {
+    html += `<div style="background:#fff8e1;border-radius:12px;padding:14px;margin-bottom:14px;text-align:center">
+      <div style="font-size:24px;margin-bottom:6px">⭐</div>
+      <div style="font-size:14px;font-weight:800;margin-bottom:4px">Vous êtes sur le plan Gratuit</div>
+      <div style="font-size:12px;color:#8a7560;margin-bottom:10px">Passez à un plan payant pour plus de visibilité</div>
+    </div>`;
+  }
+  html += PLANS.filter(p=>p.id!=='gratuit').map(p=>`
+    <div class="dv-abo-card ${abo?.planId===p.id?'actif':''}" style="${abo?.planId===p.id?'border-color:'+p.color:''}">
+      <div class="dv-abo-hdr"><span class="dv-abo-plan" style="color:${p.color}">Plan ${p.nom}</span>${abo?.planId===p.id?'<span class="dv-abo-badge actif">Actif</span>':''}</div>
+      <div class="dv-abo-prix">${fmt(p.prix)}/mois</div>
+      <div class="dv-abo-features">${p.features.map(f=>`<div class="dv-abo-feature"><i class="fas fa-check-circle" style="color:${p.color}"></i>${f}</div>`).join('')}</div>
+      ${abo?.planId!==p.id?`<a href="abonnements.html" class="dv-btn-primary" style="background:${p.color};margin-top:10px;text-decoration:none"><i class="fas fa-crown"></i> S'abonner au plan ${p.nom}</a>`:''}
+    </div>`).join('');
+  c.innerHTML = html;
+}
+
+// ── TOAST ──
+window.dvToast = function(msg) {
+  const t = document.getElementById('dvToast');
+  if(!t) return;
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+};
+
+// Fermer notifs si clic ailleurs
+document.addEventListener('click', e => {
+  const panel = document.getElementById('dvNotifPanel');
+  if(panel&&!panel.contains(e.target)&&!e.target.closest('.dv-notif-btn')) {
+    panel.style.display='none';
+  }
+});
+</script>
+</body>
+</html>

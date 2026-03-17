@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programme Partenariat & Affiliation — Galy Market</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    body { background: #0a0a0f; color: #fff; font-family: 'DM Sans', sans-serif; }
+    .part-hero { background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%); padding: 80px 20px; text-align: center; position: relative; overflow: hidden; }
+    .part-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(246,139,30,.12) 0%, transparent 70%); }
+    .part-hero-badge { display: inline-block; background: rgba(246,139,30,.15); border: 1px solid rgba(246,139,30,.3); color: #f68b1e; padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .part-hero h1 { font-size: clamp(28px, 5vw, 52px); font-weight: 800; margin-bottom: 16px; }
+    .part-hero h1 span { color: #f68b1e; }
+    .part-hero p { font-size: 16px; color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto 32px; }
+    .part-hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-part-primary { background: #f68b1e; color: #fff; border: none; padding: 14px 32px; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-part-primary:hover { background: #e07b0e; transform: translateY(-2px); }
+    .btn-part-ghost { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.2); padding: 14px 32px; border-radius: 50px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-part-ghost:hover { border-color: #f68b1e; color: #f68b1e; }
+
+    .part-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; max-width: 800px; margin: 48px auto; padding: 0 20px; }
+    .part-stat { text-align: center; padding: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; }
+    .part-stat-val { font-size: 36px; font-weight: 800; color: #f68b1e; }
+    .part-stat-label { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+
+    .part-section { max-width: 1000px; margin: 0 auto; padding: 48px 20px; }
+    .part-section h2 { font-size: 28px; font-weight: 800; margin-bottom: 32px; text-align: center; }
+    .part-section h2 span { color: #f68b1e; }
+
+    .part-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .part-step { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 24px; text-align: center; }
+    .part-step-num { width: 48px; height: 48px; border-radius: 50%; background: rgba(246,139,30,.15); border: 2px solid #f68b1e; color: #f68b1e; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .part-step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .part-step p { font-size: 13px; color: rgba(255,255,255,.6); }
+
+    .part-commissions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .part-comm-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 20px; text-align: center; transition: all .2s; }
+    .part-comm-card:hover { border-color: rgba(246,139,30,.3); transform: translateY(-4px); }
+    .part-comm-icon { font-size: 36px; margin-bottom: 12px; }
+    .part-comm-cat { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .part-comm-pct { font-size: 32px; font-weight: 800; color: #f68b1e; }
+    .part-comm-label { font-size: 12px; color: rgba(255,255,255,.5); }
+
+    .part-form-wrap { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 40px; max-width: 600px; margin: 0 auto; }
+    .part-form-field { margin-bottom: 16px; }
+    .part-form-field label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); margin-bottom: 6px; }
+    .part-form-input { width: 100%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color .2s; font-family: inherit; }
+    .part-form-input:focus { border-color: #f68b1e; }
+    .part-form-input::placeholder { color: rgba(255,255,255,.3); }
+    select.part-form-input option { background: #1a1a2e; }
+    .part-success { display: none; text-align: center; padding: 24px; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); border-radius: 12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+        <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span>🔒 Paiement sécurisé Orange Money ⭐️ MTN ⭐️ COD</span>
+      <span>🚚 Paiement à la livraison disponible</span>
+      <span>✨ Nouveautés chaque semaine</span>
+      <span>📞 Service client 24h/7j</span>
+      <span>🔄 Retour & Garantie 72 heures</span>
+      <span>🔒 Paiement sécurisé Orange Money ⭐️ MTN ⭐️ COD</span>
+      <span>🚚 Paiement à la livraison disponible</span>
+      <span>✨ Nouveautés chaque semaine</span>
+      <span>📞 Service client 24h/7j</span>
+      <span>🔄 Retour & Garantie 72 heures</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="part-hero">
+    <div class="part-hero-badge">🤝 Programme Partenariat</div>
+    <h1>Gagnez de l'argent avec <span>Galy Market</span></h1>
+    <p>Rejoignez notre programme d'affiliation et gagnez une commission sur chaque vente générée via votre lien personnel.</p>
+    <div class="part-hero-btns">
+      <a href="#formulaire" class="btn-part-primary"><i class="fas fa-handshake"></i> Devenir Partenaire</a>
+      <a href="#comment-ca-marche" class="btn-part-ghost"><i class="fas fa-play"></i> Comment ça marche</a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="part-stats">
+    <div class="part-stat">
+      <div class="part-stat-val">5-15%</div>
+      <div class="part-stat-label">Commission par vente</div>
+    </div>
+    <div class="part-stat">
+      <div class="part-stat-val">24h</div>
+      <div class="part-stat-label">Validation partenariat</div>
+    </div>
+    <div class="part-stat">
+      <div class="part-stat-val">∞</div>
+      <div class="part-stat-label">Gains illimités</div>
+    </div>
+    <div class="part-stat">
+      <div class="part-stat-val">100%</div>
+      <div class="part-stat-label">Gratuit à rejoindre</div>
+    </div>
+  </div>
+
+  <!-- Comment ça marche -->
+  <section class="part-section" id="comment-ca-marche">
+    <h2>Comment ça <span>marche</span> ?</h2>
+    <div class="part-steps">
+      <div class="part-step">
+        <div class="part-step-num">1</div>
+        <h3>Demande de partenariat</h3>
+        <p>Remplissez le formulaire ci-dessous. Nous examinons votre demande sous 24h.</p>
+      </div>
+      <div class="part-step">
+        <div class="part-step-num">2</div>
+        <h3>Confirmation & Lien</h3>
+        <p>Après confirmation, vous recevez votre lien d'affiliation personnel et votre code promo.</p>
+      </div>
+      <div class="part-step">
+        <div class="part-step-num">3</div>
+        <h3>Promotion</h3>
+        <p>Partagez votre lien sur vos réseaux sociaux, WhatsApp, TikTok, Facebook...</p>
+      </div>
+      <div class="part-step">
+        <div class="part-step-num">4</div>
+        <h3>Commission</h3>
+        <p>Gagnez une commission sur chaque vente réalisée via votre lien d'affiliation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commissions -->
+  <section class="part-section" id="affiliation" style="background:rgba(255,255,255,.02);max-width:100%;padding:48px 20px">
+    <div style="max-width:1000px;margin:0 auto">
+      <h2>Nos taux de <span>commission</span></h2>
+      <div class="part-commissions">
+        <div class="part-comm-card">
+          <div class="part-comm-icon">📱</div>
+          <div class="part-comm-cat">Téléphones & Tech</div>
+          <div class="part-comm-pct">8%</div>
+          <div class="part-comm-label">par vente</div>
+        </div>
+        <div class="part-comm-card">
+          <div class="part-comm-icon">👗</div>
+          <div class="part-comm-cat">Mode & Vêtements</div>
+          <div class="part-comm-pct">12%</div>
+          <div class="part-comm-label">par vente</div>
+        </div>
+        <div class="part-comm-card">
+          <div class="part-comm-icon">💄</div>
+          <div class="part-comm-cat">Beauté & Parfums</div>
+          <div class="part-comm-pct">15%</div>
+          <div class="part-comm-label">par vente</div>
+        </div>
+        <div class="part-comm-card">
+          <div class="part-comm-icon">💍</div>
+          <div class="part-comm-cat">Bijoux & Montres</div>
+          <div class="part-comm-pct">10%</div>
+          <div class="part-comm-label">par vente</div>
+        </div>
+        <div class="part-comm-card">
+          <div class="part-comm-icon">🏠</div>
+          <div class="part-comm-cat">Maison & Jardin</div>
+          <div class="part-comm-pct">10%</div>
+          <div class="part-comm-label">par vente</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulaire -->
+  <section class="part-section" id="formulaire">
+    <h2>Rejoindre le <span>programme</span></h2>
+    <div class="part-form-wrap">
+      <div class="part-form-field">
+        <label>Nom complet *</label>
+        <input type="text" class="part-form-input" id="pNom" placeholder="Votre nom et prénom">
+      </div>
+      <div class="part-form-field">
+        <label>Numéro de téléphone *</label>
+        <input type="tel" class="part-form-input" id="pTel" placeholder="+224 6XX XX XX XX">
+      </div>
+      <div class="part-form-field">
+        <label>Email <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:11px">(facultatif)</span></label>
+        <input type="email" class="part-form-input" id="pEmail" placeholder="votre@email.com">
+      </div>
+      <div class="part-form-field">
+        <label>Plateforme principale *</label>
+        <select class="part-form-input" id="pPlateforme">
+          <option value="">Choisir...</option>
+          <option value="facebook">Facebook</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="whatsapp">WhatsApp</option>
+          <option value="youtube">YouTube</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+      <div class="part-form-field">
+        <label>Catégorie de produits souhaitée</label>
+        <select class="part-form-input" id="pCategorie">
+          <option value="">Toutes les catégories</option>
+          <option value="phones">📱 Téléphones & Tech</option>
+          <option value="mode">👗 Mode & Vêtements</option>
+          <option value="beaute">💄 Beauté & Parfums</option>
+          <option value="bijoux">💍 Bijoux & Montres</option>
+          <option value="maison">🏠 Maison & Jardin</option>
+          <option value="sport">🏋️ Sport & Fitness</option>
+        </select>
+      </div>
+      <div class="part-form-field">
+        <label>Produit à affilier *</label>
+        <select class="part-form-input" id="pProduit">
+          <option value="">Chargement des produits...</option>
+        </select>
+        <small style="color:rgba(255,255,255,.4);font-size:11px;margin-top:4px;display:block">Tous les produits de la boutique sont disponibles</small>
+      </div>
+      <div class="part-form-field">
+        <label>Message (optionnel)</label>
+        <textarea class="part-form-input" id="pMessage" rows="3" placeholder="Parlez-nous de vous, votre audience, vos réseaux..."></textarea>
+      </div>
+      <button class="btn-part-primary" style="width:100%;margin-top:8px;padding:16px;font-size:16px" onclick="envoyerDemandePartenariat()">
+        <i class="fab fa-whatsapp"></i> Envoyer ma demande via WhatsApp
+      </button>
+      <div class="part-success" id="partSuccess">
+        <i class="fas fa-check-circle" style="font-size:40px;color:#22c55e;margin-bottom:12px"></i>
+        <h3 style="color:#22c55e">Demande envoyée !</h3>
+        <p style="color:rgba(255,255,255,.7)">Nous vous contacterons dans les 24h sur votre numéro WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/footer.js"></script>
+  <script>
+
+  /* ── Charger les produits dans le select dynamiquement ── */
+  function chargerProduits() {
+    const select = document.getElementById('pProduit');
+    if (!select) return;
+    if (typeof GM_PRODUCTS === 'undefined') { setTimeout(chargerProduits, 100); return; }
+
+    const fmt = n => n.toLocaleString('fr-FR') + ' GNF';
+    const catLabels = { phones:'Téléphones & Tech', mode:'Mode & Vêtements', beaute:'Beauté & Parfums', bijoux:'Bijoux & Montres', maison:'Maison & Jardin', sport:'Sport & Fitness' };
+
+    // Grouper par catégorie
+    const grouped = {};
+    GM_PRODUCTS.forEach(p => {
+      const cat = catLabels[p.cat] || p.cat || 'Autres';
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(p);
+    });
+
+    select.innerHTML = '<option value="">Choisir un produit...</option>';
+    Object.keys(grouped).forEach(cat => {
+      const group = document.createElement('optgroup');
+      group.label = cat;
+      grouped[cat].forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.name;
+        opt.textContent = `${p.em || '📦'} ${p.name} — ${fmt(p.price)}`;
+        group.appendChild(opt);
+      });
+      select.appendChild(group);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', chargerProduits);
+
+  function envoyerDemandePartenariat() {
+    const nom        = document.getElementById('pNom').value.trim();
+    const tel        = document.getElementById('pTel').value.trim();
+    const plateforme = document.getElementById('pPlateforme').value;
+    const produit    = document.getElementById('pProduit').value;
+    const categorie  = document.getElementById('pCategorie').value;
+    const email      = document.getElementById('pEmail').value.trim();
+    const message    = document.getElementById('pMessage').value.trim();
+
+    if (!nom)        { alert('⚠️ Veuillez entrer votre nom complet.'); return; }
+    if (!tel)        { alert('⚠️ Veuillez entrer votre numéro de téléphone.'); return; }
+    if (!plateforme) { alert('⚠️ Veuillez choisir votre plateforme principale.'); return; }
+    if (!produit)    { alert('⚠️ Veuillez choisir un produit à affilier.'); return; }
+
+    // Sauvegarder la demande
+    const demandes = JSON.parse(localStorage.getItem('GM_PARTENAIRES') || '[]');
+    demandes.push({ id: Date.now(), nom, tel, email, plateforme, categorie, produit, message, date: new Date().toISOString(), statut: 'en_attente' });
+    localStorage.setItem('GM_PARTENAIRES', JSON.stringify(demandes));
+
+    // Construire le message WhatsApp
+    const catLabels = { phones:'Téléphones & Tech', mode:'Mode & Vêtements', beaute:'Beauté & Parfums', bijoux:'Bijoux & Montres', maison:'Maison & Jardin', sport:'Sport & Fitness', '':'Toutes les catégories' };
+    const platLabels = { facebook:'Facebook', instagram:'Instagram', tiktok:'TikTok', whatsapp:'WhatsApp', youtube:'YouTube', autre:'Autre' };
+
+    const waMsg = `🤝 *DEMANDE DE PARTENARIAT — GALY MARKET*
+
+👤 *Nom :* ${nom}
+📞 *Téléphone :* ${tel}${email ? '\n📧 *Email :* ' + email : ''}
+📱 *Plateforme :* ${platLabels[plateforme] || plateforme}
+📦 *Produit à affilier :* ${produit}
+🏷️ *Catégorie :* ${catLabels[categorie] || 'Toutes les catégories'}${message ? '\n\n💬 *Message :* ' + message : ''}
+
+✅ Je souhaite rejoindre votre programme d'affiliation. Merci de me contacter !`;
+
+    // Ouvre WhatsApp du patron avec le message pré-rempli
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    const waNum = (s.shopWa || '224627900578').replace(/[^0-9]/g, '');
+    window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(waMsg)}`, '_blank');
+
+    document.getElementById('partSuccess').style.display = 'block';
+    document.getElementById('partSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  </script>
+</body>
+</html>

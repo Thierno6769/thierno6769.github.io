@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Toutes les grandes marques disponibles sur Galy Market. Apple, Samsung, Nike, Adidas et plus."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Marques — Galy Market"/>
+  <meta property="og:description" content="Toutes les grandes marques disponibles sur Galy Market. Apple, Samsung, Nike, Adidas et plus."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/marques.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Marques — Galy Market"/>
+  <meta name="twitter:description" content="Toutes les grandes marques disponibles sur Galy Market. Apple, Samsung, Nike, Adidas et plus."/>
+  <title>Marques — Galy Market</title>
+  <meta name="description" content="Toutes les grandes marques disponibles sur Galy Market. Apple, Samsung, Nike, Adidas et bien plus.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/catalogue.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <style>
+    .brands-hero{background:linear-gradient(135deg,#0f0c08,#1a1206,#2a1c0a);padding:48px 20px;text-align:center;border-bottom:1px solid rgba(246,139,30,.15)}
+    .brands-search{display:flex;align-items:center;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:12px;padding:10px 16px;gap:10px;max-width:400px;margin:20px auto 0}
+    .brands-search i{color:#8a7560}
+    .brands-search input{background:none;border:none;outline:none;color:#fdf8f0;font-size:14px;width:100%;font-family:'DM Sans',sans-serif}
+    .brands-search input::placeholder{color:#8a7560}
+    .brands-section{padding:32px 20px;background:linear-gradient(135deg,#0f0c08,#1a1206);border-top:1px solid rgba(246,139,30,.08)}
+    .brands-section-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#fdf8f0;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .brands-section-title::after{content:'';flex:1;height:1px;background:rgba(246,139,30,.15)}
+    .brands-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;max-width:1400px;margin:0 auto}
+    .brand-card{background:rgba(255,255,255,.04);border:1px solid rgba(246,139,30,.15);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:all .2s}
+    .brand-card:hover{background:rgba(246,139,30,.08);border-color:rgba(246,139,30,.4);transform:translateY(-3px);box-shadow:0 8px 24px rgba(246,139,30,.1)}
+    .brand-card-emoji{font-size:36px;margin-bottom:8px;display:block}
+    .brand-card-name{font-size:15px;font-weight:800;color:#fdf8f0;margin-bottom:4px}
+    .brand-card-count{font-size:11px;color:#8a7560}
+    .brand-card-badge{display:inline-block;background:rgba(246,139,30,.15);color:#f68b1e;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;margin-top:6px}
+    .no-results{text-align:center;padding:60px 20px;color:#8a7560}
+    .no-results i{font-size:48px;display:block;margin-bottom:14px;opacity:.3}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span>🔒 Paiement sécurisé Orange Money · MTN · COD</span>
+      <span>🚚 Paiement à la livraison disponible</span>
+      <span>✨ Nouveautés chaque semaine</span>
+      <span>📞 Service client 24h/7j</span>
+      <span>🔄 Retour &amp; Garantie 72 heures</span>
+      <span>🔒 Paiement sécurisé Orange Money · MTN · COD</span>
+      <span>🚚 Paiement à la livraison disponible</span>
+      <span>✨ Nouveautés chaque semaine</span>
+      <span>📞 Service client 24h/7j</span>
+      <span>🔄 Retour &amp; Garantie 72 heures</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">GALY<span>MARKET</span></a>
+      <div class="search-wrap">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Rechercher un produit…" autocomplete="off"/>
+          <button class="search-btn" onclick="location.href='catalogue.html?q='+document.getElementById('searchInput').value">Chercher</button>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="wishlist.html" class="haction"><i class="far fa-heart"></i><span class="haction-label">Favoris</span><span class="badge" id="wishBadge"></span></a>
+        <a href="account.html" class="haction"><i class="far fa-user-circle"></i><span class="haction-label">Compte</span></a>
+        <a href="panier.html" class="haction"><i class="fas fa-bag-shopping"></i><span class="haction-label">Panier</span><span class="badge" id="cartBadge"></span></a>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="catalogue.html" class="nav-link">Catalogue</a>
+        <a href="catalogue.html?promo=1" class="nav-link nav-promo"><i class="fas fa-bolt"></i> Flash Sale</a>
+        <a href="nouveautes.html" class="nav-link">Nouveautés</a>
+        <a href="marques.html" class="nav-link active">Marques</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="nav-info"><i class="fas fa-truck-fast"></i><span>Livraison offerte dès <strong>2 000 000 GNF</strong></span></div>
+        <div class="nav-info"><i class="fas fa-headset"></i><span><strong>+224 627 90 05 78</strong></span></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <span class="logo">GALY<span>MARKET</span></span>
+      <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+      <a href="catalogue.html"><i class="fas fa-grid-2"></i> Catalogue</a>
+      <a href="nouveautes.html"><i class="fas fa-star"></i> Nouveautés</a>
+      <a href="marques.html"><i class="fas fa-award"></i> Marques</a>
+      <a href="account.html"><i class="fas fa-user"></i> Mon compte</a>
+    </nav>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-bar">
+    <div class="bc-inner">
+      <a href="index.html"><i class="fas fa-home"></i></a>
+      <span class="bc-sep"><i class="fas fa-chevron-right"></i></span>
+      <span>Marques</span>
+    </div>
+    <div class="bc-count" id="bcCount">0 marque</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="brands-hero">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(246,139,30,.12);border:1px solid rgba(246,139,30,.3);color:#f68b1e;padding:6px 18px;border-radius:50px;font-size:12px;font-weight:700;margin-bottom:16px">
+      🏷️ Toutes les marques
+    </div>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,64px);letter-spacing:3px;color:#fdf8f0;margin-bottom:12px">Nos Marques</h1>
+    <p style="color:#8a7560;font-size:15px;max-width:500px;margin:0 auto">
+      Découvrez tous les produits disponibles par marque sur Galy Market
+    </p>
+    <div class="brands-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="brandSearch" placeholder="Rechercher une marque…" oninput="filtrerMarques(this.value)">
+    </div>
+  </div>
+
+  <!-- CONTENU -->
+  <div id="brandsContent"></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/footer.js"></script>
+  <script>
+
+  // Marques vedettes avec emoji
+  const MARQUES_VEDETTES = {
+    'Apple':   { emoji:'🍎', badge:'Premium' },
+    'Samsung': { emoji:'📱', badge:'Top vente' },
+    'Nike':    { emoji:'✔️', badge:'Sport' },
+    'Adidas':  { emoji:'🏃', badge:'Sport' },
+    'Sony':    { emoji:'🎮', badge:'Électronique' },
+    'Xiaomi':  { emoji:'📲', badge:null },
+    'Huawei':  { emoji:'📡', badge:null },
+    'Dior':    { emoji:'💎', badge:'Luxe' },
+    'Chanel':  { emoji:'🌸', badge:'Luxe' },
+    'Gucci':   { emoji:'👜', badge:'Luxe' },
+    'Reebok':  { emoji:'👟', badge:'Sport' },
+    'Puma':    { emoji:'🐆', badge:'Sport' },
+  };
+
+  function getAllProds() {
+    const ov = JSON.parse(localStorage.getItem('GM_PROD_OVERRIDES') || '{}');
+    const cu = JSON.parse(localStorage.getItem('GM_CUSTOM_PRODS')   || '[]');
+    const base = (typeof GM_PRODUCTS !== 'undefined')
+      ? GM_PRODUCTS.filter(p => !ov[p.id]?._deleted).map(p => ({ ...p, ...(ov[p.id]||{}) }))
+      : [];
+    return [...base, ...cu.filter(p => !p._deleted)];
+  }
+
+  function renderMarques(search = '') {
+    if (typeof GM_PRODUCTS === 'undefined') { setTimeout(() => renderMarques(search), 100); return; }
+
+    const allProds = getAllProds();
+
+    // Collecter toutes les marques
+    const brandMap = {};
+    allProds.forEach(p => {
+      if (!p.brand) return;
+      if (!brandMap[p.brand]) brandMap[p.brand] = 0;
+      brandMap[p.brand]++;
+    });
+
+    // Ajouter marques vedettes sans produits
+    Object.keys(MARQUES_VEDETTES).forEach(m => {
+      if (!brandMap[m]) brandMap[m] = 0;
+    });
+
+    // Filtrer par recherche
+    let brands = Object.entries(brandMap);
+    if (search) brands = brands.filter(([name]) => name.toLowerCase().includes(search.toLowerCase()));
+
+    // Trier : avec produits d'abord, puis alpha
+    brands.sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      return a[0].localeCompare(b[0]);
+    });
+
+    const bc = document.getElementById('bcCount');
+    if (bc) bc.textContent = brands.length + ' marque' + (brands.length > 1 ? 's' : '');
+
+    const content = document.getElementById('brandsContent');
+    if (!content) return;
+
+    if (!brands.length) {
+      content.innerHTML = `<div class="brands-section"><div class="no-results"><i class="fas fa-search"></i><p>Aucune marque trouvée pour "${search}"</p></div></div>`;
+      return;
+    }
+
+    // Séparer vedettes et autres
+    const vedettes = brands.filter(([name]) => MARQUES_VEDETTES[name]);
+    const autres   = brands.filter(([name]) => !MARQUES_VEDETTES[name]);
+
+    let html = '';
+
+    // Section marques vedettes
+    if (vedettes.length && !search) {
+      html += `<div class="brands-section">
+        <div style="max-width:1400px;margin:0 auto">
+          <div class="brands-section-title">⭐ Marques vedettes</div>
+          <div class="brands-grid">
+            ${vedettes.map(([name, count]) => {
+              const info = MARQUES_VEDETTES[name] || {};
+              return `<a href="catalogue.html?brand=${encodeURIComponent(name)}" class="brand-card">
+                <span class="brand-card-emoji">${info.emoji || '🏷️'}</span>
+                <div class="brand-card-name">${name}</div>
+                <div class="brand-card-count">${count > 0 ? count + ' produit' + (count > 1 ? 's' : '') : 'Bientôt disponible'}</div>
+                ${info.badge ? `<div class="brand-card-badge">${info.badge}</div>` : ''}
+              </a>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // Section toutes les marques
+    if (autres.length || search) {
+      const list = search ? brands : autres;
+      if (list.length) {
+        html += `<div class="brands-section" style="background:linear-gradient(135deg,#1a1206,#0f0c08)">
+          <div style="max-width:1400px;margin:0 auto">
+            <div class="brands-section-title">${search ? '🔍 Résultats' : '🏷️ Toutes les marques'}</div>
+            <div class="brands-grid">
+              ${list.map(([name, count]) => {
+                const info = MARQUES_VEDETTES[name] || {};
+                // Lettre initiale si pas d'emoji
+                const display = info.emoji || `<span style="font-size:28px;font-weight:800;color:#f68b1e">${name.charAt(0).toUpperCase()}</span>`;
+                return `<a href="catalogue.html?brand=${encodeURIComponent(name)}" class="brand-card">
+                  <span class="brand-card-emoji">${display}</span>
+                  <div class="brand-card-name">${name}</div>
+                  <div class="brand-card-count">${count > 0 ? count + ' produit' + (count > 1 ? 's' : '') : 'Bientôt disponible'}</div>
+                </a>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>`;
+      }
+    }
+
+    content.innerHTML = html;
+
+    // Badges header
+    const cartQty = JSON.parse(localStorage.getItem('GM_CART')||'[]').reduce((a,i)=>a+i.qty,0);
+    const wishLen = JSON.parse(localStorage.getItem('GM_WISHLIST')||'[]').length;
+    const cb = document.getElementById('cartBadge');
+    const wb = document.getElementById('wishBadge');
+    if (cb) cb.textContent = cartQty > 0 ? cartQty : '';
+    if (wb) wb.textContent = wishLen > 0 ? wishLen : '';
+  }
+
+  window.filtrerMarques = function(val) { renderMarques(val); };
+
+  document.addEventListener('DOMContentLoaded', () => renderMarques());
+  </script>
+</body>
+</html>

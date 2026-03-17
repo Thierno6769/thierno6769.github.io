@@ -1,0 +1,489 @@
+/* ═══════════════════════════════════════════
+   GALY MARKET — footer.css
+   Styles partagés : Footer global + WA flottant
+   À inclure dans toutes les pages
+═══════════════════════════════════════════ */
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+.site-footer {
+  background: var(--dark, #0f0c08);
+  padding: 60px 28px 0;
+  margin-top: 60px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 44px;
+  max-width: 1280px; margin: 0 auto;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* Logo & brand */
+.footer-logo {
+  font-family: var(--font-title, 'Bebas Neue'), cursive;
+  font-size: 30px; letter-spacing: 3px;
+  color: white; margin-bottom: 14px;
+}
+.footer-logo span { color: var(--gold, #f68b1e); }
+.footer-tagline {
+  font-size: 13px; color: rgba(255,255,255,.45);
+  line-height: 1.75; margin-bottom: 22px;
+}
+
+/* Socials */
+.footer-socials { display: flex; gap: 10px; flex-wrap: wrap; }
+.footer-socials a {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.5); font-size: 14px;
+  text-decoration: none; transition: all .25s;
+}
+.footer-socials a:hover {
+  background: var(--gold, #f68b1e);
+  color: white; border-color: var(--gold, #f68b1e);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(246,139,30,.35);
+}
+
+/* Colonnes */
+.footer-col h4 {
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: rgba(255,255,255,.3); margin-bottom: 18px;
+}
+.footer-col ul {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.footer-col ul li a {
+  font-size: 13px; color: rgba(255,255,255,.5);
+  text-decoration: none; transition: color .2s;
+  display: flex; align-items: center; gap: 7px;
+}
+.footer-col ul li a:hover { color: var(--gold, #f68b1e); }
+.footer-col ul li a .fa-fw { font-size: 12px; opacity: .6; }
+
+/* Newsletter */
+.footer-nl-desc {
+  font-size: 13px; color: rgba(255,255,255,.4);
+  line-height: 1.7; margin-bottom: 14px;
+}
+.footer-newsletter input,
+.footer-nl-input {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
+.footer-newsletter {
+  display: flex; border-radius: 11px; overflow: hidden;
+  border: 1.5px solid rgba(255,255,255,.12);
+  margin-bottom: 10px;
+  transition: border-color .25s;
+}
+.footer-newsletter:focus-within { border-color: var(--gold, #f68b1e); }
+.footer-newsletter input {
+  flex: 1; background: rgba(255,255,255,.06);
+  border: none; padding: 12px 14px;
+  font-size: 13px; color: white; outline: none;
+  font-family: var(--font-body, 'DM Sans'), sans-serif;
+}
+.footer-newsletter input::placeholder { color: rgba(255,255,255,.28); }
+.footer-newsletter button {
+  padding: 12px 18px;
+  background: var(--gold, #f68b1e); color: white;
+  font-size: 15px; transition: background .2s; border: none; cursor: pointer;
+}
+.footer-newsletter button:hover { background: #d4780f; }
+.footer-nl-msg {
+  font-size: 12px; font-weight: 600;
+  min-height: 16px; margin-top: 4px;
+}
+
+/* Paiement icons */
+.footer-payment { margin-top: 18px; }
+.fp-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.25); display: block; margin-bottom: 10px; }
+.fp-icons { display: flex; gap: 8px; flex-wrap: wrap; }
+.fp-icon {
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 800;
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.5);
+}
+.fp-icon.om   { background: rgba(255,120,0,.15); color: #ff9640; border-color: rgba(255,120,0,.2); }
+.fp-icon.mtn  { background: rgba(255,204,0,.12); color: #ffd740; border-color: rgba(255,204,0,.2); }
+.fp-icon.wave { background: rgba(0,170,255,.12); color: #40c8ff; border-color: rgba(0,170,255,.2); }
+.fp-icon.cash { background: rgba(34,197,94,.12); color: #4ade80; border-color: rgba(34,197,94,.2); }
+
+/* Footer bottom */
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0;
+  max-width: 1280px; margin: 0 auto;
+  font-size: 12px; color: rgba(255,255,255,.22);
+  flex-wrap: wrap; gap: 8px;
+}
+.footer-made { display: flex; align-items: center; gap: 5px; }
+
+/* ══════════════════════════════
+   BOUTONS FLOTTANTS — CONTENEUR
+══════════════════════════════ */
+.float-btns-wrap {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 990;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ══════════════════════════════
+   WA FLOTTANT
+══════════════════════════════ */
+@keyframes waBounce {
+  0%, 100% { transform: translateY(0);    }
+  20%       { transform: translateY(-14px); }
+  40%       { transform: translateY(0);    }
+  60%       { transform: translateY(-7px); }
+  80%       { transform: translateY(0);    }
+}
+.wa-float {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: #25d366; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 8px 28px rgba(37,211,102,.42);
+  text-decoration: none;
+  animation: waBounce 2.5s ease-in-out infinite;
+  transition: box-shadow .3s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+.wa-float:hover {
+  animation: none;
+  transform: scale(1.14);
+  box-shadow: 0 14px 40px rgba(37,211,102,.58);
+}
+.wa-float-pulse {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: rgba(37,211,102,.4);
+  animation: waPulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes waPulse {
+  0%   { transform: scale(1);   opacity: .7; }
+  100% { transform: scale(2);   opacity: 0;  }
+}
+
+/* ══════════════════════════════
+   BOUTON VENDEUR FLOTTANT
+══════════════════════════════ */
+.gm-vendeur-float {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: linear-gradient(145deg, #f68b1e, #d4720a);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  box-shadow: 0 8px 28px rgba(246,139,30,.52);
+  cursor: pointer; position: relative;
+  flex-shrink: 0;
+  animation: gmVfAppear .5s cubic-bezier(.34,1.56,.64,1) .3s both;
+  transition: transform .3s, box-shadow .3s;
+  -webkit-user-select: none; user-select: none;
+}
+.gm-vendeur-float:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 38px rgba(246,139,30,.72);
+}
+@keyframes gmVfAppear {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.gm-vf-pulse {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: rgba(246,139,30,.35);
+  animation: gmVfPulse 3s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes gmVfPulse {
+  0%   { transform: scale(1);   opacity: .6; }
+  70%  { transform: scale(1.8); opacity: 0;  }
+  100% { transform: scale(1.8); opacity: 0;  }
+}
+
+/* ══════════════════════════════
+   MENU VENDEUR (popup au clic)
+══════════════════════════════ */
+.vendeur-menu {
+  position: absolute;
+  bottom: 76px;
+  right: 0;
+  background: rgba(15,12,8,.96);
+  border: 1px solid rgba(246,139,30,.35);
+  border-radius: 16px;
+  padding: 10px 0;
+  min-width: 200px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  backdrop-filter: blur(12px);
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+  animation: menuAppear .2s ease;
+}
+.vendeur-menu.open { display: flex; }
+@keyframes menuAppear {
+  from { opacity: 0; transform: translateY(10px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.vendeur-menu a {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  transition: background .2s, color .2s;
+  white-space: nowrap;
+}
+.vendeur-menu a:hover {
+  background: rgba(246,139,30,.12);
+  color: #f68b1e;
+}
+.vendeur-menu a i {
+  width: 20px; text-align: center;
+  color: #f68b1e; font-size: 14px;
+}
+.vendeur-menu-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 800;
+  color: rgba(246,139,30,.6);
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 18px 8px;
+  border-bottom: 1px solid rgba(246,139,30,.12);
+  margin-bottom: 4px;
+}
+
+@media (max-width: 480px) {
+  .float-btns-wrap { bottom: 18px; right: 18px; gap: 10px; }
+  .wa-float, .gm-vendeur-float { width: 54px; height: 54px; font-size: 24px; }
+  .vendeur-menu { min-width: 180px; bottom: 68px; }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1100px) {
+  .footer-inner { grid-template-columns: 1fr 1fr 1fr; }
+  .brand-col    { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .brand-col    { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .footer-inner  { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .wa-float { bottom: 18px; right: 18px; width: 54px; height: 54px; font-size: 24px; }
+}
+
+
+/* ════════════════════════════════════════════
+   BOUTON "GALY MARKET VENDEUR" FLOTTANT
+   Positionné juste sous le bouton WhatsApp
+════════════════════════════════════════════ */
+
+.gm-vendeur-float {
+  position: fixed;
+  bottom: 28px;         /* exactement même hauteur que WhatsApp */
+  right: 102px;         /* 28px (WA right) + 62px (WA width) + 12px (gap) */
+  z-index: 989;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+  cursor: pointer;
+  animation: gmVfAppear .5s cubic-bezier(.34, 1.56, .64, 1) .3s both;
+  /* Forcer même taille que WA pour alignement parfait */
+  width: 62px;
+  height: 62px;
+  justify-content: center;
+}
+
+@keyframes gmVfAppear {
+  from { transform: scale(0) translateY(16px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);    opacity: 1; }
+}
+
+/* Icône ronde orange */
+.gm-vf-icon {
+  width: 62px;
+  height: 62px;
+  min-width: 62px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f68b1e 0%, #d4720a 100%);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 28px rgba(246, 139, 30, .52);
+  position: relative;
+  z-index: 1;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+}
+
+.gm-vendeur-float:hover .gm-vf-icon {
+  transform: scale(1.12);
+  box-shadow: 0 12px 38px rgba(246, 139, 30, .72);
+}
+
+/* Étiquette "Galy Market / Vendeur" */
+.gm-vf-labels {
+  background: rgba(12, 12, 22, .92);
+  border: 1px solid rgba(246, 139, 30, .35);
+  border-radius: 10px 10px 10px 0;
+  padding: 5px 11px 5px 14px;
+  margin-left: -6px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.gm-vendeur-float:hover .gm-vf-labels {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.gm-vf-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f68b1e;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.gm-vf-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .6);
+  letter-spacing: .3px;
+}
+
+/* Petit badge "Vendeur" — masqué pour garder bouton compact comme WA */
+.gm-vendeur-float::after {
+  display: none;
+}
+
+/* Animation légère sur l'icône */
+.gm-vf-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(246, 139, 30, .35);
+  animation: gmVfPulse 3s ease-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gmVfPulse {
+  0%   { transform: scale(1);   opacity: .6; }
+  70%  { transform: scale(1.8); opacity: 0;  }
+  100% { transform: scale(1.8); opacity: 0;  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .gm-vendeur-float {
+    bottom: 18px;
+    right: 84px;   /* 18 + 54 + 12px */
+    width: 54px;
+    height: 54px;
+  }
+  .gm-vf-icon {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+  }
+  .gm-vf-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE FOOTER
+══════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; padding: 32px 20px; }
+  .brand-col { grid-column: 1 / -1; }
+  .footer-logo { font-size: 28px; }
+}
+
+@media (max-width: 480px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 20px; padding: 24px 16px; }
+  .footer-col h4 { font-size: 13px; margin-bottom: 10px; }
+  .footer-col ul li a { font-size: 12px; }
+  .footer-bottom { flex-direction: column; gap: 6px; font-size: 11px; padding: 14px 16px; text-align: center; }
+  .wa-float { width: 50px; height: 50px; font-size: 22px; bottom: 16px; right: 16px; }
+  .footer-newsletter { gap: 6px; }
+  .footer-newsletter input { font-size: 13px; padding: 10px 12px; }
+}
+
+/* ── BOUTONS FLOTTANTS — CORRECTION ALIGNEMENT MOBILE ── */
+.float-btns-wrap {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 20px !important;
+  z-index: 990 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+.wa-float {
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 24px !important;
+  flex-shrink: 0 !important;
+}
+.gm-vendeur-float {
+  position: relative !important;
+  bottom: auto !important;
+  right: auto !important;
+  width: 56px !important;
+  height: 56px !important;
+  flex-shrink: 0 !important;
+  z-index: 990 !important;
+}
+@media (max-width: 480px) {
+  .float-btns-wrap {
+    bottom: 20px !important;
+    right: 16px !important;
+    gap: 10px !important;
+  }
+  .wa-float {
+    width: 52px !important;
+    height: 52px !important;
+  }
+  .gm-vendeur-float {
+    width: 52px !important;
+    height: 52px !important;
+  }
+}

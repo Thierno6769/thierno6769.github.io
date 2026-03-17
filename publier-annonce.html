@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publier une annonce — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:100px}
+    .gz-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+    .gz-back{background:rgba(255,255,255,.2);border:none;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;text-decoration:none;flex-shrink:0}
+    .gz-header-title{color:#fff;font-size:16px;font-weight:800}
+    .gz-section{background:#1a1206;margin:8px 12px;border-radius:12px;padding:16px}
+    .gz-section-title{font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#fdf8f0}
+    .gz-label{font-size:11px;font-weight:700;color:#8a7560;letter-spacing:.3px;text-transform:uppercase;display:block;margin-bottom:5px}
+    .gz-input{width:100%;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px}
+    .gz-input:focus{border-color:#f68b1e}
+    .gz-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    /* PHOTOS */
+    .gz-photos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+    .gz-photo-add{aspect-ratio:1;border:2px dashed rgba(246,139,30,.2);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;background:rgba(246,139,30,.04)}
+    .gz-photo-add:hover{border-color:#f68b1e;background:rgba(246,139,30,.08)}
+    .gz-photo-add i{font-size:22px;color:#6b5d4f;margin-bottom:4px}
+    .gz-photo-add span{font-size:9px;color:#6b5d4f;font-weight:600}
+    .gz-photo-preview{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative}
+    .gz-photo-preview img{width:100%;height:100%;object-fit:cover}
+    .gz-photo-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:10px}
+    /* TAGS ÉTAT */
+    .gz-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .gz-tag{border:1.5px solid rgba(246,139,30,.2);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:#8a7560;cursor:pointer;transition:all .2s;user-select:none}
+    .gz-tag.active{background:#f68b1e;color:#fff;border-color:#f68b1e}
+    /* BTN */
+    .gz-submit-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1206;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:100}
+    .gz-submit-btn{width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px}
+    /* TOAST */
+    .gz-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,.8);color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap}
+    .gz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    /* SWITCH NÉGOCIABLE */
+    .gz-switch-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .gz-switch{width:44px;height:24px;background:rgba(246,139,30,.2);border-radius:12px;position:relative;cursor:pointer;transition:background .2s}
+    .gz-switch.on{background:#f68b1e}
+    .gz-switch::after{content:'';position:absolute;width:20px;height:20px;background:#1a1206;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .gz-switch.on::after{left:22px}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<header class="gz-header">
+  <a href="dashboard-vendeur.html" class="gz-back"><i class="fas fa-arrow-left"></i></a>
+  <span class="gz-header-title">Publier une annonce</span>
+</header>
+
+<!-- PHOTOS -->
+<div class="gz-section">
+  <div class="gz-section-title"><i class="fas fa-camera" style="color:#f68b1e"></i> Photos de l'article</div>
+  <div class="gz-photos-grid" id="photosGrid">
+    <div class="gz-photo-add" onclick="document.getElementById('photoInput').click()">
+      <i class="fas fa-plus"></i><span>Ajouter</span>
+    </div>
+  </div>
+  <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="ajouterPhotos(this)">
+  <p style="font-size:11px;color:#6b5d4f">Max 8 photos · La première sera la photo principale</p>
+</div>
+
+<!-- INFOS -->
+<div class="gz-section">
+  <div class="gz-section-title"><i class="fas fa-tag" style="color:#f68b1e"></i> Informations</div>
+  <label class="gz-label">Titre de l'annonce *</label>
+  <input class="gz-input" type="text" id="annTitre" placeholder="Ex: iPhone 14 Pro Max 256GB neuf">
+  <label class="gz-label">Catégorie *</label>
+  <select class="gz-input" id="annCat">
+    <option value="">Choisir une catégorie...</option>
+    <option value="phones">📱 Téléphones & Tech</option>
+    <option value="informatique">💻 Informatique</option>
+    <option value="vehicules">🚗 Véhicules</option>
+    <option value="immobilier">🏠 Immobilier</option>
+    <option value="mode">👗 Mode & Vêtements</option>
+    <option value="electromenager">🔌 Électroménager</option>
+    <option value="meubles">🛋️ Meubles & Déco</option>
+    <option value="beaute">💄 Beauté & Soins</option>
+    <option value="bijoux">💍 Bijoux & Montres</option>
+    <option value="sport">⚽ Sport & Fitness</option>
+    <option value="bebe">👶 Bébé & Enfant</option>
+    <option value="alimentation">🍎 Alimentation</option>
+    <option value="emploi">💼 Emploi & Services</option>
+    <option value="animaux">🐾 Animaux</option>
+    <option value="autres">📦 Autres</option>
+  </select>
+  <label class="gz-label">Description *</label>
+  <textarea class="gz-input" id="annDesc" rows="4" placeholder="Décrivez votre article en détail (état, caractéristiques, raison de vente...)" style="resize:none;margin-bottom:4px"></textarea>
+  <p style="font-size:10px;color:#6b5d4f;margin-bottom:12px"><span id="descCount">0</span>/500 caractères</p>
+  <label class="gz-label">État de l'article</label>
+  <div class="gz-tags" id="etatTags">
+    <div class="gz-tag active" data-val="neuf" onclick="selectTag('etat',this)">Neuf</div>
+    <div class="gz-tag" data-val="excellent" onclick="selectTag('etat',this)">Excellent</div>
+    <div class="gz-tag" data-val="bon" onclick="selectTag('etat',this)">Bon état</div>
+    <div class="gz-tag" data-val="usage" onclick="selectTag('etat',this)">Usagé</div>
+  </div>
+</div>
+
+<!-- PRIX -->
+<div class="gz-section">
+  <div class="gz-section-title"><i class="fas fa-tag" style="color:#f68b1e"></i> Prix</div>
+  <label class="gz-label">Prix (GNF) *</label>
+  <input class="gz-input" type="number" id="annPrix" placeholder="Ex: 5000000" min="0">
+  <div class="gz-switch-row">
+    <div>
+      <div style="font-size:14px;font-weight:700">Prix négociable</div>
+      <div style="font-size:11px;color:#8a7560">Les acheteurs pourront proposer un prix</div>
+    </div>
+    <div class="gz-switch" id="negoSwitch" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <div class="gz-switch-row">
+    <div>
+      <div style="font-size:14px;font-weight:700">Article gratuit</div>
+      <div style="font-size:11px;color:#8a7560">Don, cadeau ou troc</div>
+    </div>
+    <div class="gz-switch" id="gratuitSwitch" onclick="toggleGratuit()"></div>
+  </div>
+</div>
+
+<!-- LOCALISATION -->
+<div class="gz-section">
+  <div class="gz-section-title"><i class="fas fa-map-marker-alt" style="color:#f68b1e"></i> Localisation</div>
+  <div class="gz-row">
+    <div>
+      <label class="gz-label">Ville *</label>
+      <select class="gz-input" id="annVille">
+        <option value="Conakry">Conakry</option>
+        <option value="Labé">Labé</option>
+        <option value="Kankan">Kankan</option>
+        <option value="N'Zérékoré">N'Zérékoré</option>
+        <option value="Kindia">Kindia</option>
+        <option value="Boké">Boké</option>
+        <option value="Faranah">Faranah</option>
+        <option value="Mamou">Mamou</option>
+        <option value="Siguiri">Siguiri</option>
+      </select>
+    </div>
+    <div>
+      <label class="gz-label">Quartier</label>
+      <input class="gz-input" type="text" id="annQuartier" placeholder="Ex: Ratoma">
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="gz-section">
+  <div class="gz-section-title"><i class="fas fa-phone" style="color:#f68b1e"></i> Contact</div>
+  <label class="gz-label">Téléphone / WhatsApp *</label>
+  <input class="gz-input" type="tel" id="annTel" placeholder="626 72 25 57">
+  <label class="gz-label">Modes de contact acceptés</label>
+  <div class="gz-tags" id="contactTags">
+    <div class="gz-tag active" data-val="appel" onclick="toggleContactTag(this)">📞 Appel</div>
+    <div class="gz-tag active" data-val="whatsapp" onclick="toggleContactTag(this)">💬 WhatsApp</div>
+    <div class="gz-tag" data-val="sms" onclick="toggleContactTag(this)">✉️ SMS</div>
+  </div>
+</div>
+
+<!-- BTN -->
+<div class="gz-submit-bar">
+  <button class="gz-submit-btn" onclick="publierAnnonce()">
+    <i class="fas fa-paper-plane"></i> Publier l'annonce
+  </button>
+</div>
+
+<div class="gz-toast" id="gzToast"></div>
+
+<script src="js/annonces.js"></script>
+<script>
+let photos = [];
+let etatSelectionne = 'neuf';
+
+function gzToast(msg){const t=document.getElementById('gzToast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// Photos
+window.ajouterPhotos = function(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    if(photos.length >= 8) return;
+    const reader = new FileReader();
+    reader.onload = e => { photos.push(e.target.result); renderPhotos(); };
+    reader.readAsDataURL(file);
+  });
+};
+
+function renderPhotos() {
+  const grid = document.getElementById('photosGrid');
+  let html = photos.map((p,i) => `
+    <div class="gz-photo-preview">
+      <img src="${p}" alt="photo ${i+1}">
+      <button class="gz-photo-del" onclick="supprimerPhoto(${i})"><i class="fas fa-times"></i></button>
+    </div>`).join('');
+  if(photos.length < 8) html += `<div class="gz-photo-add" onclick="document.getElementById('photoInput').click()"><i class="fas fa-plus"></i><span>Ajouter</span></div>`;
+  grid.innerHTML = html;
+}
+
+window.supprimerPhoto = function(i) { photos.splice(i,1); renderPhotos(); };
+
+// Tags état
+window.selectTag = function(group, el) {
+  el.closest('.gz-tags').querySelectorAll('.gz-tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(group==='etat') etatSelectionne = el.dataset.val;
+};
+
+window.toggleContactTag = function(el) { el.classList.toggle('active'); };
+
+// Gratuit
+window.toggleGratuit = function() {
+  const sw = document.getElementById('gratuitSwitch');
+  sw.classList.toggle('on');
+  const prixInput = document.getElementById('annPrix');
+  if(sw.classList.contains('on')) { prixInput.value='0'; prixInput.disabled=true; prixInput.style.opacity='.4'; }
+  else { prixInput.disabled=false; prixInput.style.opacity='1'; prixInput.value=''; }
+};
+
+// Compteur description
+document.getElementById('annDesc')?.addEventListener('input', e => {
+  const n = e.target.value.length;
+  document.getElementById('descCount').textContent = n;
+  if(n>500) e.target.value = e.target.value.slice(0,500);
+});
+
+// Pré-remplir téléphone depuis session
+const session = JSON.parse(localStorage.getItem('GM_DV_SESSION')||'{}');
+if(session.tel && document.getElementById('annTel')) document.getElementById('annTel').value = session.tel;
+
+// Publier
+window.publierAnnonce = function() {
+  const titre = document.getElementById('annTitre')?.value.trim();
+  const cat   = document.getElementById('annCat')?.value;
+  const desc  = document.getElementById('annDesc')?.value.trim();
+  const prix  = parseInt(document.getElementById('annPrix')?.value)||0;
+  const ville = document.getElementById('annVille')?.value;
+  const tel   = document.getElementById('annTel')?.value.trim();
+  const nego  = document.getElementById('negoSwitch')?.classList.contains('on') ? 'oui' : 'non';
+  const quartier = document.getElementById('annQuartier')?.value.trim()||'';
+
+  if(!titre){gzToast('⚠️ Entrez un titre');return;}
+  if(!cat)  {gzToast('⚠️ Choisissez une catégorie');return;}
+  if(!desc) {gzToast('⚠️ Ajoutez une description');return;}
+  if(!tel)  {gzToast('⚠️ Entrez votre numéro');return;}
+
+  if(!session.id){gzToast('⚠️ Connectez-vous d\'abord');window.location.href='dashboard-vendeur.html';return;}
+
+  const ann = {
+    id: 'ann'+Date.now(),
+    titre, cat, desc, prix, ville, quartier, nego,
+    tel, etat: etatSelectionne,
+    photos: photos.slice(0,8),
+    vendeurId: session.id,
+    date: new Date().toISOString(),
+    vues: 0, boost: false, dispo: true,
+  };
+
+  const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+  anns.unshift(ann);
+  localStorage.setItem('GM_ANNONCES', JSON.stringify(anns));
+
+  gzToast('✅ Annonce publiée avec succès !');
+  setTimeout(()=>window.location.href='dashboard-vendeur.html', 1500);
+};
+</script>
+</body>
+</html>

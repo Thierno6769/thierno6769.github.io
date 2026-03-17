@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Finalisez votre commande Galy Market. Paiement sécurisé Orange Money, MTN. Livraison Conakry et Guinée."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Passer commande — Galy Market"/>
+  <meta property="og:description" content="Finalisez votre commande Galy Market. Paiement sécurisé Orange Money, MTN. Livraison Conakry et Guinée."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/commande.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Passer commande — Galy Market"/>
+  <meta name="twitter:description" content="Finalisez votre commande Galy Market. Paiement sécurisé Orange Money, MTN. Livraison Conakry et Guinée."/>
+  <title>Commander — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:100px}
+    /* HEADER */
+    .gz-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+    .gz-back{background:rgba(255,255,255,.2);border:none;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;text-decoration:none}
+    .gz-header-title{color:#fff;font-size:16px;font-weight:800;flex:1}
+    /* STEPS */
+    .gz-steps{background:#1a1206;padding:12px 16px;display:flex;align-items:center;border-bottom:1px solid #eee}
+    .gz-step{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+    .gz-step-num{width:28px;height:28px;border-radius:50%;background:rgba(246,139,30,.2);color:#8a7560;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+    .gz-step.done .gz-step-num{background:#f68b1e;color:#fff}
+    .gz-step.active .gz-step-num{background:#f68b1e;color:#fff;box-shadow:0 0 0 3px rgba(246,139,30,.2)}
+    .gz-step-lbl{font-size:10px;color:#8a7560;font-weight:600}
+    .gz-step.active .gz-step-lbl,.gz-step.done .gz-step-lbl{color:#f68b1e;font-weight:700}
+    .gz-step-line{flex:1;height:2px;background:rgba(246,139,30,.2);margin-bottom:14px}
+    .gz-step-line.done{background:#f68b1e}
+    /* SECTION */
+    .gz-section{background:#1a1206;margin:8px 12px;border-radius:12px;padding:16px}
+    .gz-section-title{font-size:14px;font-weight:800;color:#fdf8f0;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .gz-section-num{width:24px;height:24px;border-radius:50%;background:#f68b1e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+    /* INPUTS */
+    .gz-label{font-size:11px;font-weight:700;color:#8a7560;letter-spacing:.3px;text-transform:uppercase;display:block;margin-bottom:5px}
+    .gz-input{width:100%;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px}
+    .gz-input:focus{border-color:#f68b1e}
+    .gz-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    /* TÉLÉPHONE */
+    .gz-phone-wrap{display:flex;gap:8px;margin-bottom:12px}
+    .gz-phone-prefix{background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 10px;font-size:13px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif;width:120px;cursor:pointer}
+    .gz-phone-prefix:focus{border-color:#f68b1e}
+    .gz-phone-num{flex:1;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif}
+    .gz-phone-num:focus{border-color:#f68b1e}
+    /* ZONES */
+    .gz-zones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+    .gz-zone-card{border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .2s}
+    .gz-zone-card.active{border-color:#f68b1e;background:rgba(246,139,30,.08)}
+    .gz-zone-name{font-size:13px;font-weight:700;margin-bottom:2px}
+    .gz-zone-prix{font-size:12px;color:#f68b1e;font-weight:700}
+    .gz-zone-delai{font-size:10px;color:#8a7560}
+    /* PAIEMENT */
+    .gz-pay-card{border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:all .2s}
+    .gz-pay-card.active{border-color:#f68b1e;background:rgba(246,139,30,.08)}
+    .gz-pay-card:last-child{margin:0}
+    .gz-pay-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .gz-pay-info{flex:1}
+    .gz-pay-name{font-size:13px;font-weight:700;color:#fdf8f0}
+    .gz-pay-sub{font-size:11px;color:#8a7560}
+    .gz-pay-radio{width:18px;height:18px;border:2px solid rgba(246,139,30,.2);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .gz-pay-card.active .gz-pay-radio{border-color:#f68b1e;background:#f68b1e}
+    .gz-pay-card.active .gz-pay-radio::after{content:'';width:8px;height:8px;background:#1a1206;border-radius:50%}
+    /* MINI CART */
+    .gz-mini-cart{background:rgba(246,139,30,.04);border-radius:10px;padding:12px;margin-bottom:12px}
+    .gz-mini-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px;border-bottom:1px solid #f0f0f0}
+    .gz-mini-item:last-child{border:none}
+    .gz-mini-total{display:flex;justify-content:space-between;font-size:15px;font-weight:800;padding:8px 0 0;border-top:2px solid #f68b1e;margin-top:4px}
+    .gz-mini-total span:last-child{color:#f68b1e}
+    /* RECOMMANDÉ */
+    .gz-recommended{background:#fff3e0;color:#f68b1e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:6px}
+    /* BTN CONFIRMER */
+    .gz-confirm-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1206;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:100}
+    .gz-confirm-btn{width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px}
+    /* MODAL SUCCÈS */
+    .gz-success-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px}
+    .gz-success-modal.open{display:flex}
+    .gz-success-box{background:#1a1206;border-radius:20px;padding:32px 24px;width:100%;max-width:380px;text-align:center}
+    /* TOAST */
+    .gz-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,.8);color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap}
+    .gz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<header class="gz-header">
+  <a href="panier.html" class="gz-back"><i class="fas fa-arrow-left"></i></a>
+  <span class="gz-header-title">Passer la commande</span>
+</header>
+
+<div class="gz-steps">
+  <div class="gz-step done"><div class="gz-step-num"><i class="fas fa-check" style="font-size:10px"></i></div><span class="gz-step-lbl">Panier</span></div>
+  <div class="gz-step-line done"></div>
+  <div class="gz-step active"><div class="gz-step-num">2</div><span class="gz-step-lbl">Livraison</span></div>
+  <div class="gz-step-line"></div>
+  <div class="gz-step active"><div class="gz-step-num">3</div><span class="gz-step-lbl">Paiement</span></div>
+  <div class="gz-step-line"></div>
+  <div class="gz-step"><div class="gz-step-num">4</div><span class="gz-step-lbl">Confirmation</span></div>
+</div>
+
+<!-- 1. INFOS PERSONNELLES -->
+<div class="gz-section">
+  <div class="gz-section-title"><div class="gz-section-num">1</div> Informations personnelles</div>
+  <div class="gz-row">
+    <div><label class="gz-label">Prénom *</label><input class="gz-input" type="text" id="fPrenom" placeholder="Mamadou"></div>
+    <div><label class="gz-label">Nom *</label><input class="gz-input" type="text" id="fNom" placeholder="Diallo"></div>
+  </div>
+  <label class="gz-label">Téléphone *</label>
+  <div class="gz-phone-wrap">
+    <select class="gz-phone-prefix" id="fCountryCode">
+      <option value="+224" selected>🇬🇳 +224</option>
+      <option value="+221">🇸🇳 +221</option>
+      <option value="+223">🇲🇱 +223</option>
+      <option value="+225">🇨🇮 +225</option>
+      <option value="+226">🇧🇫 +226</option>
+      <option value="+227">🇳🇪 +227</option>
+      <option value="+228">🇹🇬 +228</option>
+      <option value="+229">🇧🇯 +229</option>
+      <option value="+233">🇬🇭 +233</option>
+      <option value="+234">🇳🇬 +234</option>
+    </select>
+    <input class="gz-phone-num" type="tel" id="fTel" placeholder="620 00 00 00">
+  </div>
+</div>
+
+<!-- 2. ADRESSE -->
+<div class="gz-section">
+  <div class="gz-section-title"><div class="gz-section-num">2</div> Adresse de livraison</div>
+  <label class="gz-label">Commune *</label>
+  <select class="gz-input" id="fCommune" onchange="updateZones()">
+    <option value="">Choisir votre commune...</option>
+    <option value="conakry">Conakry (Centre)</option>
+    <option value="ratoma">Ratoma</option>
+    <option value="matoto">Matoto</option>
+    <option value="matam">Matam</option>
+    <option value="dixinn">Dixinn</option>
+    <option value="hors">Hors de Conakry</option>
+  </select>
+  <label class="gz-label">Adresse précise</label>
+  <input class="gz-input" type="text" id="fAdresse" placeholder="Quartier, rue, description...">
+  <!-- ZONES LIVRAISON -->
+  <label class="gz-label" style="margin-top:4px">Zone de livraison *</label>
+  <div class="gz-zones" id="gzZones"></div>
+  <div id="gzZoneInfo" style="font-size:11px;color:#8a7560;margin-top:6px"></div>
+</div>
+
+<!-- 3. MODE DE PAIEMENT -->
+<div class="gz-section">
+  <div class="gz-section-title"><div class="gz-section-num">3</div> Mode de paiement</div>
+  <div class="gz-pay-card active" id="pay-cash" onclick="selectPay('cash')">
+    <div class="gz-pay-icon" style="background:#fff3e0">💵</div>
+    <div class="gz-pay-info">
+      <div class="gz-pay-name">Paiement à la livraison <span class="gz-recommended">Recommandé</span></div>
+      <div class="gz-pay-sub">Payez en cash à la réception</div>
+    </div>
+    <div class="gz-pay-radio"></div>
+  </div>
+  <div class="gz-pay-card" id="pay-orange" onclick="selectPay('orange')">
+    <div class="gz-pay-icon" style="background:#fff3e0">🟠</div>
+    <div class="gz-pay-info">
+      <div class="gz-pay-name">Orange Money</div>
+      <div class="gz-pay-sub">Paiement mobile sécurisé</div>
+    </div>
+    <div class="gz-pay-radio"></div>
+  </div>
+  <div class="gz-pay-card" id="pay-mtn" onclick="selectPay('mtn')">
+    <div class="gz-pay-icon" style="background:#fffde7">🟡</div>
+    <div class="gz-pay-info">
+      <div class="gz-pay-name">MTN MoMo</div>
+      <div class="gz-pay-sub">Paiement mobile rapide</div>
+    </div>
+    <div class="gz-pay-radio"></div>
+  </div>
+  <div class="gz-pay-card" id="pay-whatsapp" onclick="selectPay('whatsapp')">
+    <div class="gz-pay-icon" style="background:#fff3e0">💬</div>
+    <div class="gz-pay-info">
+      <div class="gz-pay-name">Commander via WhatsApp</div>
+      <div class="gz-pay-sub">Contacter directement l'équipe</div>
+    </div>
+    <div class="gz-pay-radio"></div>
+  </div>
+</div>
+
+<!-- 4. NOTE VENDEUR -->
+<div class="gz-section">
+  <div class="gz-section-title"><div class="gz-section-num">4</div> Note pour le vendeur</div>
+  <textarea class="gz-input" id="fNote" rows="3" placeholder="Couleur, taille, instructions spéciales..." style="resize:none;margin:0"></textarea>
+</div>
+
+<!-- 5. RÉSUMÉ COMMANDE -->
+<div class="gz-section">
+  <div class="gz-section-title"><div class="gz-section-num">5</div> Résumé de commande</div>
+  <div class="gz-mini-cart" id="gzMiniCart"></div>
+</div>
+
+<!-- BTN CONFIRMER -->
+<div class="gz-confirm-bar">
+  <button class="gz-confirm-btn" onclick="confirmerCommande()">
+    <i class="fas fa-check-circle"></i> Confirmer la commande — <span id="totalDisplay">0 GNF</span>
+  </button>
+</div>
+
+<!-- MODAL SUCCÈS -->
+<div class="gz-success-modal" id="successModal">
+  <div class="gz-success-box">
+    <div style="font-size:56px;margin-bottom:16px">🎉</div>
+    <h2 style="font-size:20px;font-weight:800;margin-bottom:8px;color:#f68b1e">Commande confirmée !</h2>
+    <p style="font-size:13px;color:#8a7560;margin-bottom:8px">Référence : <strong id="succRef" style="color:#fdf8f0"></strong></p>
+    <p style="font-size:12px;color:#8a7560;margin-bottom:20px">Vous serez contacté sous peu pour confirmer la livraison.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button onclick="envoyerWA()" style="background:#25d366;color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+        <i class="fab fa-whatsapp"></i> Confirmer sur WhatsApp
+      </button>
+      <a href="annonces.html" style="background:rgba(246,139,30,.06);color:#fdf8f0;border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;text-align:center;display:block">
+        Continuer mes achats
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="gz-toast" id="gzToast"></div>
+
+<script>document.body.style.opacity="0";</script>
+  <script src="js/products.js"></script>
+<script src="js/commande.js"></script>
+<script>
+const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+let selectedPay = 'cash';
+let selectedZone = {zone:'conakry',price:0,delay:'24h'};
+let currentOrder = null;
+
+const ZONES = {
+  conakry: [{zone:'conakry-centre',label:'Conakry Centre',price:0,delay:'Gratuit'},{zone:'conakry-periph',label:'Conakry Périphérie',price:25000,delay:'25 000 GNF'}],
+  ratoma:  [{zone:'conakry-periph',label:'Conakry Périphérie',price:25000,delay:'25 000 GNF'}],
+  matoto:  [{zone:'conakry-periph',label:'Conakry Périphérie',price:25000,delay:'25 000 GNF'}],
+  matam:   [{zone:'conakry-centre',label:'Conakry Centre',price:0,delay:'Gratuit'},{zone:'conakry-periph',label:'Conakry Périphérie',price:25000,delay:'25 000 GNF'}],
+  kaloum:  [{zone:'conakry-centre',label:'Conakry Centre',price:0,delay:'Gratuit'}],
+  dixinn:  [{zone:'conakry-centre',label:'Conakry Centre',price:0,delay:'Gratuit'},{zone:'conakry-periph',label:'Conakry Périphérie',price:25000,delay:'25 000 GNF'}],
+  hors: [{zone:'basse-guinee',label:'Basse Guinée',price:0,delay:'À discuter avec le chauffeur'},{zone:'moyenne-guinee',label:'Moyen Guinée',price:0,delay:'À discuter avec le chauffeur'},{zone:'haute-guinee',label:'Haute Guinée',price:0,delay:'À discuter avec le chauffeur'},{zone:'guinee-forestiere',label:'Guinée Forestière',price:0,delay:'À discuter avec le chauffeur'}],
+};
+
+function gzToast(msg){const t=document.getElementById('gzToast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function getCart(){return JSON.parse(localStorage.getItem('GM_CART')||'[]');}
+function getCoupon(){return JSON.parse(localStorage.getItem('GM_COUPON')||'null');}
+
+const COUPONS={'GALY10':{type:'percent',value:10},'GALY20':{type:'percent',value:20},'BIENVENUE':{type:'percent',value:15},'PROMO50K':{type:'fixed',value:50000},'LIVRAISON':{type:'delivery',value:0}};
+
+function getSubtotal(cart){return cart.reduce((a,i)=>a+i.price*i.qty,0);}
+function getDiscount(sub,coupon){if(!coupon)return 0;const c=COUPONS[coupon];if(!c)return 0;if(c.type==='percent')return Math.round(sub*c.value/100);if(c.type==='fixed')return Math.min(c.value,sub);return 0;}
+function getDelivery(sub,coupon){if(coupon&&COUPONS[coupon]?.type==='delivery')return 0;if(sub>=2000000)return 0;return selectedZone.price;}
+function getTotal(){const cart=getCart();const sub=getSubtotal(cart);const coupon=getCoupon();return Math.max(0,sub-getDiscount(sub,coupon)+getDelivery(sub,coupon));}
+
+// Zones
+window.updateZones = function(){
+  const commune = document.getElementById('fCommune')?.value||'conakry';
+  const zones = ZONES[commune]||ZONES.conakry;
+  selectedZone = {zone:zones[0].zone,price:zones[0].price,delay:zones[0].delay};
+  const c = document.getElementById('gzZones');
+  if(c) c.innerHTML = zones.map((z,i)=>`
+    <div class="gz-zone-card ${i===0?'active':''}" onclick="selectZone('${z.zone}',${z.price},'${z.delay}',this)">
+      <div class="gz-zone-name">${z.label}</div>
+      
+      <div class="gz-zone-delai">⏱ ${z.delay}</div>
+    </div>`).join('');
+  updateTotal();
+};
+
+window.selectZone = function(zone,price,delay,el){
+  selectedZone={zone,price,delay};
+  document.querySelectorAll('.gz-zone-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  updateTotal();
+};
+
+// Paiement
+window.selectPay = function(pay){
+  selectedPay=pay;
+  document.querySelectorAll('.gz-pay-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('pay-'+pay)?.classList.add('active');
+};
+
+// Mini cart
+function renderMiniCart(){
+  const cart=getCart();const coupon=getCoupon();
+  const sub=getSubtotal(cart);const disc=getDiscount(sub,coupon);const del=getDelivery(sub,coupon);const total=Math.max(0,sub-disc+del);
+  const c=document.getElementById('gzMiniCart');
+  if(!c)return;
+  c.innerHTML=cart.map(i=>`<div class="gz-mini-item"><span>${i.name} ×${i.qty}</span><span style="font-weight:700">${fmt(i.price*i.qty)}</span></div>`).join('')
+    +(disc>0?`<div class="gz-mini-item"><span>Réduction</span><span style="color:#f68b1e;font-weight:700">− ${fmt(disc)}</span></div>`:'')+
+    `<div class="gz-mini-item"><span>Livraison (${selectedZone.delay})</span><span style="color:#f68b1e;font-weight:700">${del===0?'Gratuite':fmt(del)}</span></div>
+    <div class="gz-mini-total"><span>Total TTC</span><span>${fmt(total)}</span></div>`;
+  const td=document.getElementById('totalDisplay');
+  if(td)td.textContent=fmt(total);
+}
+
+function updateTotal(){renderMiniCart();}
+
+// Confirmer
+window.confirmerCommande = function(){
+  const prenom=document.getElementById('fPrenom')?.value.trim();
+  const nom=document.getElementById('fNom')?.value.trim();
+  const cc=document.getElementById('fCountryCode')?.value||'+224';
+  const tel=document.getElementById('fTel')?.value.trim();
+  const commune=document.getElementById('fCommune')?.value;
+  const adresse=document.getElementById('fAdresse')?.value.trim()||'';
+  const note=document.getElementById('fNote')?.value.trim()||'';
+  const cart=getCart();
+
+  if(!prenom){gzToast('⚠️ Entrez votre prénom');return;}
+  if(!nom){gzToast('⚠️ Entrez votre nom');return;}
+  if(!tel||tel.length<6){gzToast('⚠️ Numéro de téléphone invalide');return;}
+  if(!commune){gzToast('⚠️ Choisissez votre commune');return;}
+  if(!cart.length){gzToast('⚠️ Votre panier est vide');return;}
+
+  const coupon=getCoupon();
+  const sub=getSubtotal(cart);const disc=getDiscount(sub,coupon);const del=getDelivery(sub,coupon);const total=Math.max(0,sub-disc+del);
+  const ref='GM-'+Date.now();
+  const PAY={cash:'Paiement livraison',orange:'Orange Money',mtn:'MTN MoMo',whatsapp:'Via WhatsApp'};
+
+  currentOrder={ref,date:new Date().toLocaleDateString('fr-FR'),client:{prenom,nom,tel:cc+' '+tel},adresse:{adresse,commune,zone:selectedZone.zone},payment:selectedPay,items:cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})),subtotal:sub,discount:disc,delivery:del,total,status:'en_attente',coupon:coupon||null,note};
+
+  const orders=JSON.parse(localStorage.getItem('GM_ORDERS')||'[]');
+  orders.unshift(currentOrder);
+  localStorage.setItem('GM_ORDERS',JSON.stringify(orders));
+  localStorage.setItem('GM_CART','[]');
+  localStorage.setItem('GM_COUPON','null');
+
+  document.getElementById('succRef').textContent=ref;
+  document.getElementById('successModal').classList.add('open');
+};
+
+window.envoyerWA = function(){
+  if(!currentOrder) return;
+  const PAY={cash:'Paiement à la livraison',orange:'Orange Money',mtn:'MTN MoMo',whatsapp:'Via WhatsApp'};
+  const items=currentOrder.items.map(i=>`• ${i.name} ×${i.qty} = ${fmt(i.price*i.qty)}`).join('\n');
+  const s=JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+  const waNum=(s.shopWa||'224627900578').replace(/[^0-9]/g,'');
+  const msg=`🛍️ *NOUVELLE COMMANDE — GALY MARKET*\n\n📋 Réf: *${currentOrder.ref}*\n👤 Client: *${currentOrder.client.prenom} ${currentOrder.client.nom}*\n📞 Tél: *${currentOrder.client.tel}*\n📍 Zone: ${currentOrder.adresse.zone}${currentOrder.adresse.adresse?', '+currentOrder.adresse.adresse:''}\n💳 Paiement: *${PAY[currentOrder.payment]}*\n\n🛒 *Articles:*\n${items}\n\n💰 *TOTAL: ${fmt(currentOrder.total)}*${currentOrder.note?'\n\n📝 Note: '+currentOrder.note:''}`;
+  window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`, '_blank');
+  window.location.href='annonces.html';
+};
+
+document.addEventListener('DOMContentLoaded',function(){
+  updateZones();
+  renderMiniCart();
+});
+</script>
+<script>window.addEventListener("load",()=>{document.body.style.opacity="1";document.body.style.transition="opacity .3s";});</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez toutes les boutiques des vendeurs sur Galy Market. Achetez directement auprès des vendeurs guinéens."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Boutiques Vendeurs — Galy Market"/>
+  <meta property="og:description" content="Découvrez toutes les boutiques des vendeurs sur Galy Market. Achetez directement auprès des vendeurs guinéens."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/boutiques.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Boutiques Vendeurs — Galy Market"/>
+  <meta name="twitter:description" content="Découvrez toutes les boutiques des vendeurs sur Galy Market. Achetez directement auprès des vendeurs guinéens."/>
+  <title>Boutiques — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:70px}
+    /* HEADER */
+    .gz-header{background:#1a1206;padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    .gz-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .gz-logo-icon{width:36px;height:36px;background:#f68b1e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .gz-logo-text{font-size:15px;font-weight:800;color:#f68b1e}
+    .gz-search-wrap{flex:1;display:flex;align-items:center;background:rgba(246,139,30,.06);border-radius:8px;padding:8px 12px;gap:8px}
+    .gz-search-wrap i{color:#8a7560;font-size:13px}
+    .gz-search-wrap input{border:none;background:none;outline:none;font-size:13px;width:100%;font-family:'DM Sans',sans-serif}
+    .gz-header-right{display:flex;gap:14px;align-items:center}
+    .gz-header-right a{color:#fdf8f0;font-size:20px;text-decoration:none;position:relative}
+    /* PAGE TITLE */
+    .page-title{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:16px 14px;color:#fff}
+    .page-title h1{font-size:18px;font-weight:800;margin-bottom:2px}
+    .page-title p{font-size:12px;opacity:.85}
+    /* FILTRES */
+    .gz-filtres{background:#1a1206;padding:8px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #eee;align-items:center}
+    .gz-filtres::-webkit-scrollbar{display:none}
+    .gz-fchip{background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.15);border-radius:14px;padding:5px 12px;font-size:11px;font-weight:600;color:#8a7560;cursor:pointer;white-space:nowrap;user-select:none}
+    .gz-fchip.active{background:#f68b1e;color:#fff;border-color:#f68b1e}
+    /* GRILLE BOUTIQUES */
+    .gz-boutiques-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px}
+    @media(min-width:540px){.gz-boutiques-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:800px){.gz-boutiques-grid{grid-template-columns:repeat(4,1fr)}}
+    /* CARTE BOUTIQUE */
+    .gz-boutique-card{background:#1a1206;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:transform .15s,box-shadow .15s;text-decoration:none;color:#fdf8f0;display:block}
+    .gz-boutique-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+    .gz-bout-banner{height:70px;background:linear-gradient(135deg,#f68b1e,#e07b0e);position:relative;display:flex;align-items:center;justify-content:center}
+    .gz-bout-avatar{width:52px;height:52px;border-radius:50%;background:#1a1206;border:3px solid #fff;position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .gz-bout-body{padding:34px 10px 12px;text-align:center}
+    .gz-bout-nom{font-size:13px;font-weight:700;color:#fdf8f0;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .gz-bout-ville{font-size:10px;color:#8a7560;display:flex;align-items:center;justify-content:center;gap:3px;margin-bottom:6px}
+    .gz-bout-badges{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+    .gz-bout-badge-prem{background:#fff8e1;color:#f59e0b;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;border:1px solid #fde68a}
+    .gz-bout-badge-pro{background:#fff3e0;color:#f68b1e;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid #fde8c0}
+    .gz-bout-badge-basic{background:#e3f2fd;color:#1565c0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid #bbdefb}
+    .gz-bout-badge-verif{background:#f3e8ff;color:#7c3aed;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid #e9d5ff}
+    .gz-bout-stats{display:flex;justify-content:center;gap:12px;font-size:10px;color:#8a7560;border-top:1px solid #f5f5f5;padding-top:8px;margin-top:4px}
+    .gz-bout-stats span{display:flex;align-items:center;gap:3px}
+    .gz-bout-btn{width:100%;background:#f68b1e;color:#fff;border:none;border-radius:6px;padding:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+    /* VIDE */
+    .gz-empty{text-align:center;padding:60px 20px;color:#6b5d4f}
+    .gz-empty i{font-size:48px;display:block;margin-bottom:12px;opacity:.4}
+    /* BOTTOM NAV */
+    .gz-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);display:flex;z-index:200;box-shadow:0 -2px 6px rgba(0,0,0,.06)}
+    .gz-nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;cursor:pointer;text-decoration:none;color:#999;font-size:9px;font-weight:600;gap:2px}
+    .gz-nitem.active{color:#f68b1e}
+    .gz-nitem i{font-size:19px}
+    .gz-npub{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none}
+    .gz-npub-icon{width:42px;height:42px;background:#f68b1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 3px 10px rgba(246,139,30,.4)}
+    .gz-npub-icon i{font-size:19px;color:#fff}
+    .gz-npub span{font-size:9px;font-weight:600;color:#f68b1e}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<!-- HEADER -->
+<header class="gz-header">
+  <a href="index.html" class="gz-logo">
+    <div class="gz-logo-icon">🛍️</div>
+    <span class="gz-logo-text">GALY MARKET</span>
+  </a>
+  <div class="gz-search-wrap">
+    <i class="fas fa-search"></i>
+    <input type="text" id="searchBoutique" placeholder="Rechercher une boutique..." onkeyup="renderBoutiques()">
+  </div>
+  <div class="gz-header-right">
+    <a href="panier.html" style="position:relative">
+      <i class="fas fa-shopping-cart"></i>
+    </a>
+  </div>
+</header>
+
+<!-- TITRE -->
+<div class="page-title">
+  <h1>🏪 Toutes les Boutiques</h1>
+  <p id="nbBoutiques">Chargement...</p>
+</div>
+
+<!-- FILTRES -->
+<div class="gz-filtres">
+  <div class="gz-fchip active" onclick="setFiltre('tous',this)">Tous</div>
+  <div class="gz-fchip" onclick="setFiltre('premium',this)">👑 Premium</div>
+  <div class="gz-fchip" onclick="setFiltre('pro',this)">⭐ Pro</div>
+  <div class="gz-fchip" onclick="setFiltre('basic',this)">📋 Basic</div>
+  <div class="gz-fchip" onclick="setFiltre('verifie',this)">✅ Vérifiés</div>
+  <div class="gz-fchip" onclick="setFiltre('gratuit',this)">🆓 Gratuits</div>
+</div>
+
+<!-- GRILLE -->
+<div class="gz-boutiques-grid" id="gzBoutiquesGrid">
+  <div class="gz-empty" style="grid-column:1/-1">
+    <i class="fas fa-store"></i>
+    <p>Chargement des boutiques...</p>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="gz-nav">
+  <a href="index.html" class="gz-nitem"><i class="fas fa-home"></i><span>Accueil</span></a>
+  <a href="annonces.html" class="gz-nitem"><i class="fas fa-tag"></i><span>Offres</span></a>
+  <a href="publier-annonce.html" class="gz-npub">
+    <div class="gz-npub-icon"><i class="fas fa-plus"></i></div>
+    <span>Publier</span>
+  </a>
+  <a href="boutiques.html" class="gz-nitem active"><i class="fas fa-store"></i><span>Boutiques</span></a>
+  <a href="account.html" class="gz-nitem"><i class="fas fa-user"></i><span>Compte</span></a>
+</nav>
+
+<script src="js/annonces.js"></script>
+<script>
+let filtreActif = 'tous';
+
+// Couleurs de bannière par forfait
+const BANNER_COLORS = {
+  premium: 'linear-gradient(135deg,#f59e0b,#d97706)',
+  pro:     'linear-gradient(135deg,#7c3aed,#6d28d9)',
+  basic:   'linear-gradient(135deg,#1565c0,#0d47a1)',
+  gratuit: 'linear-gradient(135deg,#f68b1e,#e07b0e)',
+};
+
+function getAbo(vendeurId) {
+  const abos = JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+  return abos.find(a=>a.vendeurId===vendeurId && a.statut==='actif')||null;
+}
+
+function getForfait(vendeurId) {
+  return getAbo(vendeurId)?.planId || 'gratuit';
+}
+
+const FORFAIT_POIDS = { premium:4, pro:3, basic:2, gratuit:1 };
+
+window.setFiltre = function(filtre, el) {
+  filtreActif = filtre;
+  document.querySelectorAll('.gz-fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderBoutiques();
+};
+
+window.renderBoutiques = function() {
+  if(typeof getVendeurs !== 'function') { setTimeout(renderBoutiques, 150); return; }
+
+  let vendeurs = getVendeurs();
+  const q = document.getElementById('searchBoutique')?.value.toLowerCase()||'';
+
+  // Filtre recherche
+  if(q) vendeurs = vendeurs.filter(v =>
+    v.nom?.toLowerCase().includes(q) ||
+    v.ville?.toLowerCase().includes(q)
+  );
+
+  // Filtre forfait
+  if(filtreActif !== 'tous') {
+    if(filtreActif === 'verifie') {
+      vendeurs = vendeurs.filter(v => v.verifie);
+    } else {
+      vendeurs = vendeurs.filter(v => getForfait(v.id) === filtreActif);
+    }
+  }
+
+  // Trier : Premium → Pro → Basic → Gratuit, puis vérifiés, puis ventes
+  vendeurs.sort((a,b) => {
+    const pa = FORFAIT_POIDS[getForfait(a.id)]||1;
+    const pb = FORFAIT_POIDS[getForfait(b.id)]||1;
+    if(pb !== pa) return pb - pa;
+    if(b.verifie !== a.verifie) return (b.verifie?1:0)-(a.verifie?1:0);
+    return (b.ventes||0)-(a.ventes||0);
+  });
+
+  const nbEl = document.getElementById('nbBoutiques');
+  if(nbEl) nbEl.textContent = `${vendeurs.length} boutique${vendeurs.length>1?'s':''} disponible${vendeurs.length>1?'s':''}`;
+
+  const grid = document.getElementById('gzBoutiquesGrid');
+  if(!grid) return;
+
+  if(!vendeurs.length) {
+    grid.innerHTML = `<div class="gz-empty" style="grid-column:1/-1">
+      <i class="fas fa-store"></i>
+      <p>Aucune boutique trouvée</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = vendeurs.map(v => {
+    const forfait = getForfait(v.id);
+    const abo = getAbo(v.id);
+    const banner = BANNER_COLORS[forfait] || BANNER_COLORS.gratuit;
+    const anns = typeof getAnnonces === 'function'
+      ? getAnnonces().filter(a=>a.vendeurId===v.id&&a.dispo!==false).length
+      : 0;
+
+    // Badges
+    let badges = '';
+    if(forfait === 'premium') badges += '<span class="gz-bout-badge-prem">👑 Premium</span>';
+    else if(forfait === 'pro') badges += '<span class="gz-bout-badge-prem" style="background:#f3e8ff;color:#7c3aed;border-color:#e9d5ff">⭐ Pro</span>';
+    else if(forfait === 'basic') badges += '<span class="gz-bout-badge-basic">📋 Basic</span>';
+    if(v.verifie) badges += '<span class="gz-bout-badge-verif">✅ Vérifié</span>';
+
+    return `<a class="gz-boutique-card" href="boutique-vendeur.html?id=${v.id}">
+      <div class="gz-bout-banner" style="background:${banner}">
+        <div class="gz-bout-avatar">${v.avatar||'👤'}</div>
+      </div>
+      <div class="gz-bout-body">
+        <div class="gz-bout-nom">${v.nom||'Vendeur'}</div>
+        <div class="gz-bout-ville"><i class="fas fa-map-marker-alt" style="color:#e53935"></i>${v.ville||'Guinée'}</div>
+        <div class="gz-bout-badges">${badges||'<span style="font-size:9px;color:#6b5d4f">Plan Gratuit</span>'}</div>
+        <div class="gz-bout-stats">
+          <span><i class="fas fa-tag"></i> ${anns} annonce${anns>1?'s':''}</span>
+          <span><i class="fas fa-shopping-bag"></i> ${v.ventes||0} vente${(v.ventes||0)>1?'s':''}</span>
+          ${v.note ? `<span><i class="fas fa-star" style="color:#f59e0b"></i> ${v.note}</span>` : ''}
+        </div>
+        <button class="gz-bout-btn">Voir la boutique</button>
+      </div>
+    </a>`;
+  }).join('');
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  const check = setInterval(()=>{
+    if(typeof getVendeurs==='function'){clearInterval(check);renderBoutiques();}
+  },100);
+});
+</script>
+</body>
+</html>

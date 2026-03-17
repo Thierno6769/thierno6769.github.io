@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booster un produit — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;min-height:100vh}
+    .header{background:#1a1206;border-bottom:2px solid #f68b1e;padding:14px 20px;display:flex;align-items:center;gap:12px}
+    .header-back{background:none;border:none;color:#f68b1e;font-size:20px;cursor:pointer;padding:4px 8px}
+    .header-title{font-size:17px;font-weight:800;color:#fdf8f0}
+    .header-sub{font-size:12px;color:#8a7560}
+
+    /* ÉTAPES */
+    .steps{display:flex;align-items:center;justify-content:center;gap:0;padding:20px;background:#1a1206;border-bottom:1px solid rgba(246,139,30,.1)}
+    .step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+    .step::after{content:'';position:absolute;top:16px;left:60%;width:80%;height:2px;background:rgba(246,139,30,.2)}
+    .step:last-child::after{display:none}
+    .step-dot{width:32px;height:32px;border-radius:50%;border:2px solid rgba(246,139,30,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#8a7560;background:#0f0c08;position:relative;z-index:1}
+    .step-dot.active{border-color:#f68b1e;color:#f68b1e;background:#1a1206}
+    .step-dot.done{border-color:#22c55e;color:#22c55e;background:rgba(34,197,94,.1)}
+    .step-label{font-size:10px;color:#8a7560;font-weight:600;text-align:center}
+    .step-label.active{color:#f68b1e}
+
+    /* CONTENU */
+    .content{padding:20px;max-width:700px;margin:0 auto}
+
+    /* CHOIX TYPE BOOST */
+    .boost-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+    .boost-choice-card{background:#1a1206;border:2px solid rgba(246,139,30,.2);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s}
+    .boost-choice-card:hover,.boost-choice-card.selected{border-color:#f68b1e;background:rgba(246,139,30,.06)}
+    .boost-choice-icon{font-size:40px;margin-bottom:12px}
+    .boost-choice-title{font-size:16px;font-weight:800;color:#fdf8f0;margin-bottom:6px}
+    .boost-choice-desc{font-size:12px;color:#8a7560;line-height:1.5}
+    .boost-choice-badge{display:inline-block;background:rgba(246,139,30,.15);color:#f68b1e;font-size:10px;font-weight:800;padding:3px 10px;border-radius:50px;margin-top:8px}
+
+    /* SÉLECTION PRODUIT */
+    .prod-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:12px}
+    .prod-sel-card{background:#1a1206;border:2px solid rgba(246,139,30,.15);border-radius:12px;padding:12px;cursor:pointer;transition:all .2s;text-align:center}
+    .prod-sel-card:hover,.prod-sel-card.selected{border-color:#f68b1e;background:rgba(246,139,30,.06)}
+    .prod-sel-card.selected::after{content:'✓';position:absolute;top:8px;right:8px;background:#f68b1e;color:#fff;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+    .prod-sel-card{position:relative}
+    .prod-sel-img{width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:8px;background:rgba(246,139,30,.06);display:flex;align-items:center;justify-content:center;font-size:36px}
+    .prod-sel-img img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .prod-sel-name{font-size:12px;font-weight:700;color:#fdf8f0;margin-bottom:4px;line-height:1.3}
+    .prod-sel-price{font-size:12px;color:#f68b1e;font-weight:700}
+
+    /* FORFAITS BOOST */
+    .forfait-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:12px}
+    .forfait-card{background:#1a1206;border:2px solid rgba(246,139,30,.15);border-radius:14px;padding:20px;cursor:pointer;transition:all .2s;position:relative}
+    .forfait-card:hover,.forfait-card.selected{border-color:#f68b1e;background:rgba(246,139,30,.06)}
+    .forfait-card.featured{border-color:#f68b1e}
+    .forfait-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#f68b1e;color:#fff;font-size:10px;font-weight:800;padding:3px 12px;border-radius:50px;white-space:nowrap}
+    .forfait-name{font-size:15px;font-weight:800;color:#fdf8f0;margin-bottom:4px}
+    .forfait-price{font-size:24px;font-weight:800;color:#f68b1e;margin-bottom:8px}
+    .forfait-price span{font-size:12px;color:#8a7560;font-weight:400}
+    .forfait-features{list-style:none;display:flex;flex-direction:column;gap:6px}
+    .forfait-features li{font-size:12px;color:#8a7560;display:flex;align-items:center;gap:6px}
+    .forfait-features li i{color:#22c55e;font-size:11px}
+
+    /* RÉSEAUX SOCIAUX */
+    .reseaux-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:12px}
+    .reseau-card{background:#1a1206;border:2px solid rgba(255,255,255,.06);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+    .reseau-card.selected{border-color:var(--rc);background:rgba(var(--rcr),var(--rcg),var(--rcb),.1)}
+    .reseau-card i{font-size:28px;display:block;margin-bottom:6px}
+    .reseau-card span{font-size:12px;font-weight:700}
+
+    /* OUTILS SHOPIFY */
+    .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:12px}
+    .tool-card{background:#1a1206;border:1px solid rgba(246,139,30,.15);border-radius:14px;padding:18px;transition:all .2s}
+    .tool-card:hover{border-color:rgba(246,139,30,.4);transform:translateY(-2px)}
+    .tool-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+    .tool-card-title{font-size:14px;font-weight:800;color:#fdf8f0;margin-bottom:4px}
+    .tool-card-desc{font-size:12px;color:#8a7560;line-height:1.5;margin-bottom:12px}
+    .tool-card-btn{width:100%;background:rgba(246,139,30,.15);color:#f68b1e;border:1px solid rgba(246,139,30,.3);border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .tool-card-btn:hover{background:rgba(246,139,30,.25)}
+
+    /* PAIEMENT */
+    .pay-methods{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .pay-method{background:#1a1206;border:2px solid rgba(246,139,30,.15);border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s}
+    .pay-method:hover,.pay-method.selected{border-color:#f68b1e;background:rgba(246,139,30,.06)}
+    .pay-method-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .pay-method-name{font-size:14px;font-weight:700;color:#fdf8f0}
+    .pay-method-detail{font-size:12px;color:#8a7560}
+
+    /* SECTION TITRE */
+    .section-title{font-size:18px;font-weight:800;color:#fdf8f0;margin-bottom:4px}
+    .section-sub{font-size:13px;color:#8a7560;margin-bottom:16px}
+
+    /* BOUTONS */
+    .btn-primary{width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;transition:opacity .2s}
+    .btn-primary:hover{opacity:.88}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-secondary{width:100%;background:rgba(246,139,30,.08);color:#f68b1e;border:1px solid rgba(246,139,30,.3);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px}
+
+    /* RÉSUMÉ */
+    .resume-card{background:#1a1206;border:1px solid rgba(246,139,30,.2);border-radius:14px;padding:16px;margin-bottom:16px}
+    .resume-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(246,139,30,.08)}
+    .resume-row:last-child{border:none;padding-top:10px}
+    .resume-label{font-size:13px;color:#8a7560}
+    .resume-value{font-size:13px;font-weight:700;color:#fdf8f0}
+    .resume-total{font-size:18px;font-weight:800;color:#f68b1e}
+
+    /* SUCCESS */
+    .success-screen{text-align:center;padding:40px 20px;display:none}
+    .success-icon{font-size:72px;margin-bottom:16px}
+    .success-title{font-size:24px;font-weight:800;color:#fdf8f0;margin-bottom:8px}
+    .success-sub{font-size:14px;color:#8a7560;line-height:1.6;max-width:400px;margin:0 auto 24px}
+
+    /* PREVIEW PRODUIT */
+    .prod-preview{background:#1a1206;border:1px solid rgba(246,139,30,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .prod-preview-img{width:60px;height:60px;border-radius:10px;background:rgba(246,139,30,.06);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden}
+    .prod-preview-img img{width:100%;height:100%;object-fit:cover}
+    .prod-preview-name{font-size:14px;font-weight:700;color:#fdf8f0}
+    .prod-preview-price{font-size:13px;color:#f68b1e;font-weight:700}
+
+    .hidden{display:none!important}
+    .page{display:none}
+    .page.active{display:block}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <button class="header-back" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+  <div>
+    <div class="header-title">Booster un produit</div>
+    <div class="header-sub" id="headerSub">Choisissez votre type de boost</div>
+  </div>
+</div>
+
+<!-- ÉTAPES -->
+<div class="steps" id="stepsBar">
+  <div class="step">
+    <div class="step-dot active" id="dot1">1</div>
+    <div class="step-label active" id="lbl1">Type</div>
+  </div>
+  <div class="step">
+    <div class="step-dot" id="dot2">2</div>
+    <div class="step-label" id="lbl2">Produit</div>
+  </div>
+  <div class="step">
+    <div class="step-dot" id="dot3">3</div>
+    <div class="step-label" id="lbl3">Options</div>
+  </div>
+  <div class="step">
+    <div class="step-dot" id="dot4">4</div>
+    <div class="step-label" id="lbl4">Paiement</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- PAGE 1 : CHOIX TYPE BOOST -->
+  <div class="page active" id="page1">
+    <div class="section-title" style="margin-top:8px">Comment voulez-vous booster ?</div>
+    <div class="section-sub">Choisissez qui va gérer la promotion de votre produit</div>
+    <div class="boost-choice-grid">
+      <div class="boost-choice-card" onclick="selectBoostType('galy')">
+        <div class="boost-choice-icon">🚀</div>
+        <div class="boost-choice-title">Galy Market booste</div>
+        <div class="boost-choice-desc">Notre équipe gère votre pub sur Facebook, Instagram, TikTok, WhatsApp et Telegram</div>
+        <div class="boost-choice-badge">Recommandé</div>
+      </div>
+      <div class="boost-choice-card" onclick="selectBoostType('self')">
+        <div class="boost-choice-icon">🛠️</div>
+        <div class="boost-choice-title">Je booste moi-même</div>
+        <div class="boost-choice-desc">Accédez aux outils de marketing professionnel pour gérer vos pubs vous-même</div>
+        <div class="boost-choice-badge">Autonomie totale</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btnStep1" disabled onclick="goToPage(2)">
+      Continuer <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- PAGE 2 : CHOIX PRODUIT -->
+  <div class="page" id="page2">
+    <div class="section-title" style="margin-top:8px">Quel produit voulez-vous booster ?</div>
+    <div class="section-sub">Sélectionnez un produit de votre boutique</div>
+    <div class="prod-select-grid" id="prodSelectGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:30px;color:#8a7560">
+        <i class="fas fa-box-open" style="font-size:32px;display:block;margin-bottom:10px;opacity:.3"></i>
+        Chargement de vos produits...
+      </div>
+    </div>
+    <button class="btn-primary" id="btnStep2" disabled onclick="goToPage(3)">
+      Continuer <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- PAGE 3A : OPTIONS GALY MARKET -->
+  <div class="page" id="page3galy">
+    <div class="prod-preview" id="prodPreview3galy"></div>
+    <div class="section-title">Choisissez votre forfait boost</div>
+    <div class="section-sub">Galy Market va promouvoir votre produit sur les réseaux sociaux</div>
+
+    <!-- Réseaux -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:#8a7560;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Réseaux inclus dans tous les forfaits</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span style="background:rgba(24,119,242,.15);color:#1877f2;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700"><i class="fab fa-facebook-f"></i> Facebook</span>
+        <span style="background:rgba(225,48,108,.15);color:#e1306c;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700"><i class="fab fa-instagram"></i> Instagram</span>
+        <span style="background:rgba(0,0,0,.2);color:#fdf8f0;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700"><i class="fab fa-tiktok"></i> TikTok</span>
+        <span style="background:rgba(37,211,102,.15);color:#25d366;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700"><i class="fab fa-whatsapp"></i> WhatsApp</span>
+        <span style="background:rgba(0,136,204,.15);color:#0088cc;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700"><i class="fab fa-telegram"></i> Telegram</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#8a7560;margin-top:4px">Les options ne sont pas obligatoires.</p>
+
+    <div class="forfait-grid" id="forfaitGrid">
+      <!-- Généré par JS -->
+    </div>
+
+    <!-- Total fixe en bas style Guinéezone -->
+    <div style="position:sticky;bottom:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);padding:14px 0;margin-top:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:12px;color:#8a7560">Total options</div>
+          <div style="font-size:20px;font-weight:800;color:#fdf8f0" id="totalOptions">0 GNF</div>
+        </div>
+      </div>
+      <button class="btn-primary" id="btnStep3galy" disabled onclick="goToPage(4)" style="margin-top:0">
+        Suivant <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE 3B : OUTILS SELF BOOST (style Shopify) -->
+  <div class="page" id="page3self">
+    <div class="prod-preview" id="prodPreview3self"></div>
+    <div class="section-title">Outils de marketing</div>
+    <div class="section-sub">Boostez votre produit vous-même avec nos outils professionnels</div>
+
+    <div class="tool-grid" id="toolGrid">
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(24,119,242,.1)"><i class="fab fa-facebook-f" style="color:#1877f2"></i></div>
+        <div class="tool-card-title">Publicité Facebook</div>
+        <div class="tool-card-desc">Créez et partagez une pub prête à publier sur votre page Facebook avec le lien direct vers votre produit</div>
+        <button class="tool-card-btn" onclick="lancerOutil('facebook')"><i class="fab fa-facebook-f"></i> Créer la pub Facebook</button>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(225,48,108,.1)"><i class="fab fa-instagram" style="color:#e1306c"></i></div>
+        <div class="tool-card-title">Publication Instagram</div>
+        <div class="tool-card-desc">Générez un texte accrocheur avec hashtags et visuels optimisés pour Instagram</div>
+        <button class="tool-card-btn" onclick="lancerOutil('instagram')"><i class="fab fa-instagram"></i> Créer pour Instagram</button>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(0,0,0,.2)"><i class="fab fa-tiktok" style="color:#fdf8f0"></i></div>
+        <div class="tool-card-title">Vidéo TikTok</div>
+        <div class="tool-card-desc">Texte optimisé pour TikTok avec hashtags tendance en Guinée pour maximiser votre portée</div>
+        <button class="tool-card-btn" onclick="lancerOutil('tiktok')"><i class="fab fa-tiktok"></i> Créer pour TikTok</button>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(37,211,102,.1)"><i class="fab fa-whatsapp" style="color:#25d366"></i></div>
+        <div class="tool-card-title">Message WhatsApp</div>
+        <div class="tool-card-desc">Rédigez un message commercial percutant à envoyer à vos contacts WhatsApp</div>
+        <button class="tool-card-btn" onclick="lancerOutil('whatsapp')"><i class="fab fa-whatsapp"></i> Créer pour WhatsApp</button>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(0,136,204,.1)"><i class="fab fa-telegram" style="color:#0088cc"></i></div>
+        <div class="tool-card-title">Canal Telegram</div>
+        <div class="tool-card-desc">Partagez votre produit sur votre canal Telegram avec un message professionnel</div>
+        <button class="tool-card-btn" onclick="lancerOutil('telegram')"><i class="fab fa-telegram"></i> Créer pour Telegram</button>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-icon" style="background:rgba(246,139,30,.1)"><i class="fas fa-image" style="color:#f68b1e"></i></div>
+        <div class="tool-card-title">Visuel publicitaire</div>
+        <div class="tool-card-desc">Créez une image de pub avec le prix, le nom et la photo de votre produit à télécharger</div>
+        <button class="tool-card-btn" onclick="lancerOutil('visuel')"><i class="fas fa-download"></i> Créer le visuel</button>
+      </div>
+    </div>
+
+    <!-- Modal outil -->
+    <div id="outilModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px">
+      <div style="background:#1a1206;border:1px solid rgba(246,139,30,.3);border-radius:16px;width:100%;max-width:500px;padding:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:16px;font-weight:800;color:#fdf8f0" id="outilTitle">Créer la pub</div>
+          <button onclick="fermerOutil()" style="background:none;border:none;color:#8a7560;font-size:18px;cursor:pointer"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="outilContent"></div>
+      </div>
+    </div>
+
+    <button class="btn-secondary" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
+  </div>
+
+  <!-- PAGE 4 : PAIEMENT -->
+  <div class="page" id="page4">
+    <div class="prod-preview" id="prodPreview4"></div>
+    <div class="section-title">Paiement du boost</div>
+    <div class="section-sub">Choisissez votre méthode de paiement</div>
+
+    <div class="resume-card" id="resumeCard"></div>
+
+    <div class="pay-methods">
+      <div class="pay-method" onclick="selectPay('orange')">
+        <div class="pay-method-icon" style="background:rgba(255,102,0,.15)">🟠</div>
+        <div>
+          <div class="pay-method-name">Orange Money</div>
+          <div class="pay-method-detail">Numéro de dépôt : <strong style="color:#f68b1e">+224 627 90 05 78</strong></div>
+        </div>
+        <i class="fas fa-circle" id="payDot-orange" style="margin-left:auto;color:rgba(255,255,255,.1);font-size:12px"></i>
+      </div>
+      <div class="pay-method" onclick="selectPay('mtn')">
+        <div class="pay-method-icon" style="background:rgba(255,204,0,.15)">🟡</div>
+        <div>
+          <div class="pay-method-name">MTN Mobile Money</div>
+          <div class="pay-method-detail">Numéro de dépôt : <strong style="color:#f68b1e">+224 627 90 05 78</strong></div>
+        </div>
+        <i class="fas fa-circle" id="payDot-mtn" style="margin-left:auto;color:rgba(255,255,255,.1);font-size:12px"></i>
+      </div>
+      <div class="pay-method" onclick="selectPay('cod')">
+        <div class="pay-method-icon" style="background:rgba(34,197,94,.15)">💵</div>
+        <div>
+          <div class="pay-method-name">Paiement en espèces</div>
+          <div class="pay-method-detail">Payer en main propre à notre bureau Conakry</div>
+        </div>
+        <i class="fas fa-circle" id="payDot-cod" style="margin-left:auto;color:rgba(255,255,255,.1);font-size:12px"></i>
+      </div>
+    </div>
+
+    <!-- Instructions paiement -->
+    <div id="payInstructions" style="display:none;background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.2);border-radius:12px;padding:14px;margin-top:14px;font-size:13px;color:#fdf8f0;line-height:1.7"></div>
+
+    <!-- Upload capture -->
+    <div id="uploadCapture" style="display:none;margin-top:12px">
+      <div style="font-size:12px;font-weight:700;color:#8a7560;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Envoyez la capture d'écran du paiement</div>
+      <label style="display:block;background:rgba(246,139,30,.06);border:2px dashed rgba(246,139,30,.3);border-radius:12px;padding:20px;text-align:center;cursor:pointer">
+        <i class="fas fa-camera" style="font-size:28px;color:#f68b1e;display:block;margin-bottom:8px"></i>
+        <span style="font-size:13px;color:#8a7560">Appuyez pour ajouter la capture</span>
+        <input type="file" accept="image/*" id="captureInput" style="display:none" onchange="previewCapture(this)">
+      </label>
+      <div id="capturePreview" style="display:none;margin-top:8px;text-align:center">
+        <img id="captureImg" style="max-width:100%;max-height:200px;border-radius:10px;border:1px solid rgba(246,139,30,.3)">
+        <div style="font-size:11px;color:#22c55e;margin-top:6px"><i class="fas fa-check-circle"></i> Capture ajoutée</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btnPayer" disabled onclick="confirmerPaiement()">
+      <i class="fas fa-paper-plane"></i> Envoyer la demande de boost
+    </button>
+  </div>
+
+  <!-- PAGE SUCCESS -->
+  <div class="success-screen" id="pageSuccess">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Paiement envoyé !</div>
+    <div class="success-sub">Votre demande a été enregistrée. Partagez votre produit maintenant !</div>
+
+    <!-- SECTION ADMIN : Notifier Galy Market -->
+    <div id="sectionAdmin" style="text-align:left;margin-bottom:20px">
+      <div style="font-size:13px;font-weight:800;color:#f68b1e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">
+        <i class="fab fa-whatsapp"></i> Notifier Galy Market
+      </div>
+      <div style="background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.2);border-radius:12px;padding:14px;margin-bottom:10px;font-size:12px;color:#fdf8f0;line-height:1.8" id="waAdminMsg"></div>
+      <button id="btnWaAdmin" onclick="envoyerWaAdmin()"
+        style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+        <i class="fab fa-whatsapp" style="font-size:18px"></i> Envoyer à Galy Market sur WhatsApp
+      </button>
+    </div>
+
+    <!-- SÉPARATEUR -->
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0;text-align:left">
+      <div style="flex:1;height:1px;background:rgba(246,139,30,.2)"></div>
+      <span style="font-size:12px;color:#8a7560;white-space:nowrap">Partagez aussi votre produit</span>
+      <div style="flex:1;height:1px;background:rgba(246,139,30,.2)"></div>
+    </div>
+
+    <!-- SECTION VENDEUR : Partager sur ses réseaux -->
+    <div id="sectionVendeur" style="text-align:left;margin-bottom:20px">
+      <div style="font-size:13px;font-weight:800;color:#fdf8f0;margin-bottom:10px">📢 Partagez sur vos réseaux</div>
+      <div id="shareButtons" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+    <button class="btn-secondary" onclick="window.location.href='dashboard-vendeur.html'" style="margin-top:8px">
+      <i class="fas fa-home"></i> Retour au dashboard
+    </button>
+  </div>
+
+</div>
+
+<script>
+const DV_KEY = 'GM_DV_SESSION';
+const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+
+let boostType = null; // 'galy' ou 'self'
+let selectedProd = null;
+let selectedForfait = null;
+let selectedPay = null;
+let currentPage = 1;
+
+const FORFAITS = [
+  {
+    id:'prioritaire', name:'Annonce prioritaire', price:25000, duration:'15 jours',
+    categorie:'remonter',
+    desc:'Votre annonce est prioritaire pendant 15 jours',
+    icon:'⭐', features:['Mise en avant 15 jours','Position prioritaire','Visible en premier']
+  },
+  {
+    id:'remonter15', name:'Remonter en tête 15 jours', price:20000, duration:'15 jours',
+    categorie:'remonter',
+    desc:'Votre annonce est remontée en haut de la liste de résultats chaque jour pendant 15 jours consécutifs',
+    icon:'⬆️', features:['Remontée quotidienne','15 jours consécutifs','Maximum de visibilité']
+  },
+  {
+    id:'remonter30', name:'Remonter en tête 30 jours', price:30000, duration:'30 jours',
+    categorie:'remonter',
+    desc:'Votre annonce est remontée en haut de la liste de résultats chaque jour pendant 30 jours consécutifs',
+    icon:'🔝', features:['Remontée quotidienne','30 jours consécutifs','Meilleur rapport qualité/prix']
+  },
+  {
+    id:'urgent', name:'Annonce urgente', price:15000, duration:'15 jours',
+    categorie:'bandeau',
+    desc:'Ajouter un "Logo urgent" pour indiquer que votre produit est à vendre de manière urgente. Une recherche ciblée uniquement sur ces annonces est également proposée.',
+    icon:'🚨', features:['Badge URGENT visible','Recherche ciblée','Attire plus d\'acheteurs']
+  },
+];
+
+// ── Charger produits vendeur ──
+function loadProds() {
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  if(!session.id) { window.location.href='dashboard-vendeur.html'; return; }
+  const ov = JSON.parse(localStorage.getItem('GM_PROD_OVERRIDES')||'{}');
+  const cu = JSON.parse(localStorage.getItem('GM_CUSTOM_PRODS')||'[]');
+  const base = typeof GM_PRODUCTS!=='undefined'
+    ? GM_PRODUCTS.filter(p=>!ov[p.id]?._deleted).map(p=>({...p,...(ov[p.id]||{})}))
+    : [];
+  return [...base, ...cu.filter(p=>!p._deleted)];
+}
+
+function renderProds() {
+  const grid = document.getElementById('prodSelectGrid');
+  const prods = loadProds();
+  if(!prods || !prods.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:#8a7560"><i class="fas fa-box-open" style="font-size:32px;display:block;margin-bottom:10px;opacity:.3"></i>Aucun produit. Ajoutez des produits d\'abord.</div>';
+    return;
+  }
+  grid.innerHTML = prods.map(p => {
+    const photo = (p.photos&&p.photos[0])||p.img||'';
+    return `<div class="prod-sel-card" onclick="selectProd('${p.id}')" id="ps-${p.id}">
+      <div class="prod-sel-img">${photo?`<img src="${photo}" alt="${p.name}">`:`<span>${p.em||'📦'}</span>`}</div>
+      <div class="prod-sel-name">${p.name}</div>
+      <div class="prod-sel-price">${fmt(p.price)}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectProd(id) {
+  const prods = loadProds();
+  selectedProd = prods.find(p=>String(p.id)===String(id));
+  document.querySelectorAll('.prod-sel-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('ps-'+id)?.classList.add('selected');
+  document.getElementById('btnStep2').disabled = false;
+}
+
+function selectBoostType(type) {
+  boostType = type;
+  document.querySelectorAll('.boost-choice-card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  document.getElementById('btnStep1').disabled = false;
+}
+
+function selectForfait(id) {
+  selectedForfait = FORFAITS.find(f=>f.id===id);
+  // Remettre tous à l'état normal
+  FORFAITS.forEach(f => {
+    const el = document.getElementById('fc-'+f.id);
+    const check = document.getElementById('check-'+f.id);
+    if(el) { el.style.background='transparent'; el.style.borderColor='transparent'; el.classList.remove('selected-opt'); }
+    if(check) check.innerHTML='<i class="far fa-circle"></i>';
+  });
+  // Sélectionner celui choisi
+  const el = document.getElementById('fc-'+id);
+  const check = document.getElementById('check-'+id);
+  if(el) { el.style.background='rgba(246,139,30,.08)'; el.style.borderColor='rgba(246,139,30,.4)'; el.classList.add('selected-opt'); }
+  if(check) check.innerHTML='<i class="fas fa-check-circle"></i>';
+  // Mettre à jour total
+  const total = document.getElementById('totalOptions');
+  if(total && selectedForfait) total.textContent = fmt(selectedForfait.price);
+  document.getElementById('btnStep3galy').disabled = false;
+}
+
+function renderForfaits() {
+  const cats = {
+    remonter: { label:'Remonter', icon:'⬆️', items:[] },
+    bandeau:  { label:'Bandeau',  icon:'🏷️', items:[] },
+  };
+  FORFAITS.forEach(f => { if(cats[f.categorie]) cats[f.categorie].items.push(f); });
+
+  document.getElementById('forfaitGrid').innerHTML = Object.values(cats).map(cat => `
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(246,139,30,.12);border-radius:14px;overflow:hidden;margin-bottom:14px">
+      <div style="padding:12px 16px;background:rgba(246,139,30,.06);border-bottom:1px solid rgba(246,139,30,.1);font-size:13px;font-weight:700;color:#f68b1e">
+        ${cat.icon} ${cat.label}
+      </div>
+      <div style="padding:8px">
+        ${cat.items.map(f => `
+          <div onclick="selectForfait('${f.id}')" id="fc-${f.id}"
+            style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;transition:all .2s;margin-bottom:4px"
+            onmouseover="this.style.background='rgba(246,139,30,.06)'"
+            onmouseout="if(!this.classList.contains('selected-opt'))this.style.background='transparent'">
+            <div style="width:36px;height:36px;border-radius:50%;border:2px solid rgba(246,139,30,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#f68b1e;font-size:16px;transition:all .2s" id="check-${f.id}">
+              <i class="far fa-circle"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700;color:#fdf8f0;margin-bottom:3px">${f.name}</div>
+              <div style="font-size:12px;color:#8a7560;line-height:1.5">${f.desc}</div>
+            </div>
+            <div style="background:rgba(246,139,30,.12);border:1px solid rgba(246,139,30,.3);color:#f68b1e;font-size:13px;font-weight:800;padding:6px 12px;border-radius:50px;white-space:nowrap;flex-shrink:0">
+              ${fmt(f.price)}
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function renderProdPreview(containerId) {
+  if(!selectedProd) return;
+  const photo = (selectedProd.photos&&selectedProd.photos[0])||selectedProd.img||'';
+  document.getElementById(containerId).innerHTML = `
+    <div class="prod-preview-img">${photo?`<img src="${photo}">`:`<span>${selectedProd.em||'📦'}</span>`}</div>
+    <div>
+      <div class="prod-preview-name">${selectedProd.name}</div>
+      <div class="prod-preview-price">${fmt(selectedProd.price)}</div>
+    </div>`;
+}
+
+function goToPage(n) {
+  // Cacher tout
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pageSuccess').style.display='none';
+
+  if(n===3) {
+    if(boostType==='galy') {
+      renderProdPreview('prodPreview3galy');
+      renderForfaits();
+      document.getElementById('page3galy').classList.add('active');
+      document.getElementById('headerSub').textContent='Choisissez votre forfait';
+    } else {
+      renderProdPreview('prodPreview3self');
+      document.getElementById('page3self').classList.add('active');
+      document.getElementById('headerSub').textContent='Outils de marketing';
+    }
+  } else if(n===4) {
+    renderProdPreview('prodPreview4');
+    renderResume();
+    document.getElementById('page4').classList.add('active');
+    document.getElementById('headerSub').textContent='Paiement';
+  } else {
+    const page = document.getElementById('page'+n);
+    if(page) page.classList.add('active');
+  }
+
+  currentPage = n;
+  updateSteps(n);
+
+  if(n===2) {
+    renderProds();
+    document.getElementById('headerSub').textContent='Sélectionnez un produit';
+  }
+}
+
+function renderResume() {
+  const forfait = selectedForfait;
+  document.getElementById('resumeCard').innerHTML = `
+    <div class="resume-row"><span class="resume-label">Produit</span><span class="resume-value">${selectedProd?.name||'—'}</span></div>
+    <div class="resume-row"><span class="resume-label">Forfait</span><span class="resume-value">${forfait?.name||'—'} (${forfait?.duration||'—'})</span></div>
+    <div class="resume-row"><span class="resume-label">Réseaux</span><span class="resume-value">Facebook · Instagram · TikTok · WhatsApp · Telegram</span></div>
+    <div class="resume-row"><span class="resume-label">Total</span><span class="resume-total">${fmt(forfait?.price)}</span></div>`;
+}
+
+function selectPay(method) {
+  selectedPay = method;
+  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  ['orange','mtn','cod'].forEach(m=>{
+    document.getElementById('payDot-'+m).style.color = m===method ? '#f68b1e' : 'rgba(255,255,255,.1)';
+  });
+  const instructions = {
+    orange:`📱 <strong>Orange Money</strong><br>1. Composez le <strong>#144*1*1#</strong><br>2. Entrez le numéro : <strong>627 90 05 78</strong><br>3. Montant : <strong>${fmt(selectedForfait?.price)}</strong><br>4. Envoyez la capture d'écran ci-dessous`,
+    mtn:`📱 <strong>MTN Mobile Money</strong><br>1. Composez le <strong>*555#</strong><br>2. Entrez le numéro : <strong>627 90 05 78</strong><br>3. Montant : <strong>${fmt(selectedForfait?.price)}</strong><br>4. Envoyez la capture d'écran ci-dessous`,
+    cod:`💵 <strong>Paiement en espèces</strong><br>Rendez-vous à notre bureau :<br><strong>Conakry, Guinée</strong><br>Contactez-nous d'abord sur WhatsApp : <strong>+224 627 90 05 78</strong>`
+  };
+  document.getElementById('payInstructions').innerHTML = instructions[method];
+  document.getElementById('payInstructions').style.display = 'block';
+  document.getElementById('uploadCapture').style.display = method!=='cod' ? 'block' : 'none';
+  document.getElementById('btnPayer').disabled = false;
+}
+
+window.selectPay = selectPay;
+
+function previewCapture(input) {
+  if(!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('captureImg').src = e.target.result;
+    document.getElementById('capturePreview').style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function confirmerPaiement() {
+  const session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+  const prodUrl = window.location.origin + '/produit.html?id=' + selectedProd?.id;
+  const photo   = (selectedProd?.photos && selectedProd.photos[0]) || selectedProd?.img || '';
+
+  const boost = {
+    id: 'boost'+Date.now(),
+    vendeurId: session.id,
+    vendeurNom: session.nom,
+    vendeurTel: session.tel || '',
+    produitId: selectedProd?.id,
+    produitNom: selectedProd?.name,
+    produitPrix: selectedProd?.price,
+    produitUrl: prodUrl,
+    forfait: selectedForfait?.id,
+    forfaitNom: selectedForfait?.name,
+    montant: selectedForfait?.price,
+    methode: selectedPay,
+    statut: 'en_attente',
+    date: new Date().toISOString(),
+    boostType: boostType,
+  };
+
+  const boosts = JSON.parse(localStorage.getItem('GM_BOOSTS')||'[]');
+  boosts.push(boost);
+  localStorage.setItem('GM_BOOSTS', JSON.stringify(boosts));
+
+  // ── Message WhatsApp pour l'admin ──
+  const msgAdmin = `🚀 *NOUVELLE DEMANDE DE BOOST*\n\n`
+    + `👤 *Vendeur :* ${session.nom||'—'}\n`
+    + `📞 *Tél :* ${session.tel||'—'}\n\n`
+    + `📦 *Produit :* ${selectedProd?.name||'—'}\n`
+    + `💰 *Prix produit :* ${fmt(selectedProd?.price)}\n`
+    + `🔗 *Lien produit :* ${prodUrl}\n\n`
+    + `⭐ *Forfait :* ${selectedForfait?.name||'—'}\n`
+    + `💵 *Montant payé :* ${fmt(selectedForfait?.price)}\n`
+    + `💳 *Méthode :* ${selectedPay||'—'}\n\n`
+    + `📅 *Date :* ${new Date().toLocaleString('fr-FR')}\n\n`
+    + `➡️ Valider dans l'admin : ${window.location.origin}/admin.html`;
+
+  document.getElementById('waAdminMsg').innerHTML = msgAdmin.replace(/\*/g,'<strong>').replace(/\n/g,'<br>');
+
+  // ── Boutons partage vendeur ──
+  const prix = fmt(selectedProd?.price);
+  const nom  = selectedProd?.name || '';
+  const cat  = selectedProd?.cat  || 'produit';
+
+  const partages = [
+    {
+      reseau:'facebook', label:'Facebook', color:'#1877f2', bg:'rgba(24,119,242,.15)', icon:'fab fa-facebook-f',
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(prodUrl)}&quote=${encodeURIComponent(`🛒 ${nom} — ${prix} | Galy Market Guinée`)}`,
+      direct: true
+    },
+    {
+      reseau:'whatsapp', label:'WhatsApp', color:'#25d366', bg:'rgba(37,211,102,.15)', icon:'fab fa-whatsapp',
+      texte: `🛒 *${nom}*\n\n💰 Prix : *${prix}*\n✅ Qualité garantie · Livraison Conakry\n\n👉 Commander : ${prodUrl}\n\n📞 +224 627 90 05 78`,
+      direct: false
+    },
+    {
+      reseau:'instagram', label:'Instagram', color:'#e1306c', bg:'rgba(225,48,108,.15)', icon:'fab fa-instagram',
+      texte: `✨ ${nom} ✨\n\n💰 ${prix}\n🚚 Livraison Conakry\n✅ Qualité garantie\n\n🛍️ Commandez sur Galy Market !\n👆 Lien en bio\n\n#GalyMarket #Guinée #Conakry #Shopping #${cat}`,
+      direct: false
+    },
+    {
+      reseau:'tiktok', label:'TikTok', color:'#fdf8f0', bg:'rgba(255,255,255,.08)', icon:'fab fa-tiktok',
+      texte: `${nom} disponible sur Galy Market ! 🔥\n\nPrix : ${prix} seulement 💰\nLivraison rapide Conakry 🚚\n\nLien dans ma bio !\n\n#GalyMarket #Guinée #Conakry #Shopping #TikTokGuinée #ForyouPage`,
+      direct: false
+    },
+    {
+      reseau:'telegram', label:'Telegram', color:'#0088cc', bg:'rgba(0,136,204,.15)', icon:'fab fa-telegram',
+      url: `https://t.me/share/url?url=${encodeURIComponent(prodUrl)}&text=${encodeURIComponent(`📦 ${nom} | ${prix} | Galy Market Guinée\n✅ Livraison Conakry\n👉 ${prodUrl}`)}`,
+      direct: true
+    },
+  ];
+
+  document.getElementById('shareButtons').innerHTML = partages.map(p => `
+    <button onclick="partagerVendeur('${p.reseau}')"
+      style="width:100%;background:${p.bg};color:${p.color};border:1px solid ${p.color}40;border-radius:12px;padding:13px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;text-align:left">
+      <i class="${p.icon}" style="font-size:20px;width:24px;text-align:center"></i>
+      <div>
+        <div style="font-weight:800">Partager sur ${p.label}</div>
+        <div style="font-size:11px;opacity:.7">Cliquez pour ${p.direct ? 'partager directement' : 'copier le texte et ouvrir '+p.label}</div>
+      </div>
+      <i class="fas fa-arrow-right" style="margin-left:auto;opacity:.5;font-size:12px"></i>
+    </button>`).join('');
+
+  // Stocker les partages pour usage dans partagerVendeur
+  window._partages = partages;
+
+  // Afficher success
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('stepsBar').style.display='none';
+  document.getElementById('pageSuccess').style.display='block';
+  window._msgAdmin = msgAdmin;
+}
+
+window.envoyerWaAdmin = function() {
+  const tel = '224627900578';
+  const msg = encodeURIComponent(window._msgAdmin || '');
+  window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
+  const btn = document.getElementById('btnWaAdmin');
+  if(btn) {
+    btn.innerHTML = '<i class="fas fa-check-circle"></i> Envoyé !';
+    btn.style.background = 'rgba(34,197,94,.3)';
+    btn.disabled = true;
+  }
+};
+
+window.partagerVendeur = function(reseau) {
+  const partages = window._partages || [];
+  const p = partages.find(x=>x.reseau===reseau);
+  if(!p) return;
+
+  if(p.direct && p.url) {
+    window.open(p.url, '_blank');
+  } else if(p.texte) {
+    // Copier + ouvrir le réseau
+    const urls = {
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(p.texte)}`,
+      instagram: 'https://www.instagram.com/',
+      tiktok: 'https://www.tiktok.com/',
+    };
+    if(reseau === 'whatsapp') {
+      window.open(urls.whatsapp, '_blank');
+    } else {
+      navigator.clipboard.writeText(p.texte).then(()=>{
+        showToast('📋 Texte copié ! Collez-le dans ' + reseau);
+        setTimeout(()=> window.open(urls[reseau]||'#','_blank'), 800);
+      }).catch(()=>{
+        window.open(urls[reseau]||'#','_blank');
+      });
+    }
+  }
+};
+
+// ── Outils self boost ──
+function lancerOutil(reseau) {
+  if(!selectedProd) return;
+  const prod = selectedProd;
+  const url = window.location.origin + '/produit.html?id=' + prod.id;
+  const prix = fmt(prod.price);
+
+  const textes = {
+    facebook: {
+      title: '📘 Pub Facebook',
+      content: `🛒 <strong>${prod.name}</strong>\n\n💰 Prix : ${prix}\n✅ Disponible sur Galy Market\n🚚 Livraison rapide à Conakry\n\n👉 Commander maintenant :\n${url}\n\n📞 WhatsApp : +224 627 90 05 78`
+    },
+    instagram: {
+      title: '📸 Publication Instagram',
+      content: `✨ ${prod.name} ✨\n\n💰 ${prix}\n🚚 Livraison Conakry\n✅ Qualité garantie\n\n🛍️ Commandez sur Galy Market !\nLien en bio 👆\n\n#GalyMarket #Guinée #Conakry #Shopping #${prod.cat||'Mode'} #Livraison`
+    },
+    tiktok: {
+      title: '🎵 Texte TikTok',
+      content: `${prod.name} disponible sur Galy Market ! 🔥\n\nPrix : ${prix} seulement 💰\nLivraison rapide Conakry 🚚\n\nLien dans ma bio !\n\n#GalyMarket #Guinée #Conakry #Shopping #TikTokGuinée #ForyouPage #Fyp`
+    },
+    whatsapp: {
+      title: '💬 Message WhatsApp',
+      content: `🛒 *${prod.name}*\n\n💰 Prix : *${prix}*\n✅ Disponible maintenant\n🚚 Livraison rapide à Conakry\n\n👉 Commander : ${url}\n\n📞 Plus d'infos : +224 627 90 05 78`
+    },
+    telegram: {
+      title: '✈️ Message Telegram',
+      content: `📦 **${prod.name}**\n\n💰 Prix : **${prix}**\n✅ En stock sur Galy Market\n🚚 Livraison Conakry & Guinée\n\n👉 [Commander maintenant](${url})\n\n📞 WhatsApp : +224 627 90 05 78`
+    },
+    visuel: {
+      title: '🖼️ Visuel publicitaire',
+      content: `canvas`
+    }
+  };
+
+  const outil = textes[reseau];
+  if(!outil) return;
+
+  document.getElementById('outilTitle').textContent = outil.title;
+
+  if(reseau === 'visuel') {
+    document.getElementById('outilContent').innerHTML = `
+      <canvas id="boostCanvas" width="600" height="600" style="width:100%;border-radius:10px;background:#0f0c08"></canvas>
+      <button onclick="dessinerCanvas()" style="width:100%;background:rgba(246,139,30,.15);color:#f68b1e;border:1px solid rgba(246,139,30,.3);border-radius:8px;padding:10px;margin-top:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif">
+        <i class="fas fa-paint-brush"></i> Générer le visuel
+      </button>
+      <button onclick="telechargerCanvas()" style="width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:8px;padding:10px;margin-top:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif">
+        <i class="fas fa-download"></i> Télécharger
+      </button>`;
+    document.getElementById('outilModal').style.display='flex';
+    setTimeout(dessinerCanvas, 100);
+    return;
+  }
+
+  const links = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(outil.content)}`,
+    telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(outil.content)}`,
+    instagram: null, tiktok: null
+  };
+
+  document.getElementById('outilContent').innerHTML = `
+    <div style="background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.2);border-radius:10px;padding:12px;margin-bottom:12px">
+      <pre style="white-space:pre-wrap;font-size:12px;color:#fdf8f0;font-family:'DM Sans',sans-serif;line-height:1.6">${outil.content.replace(/<[^>]+>/g,'')}</pre>
+    </div>
+    <button onclick="copierTexte()" style="width:100%;background:rgba(246,139,30,.15);color:#f68b1e;border:1px solid rgba(246,139,30,.3);border-radius:8px;padding:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;margin-bottom:8px">
+      <i class="fas fa-copy"></i> Copier le texte
+    </button>
+    ${links[reseau] ? `<button onclick="window.open('${links[reseau]}','_blank')" style="width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif">
+      <i class="fas fa-share"></i> Partager maintenant
+    </button>` : `<button onclick="navigator.clipboard.writeText(\`${outil.content.replace(/`/g,"'")}\`).then(()=>{window.open('https://www.${reseau}.com','_blank')})" style="width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif">
+      <i class="fas fa-copy"></i> Copier & Ouvrir ${reseau}
+    </button>`}`;
+
+  document.getElementById('outilModal').style.display='flex';
+  window._currentOutilTexte = outil.content.replace(/<[^>]+>/g,'');
+}
+
+window.lancerOutil = lancerOutil;
+
+function copierTexte() {
+  navigator.clipboard.writeText(window._currentOutilTexte||'').then(()=>{
+    showToast('✅ Texte copié !');
+  });
+}
+
+function fermerOutil() {
+  document.getElementById('outilModal').style.display='none';
+}
+window.fermerOutil = fermerOutil;
+
+function dessinerCanvas() {
+  const canvas = document.getElementById('boostCanvas');
+  if(!canvas||!selectedProd) return;
+  const ctx = canvas.getContext('2d');
+  const p = selectedProd;
+
+  // Fond sombre
+  ctx.fillStyle = '#0f0c08';
+  ctx.fillRect(0,0,600,600);
+
+  // Fond dégradé
+  const grad = ctx.createLinearGradient(0,0,600,600);
+  grad.addColorStop(0,'#1a1206');
+  grad.addColorStop(1,'#2a1c0a');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,600,600);
+
+  // Bordure orange
+  ctx.strokeStyle = '#f68b1e';
+  ctx.lineWidth = 8;
+  ctx.strokeRect(4,4,592,592);
+
+  // Logo GALY MARKET
+  ctx.fillStyle = '#fdf8f0';
+  ctx.font = 'bold 32px Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('GALY', 240, 60);
+  ctx.fillStyle = '#f68b1e';
+  ctx.fillText('MARKET', 380, 60);
+
+  // Photo ou emoji produit
+  const photo = (p.photos&&p.photos[0])||p.img||'';
+  if(photo) {
+    const img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 150, 80, 300, 300);
+      finirCanvas(ctx, p);
+    };
+    img.src = photo;
+  } else {
+    ctx.font = '180px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.em||'📦', 300, 280);
+    finirCanvas(ctx, p);
+  }
+}
+
+function finirCanvas(ctx, p) {
+  // Nom produit
+  ctx.fillStyle = '#fdf8f0';
+  ctx.font = 'bold 28px DM Sans, sans-serif';
+  ctx.textAlign = 'center';
+  const name = p.name.length > 30 ? p.name.slice(0,30)+'…' : p.name;
+  ctx.fillText(name, 300, 430);
+
+  // Prix
+  ctx.fillStyle = '#f68b1e';
+  ctx.font = 'bold 40px DM Sans, sans-serif';
+  ctx.fillText(fmt(p.price), 300, 490);
+
+  // CTA
+  ctx.fillStyle = '#f68b1e';
+  ctx.beginPath();
+  ctx.roundRect(150, 510, 300, 50, 25);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 20px DM Sans, sans-serif';
+  ctx.fillText('Commander maintenant', 300, 542);
+
+  // Site
+  ctx.fillStyle = 'rgba(255,255,255,.4)';
+  ctx.font = '14px DM Sans, sans-serif';
+  ctx.fillText('galymarket.com · WhatsApp : +224 627 90 05 78', 300, 585);
+}
+
+function telechargerCanvas() {
+  const canvas = document.getElementById('boostCanvas');
+  if(!canvas) return;
+  const link = document.createElement('a');
+  link.download = 'pub-' + (selectedProd?.name||'produit').replace(/\s+/g,'-') + '.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+window.dessinerCanvas = dessinerCanvas;
+window.telechargerCanvas = telechargerCanvas;
+
+function updateSteps(n) {
+  const pageToStep = { 1:1, 2:2, '3galy':3, '3self':3, 4:4 };
+  const step = pageToStep[n] || n;
+  for(let i=1;i<=4;i++) {
+    const dot = document.getElementById('dot'+i);
+    const lbl = document.getElementById('lbl'+i);
+    if(!dot) continue;
+    if(i < step) { dot.className='step-dot done'; dot.innerHTML='<i class="fas fa-check" style="font-size:10px"></i>'; }
+    else if(i === step) { dot.className='step-dot active'; dot.textContent=i; lbl.className='step-label active'; }
+    else { dot.className='step-dot'; dot.textContent=i; lbl.className='step-label'; }
+  }
+}
+
+function goBack() {
+  if(currentPage===1) { window.location.href='dashboard-vendeur.html'; return; }
+  if(currentPage===4) { goToPage(3); return; }
+  if(currentPage===3) { goToPage(2); return; }
+  goToPage(currentPage-1);
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:99999';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// Vérifier session
+const _session = JSON.parse(localStorage.getItem(DV_KEY)||'{}');
+if(!_session.id) window.location.href='dashboard-vendeur.html';
+</script>
+</body>
+</html>

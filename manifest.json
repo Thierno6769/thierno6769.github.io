@@ -1,0 +1,20 @@
+{
+  "name": "Galy Market",
+  "short_name": "Galy Market",
+  "description": "La boutique en ligne N°1 en Guinée — Conakry",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0c08",
+  "theme_color": "#f68b1e",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

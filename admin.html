@@ -1,0 +1,3231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/marketing.css" />
+  <link rel="stylesheet" href="css/produits-admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ░░ LOGIN SCREEN ░░ -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-box">
+      <div class="login-logo">GALY<span>MARKET</span></div>
+      <div class="login-sub">Panneau d'administration</div>
+      <div class="login-form">
+        <div class="lf-group">
+          <label><i class="fas fa-user"></i> Identifiant</label>
+          <input type="text" id="loginUser" placeholder="admin" class="lf-input" />
+        </div>
+        <div class="lf-group">
+          <label><i class="fas fa-lock"></i> Mot de passe</label>
+          <div class="lf-pw-wrap">
+            <input type="password" id="loginPass" placeholder="••••••••" class="lf-input" />
+            <button class="lf-eye" id="lfeye"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="login-err" id="loginErr"></div>
+        <button class="login-btn" id="loginBtn">
+          <i class="fas fa-right-to-bracket"></i> Se connecter
+        </button>
+        <div class="login-hint">Identifiants : <strong>admin</strong> / <strong>admin2025</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ ADMIN PANEL ░░ -->
+  <div class="admin-panel" id="adminPanel" style="display:none">
+
+    <!-- SIDEBAR -->
+    <aside class="adm-sidebar" id="admSidebar">
+      <div class="adm-logo">
+        <span>GALY<em>MARKET</em></span>
+        <button class="adm-sidebar-close" id="admSidebarClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="adm-user-badge">
+        <div class="adm-avatar"><i class="fas fa-user-shield"></i></div>
+        <div>
+          <div class="adm-uname">Administrateur</div>
+          <div class="adm-urole">Super Admin</div>
+        </div>
+      </div>
+      <nav class="adm-nav">
+        <a href="#" class="adm-link active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="#" class="adm-link" data-tab="commandes"><i class="fas fa-bag-shopping"></i> Commandes <span class="adm-badge" id="nbCommandes">0</span></a>
+        <a href="#" class="adm-link" data-tab="produits"><i class="fas fa-box-open"></i> Produits <span class="adm-badge">20</span></a>
+        <a href="#" class="adm-link" data-tab="coupons"><i class="fas fa-ticket"></i> Coupons</a>
+        <a href="#" class="adm-link" data-tab="clients"><i class="fas fa-users"></i> Clients</a>
+        <a href="#" class="adm-link" data-tab="livraison"><i class="fas fa-truck-fast"></i> Livraison</a>
+        <div class="adm-nav-sep">Marketing</div>
+        <a href="#" class="adm-link" data-tab="marketing"><i class="fas fa-bullhorn"></i> Marketing <span class="adm-badge adm-badge-new">NEW</span></a>
+        <a href="#" class="adm-link" data-tab="boosts"><i class="fas fa-rocket"></i> Boosts <span class="adm-badge" id="nbBoosts">0</span></a>
+        <div class="adm-nav-sep">Équipe</div>
+        <a href="#" class="adm-link" data-tab="employes"><i class="fas fa-id-badge"></i> Employés <span class="adm-badge adm-badge-new" id="nbEmployes">0</span></a>
+        <div class="adm-nav-sep">Partenaires</div>
+        <a href="#" class="adm-link" data-tab="affiliation"><i class="fas fa-handshake"></i> Affiliation <span class="adm-badge adm-badge-new" id="nbAffiliés">0</span></a>
+        <a href="#" class="adm-link" data-tab="vendeurs"><i class="fas fa-store-alt"></i> Vendeurs <span class="adm-badge" id="nbVendeurs">0</span></a>
+        <div class="adm-nav-sep">Paramètres</div>
+        <a href="#" class="adm-link" data-tab="reglages"><i class="fas fa-gear"></i> Réglages</a>
+        <a href="#" class="adm-link" onclick="voirBoutiqueEtDeconnecter()"><i class="fas fa-store"></i> Voir la boutique</a>
+      </nav>
+      <button class="adm-logout" id="admLogout" onclick="deconnecterAdmin()"><i class="fas fa-right-from-bracket"></i> Déconnexion</button>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="adm-main">
+
+      <!-- TOP BAR -->
+      <div class="adm-topbar">
+        <button class="adm-burger" id="admBurger"><i class="fas fa-bars"></i></button>
+        <div class="adm-topbar-title" id="tabTitle">Dashboard</div>
+        <div class="adm-topbar-right">
+          <div class="adm-search-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="admSearch" placeholder="Rechercher…" />
+          </div>
+          <button class="adm-notif" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="adm-topbar-user">
+            <div class="adm-avatar sm"><i class="fas fa-user-shield"></i></div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="adm-content">
+
+        <!-- ── DASHBOARD ── -->
+        <div class="tab-content active" id="tab-dashboard">
+          <div class="adm-page-hdr">
+            <h2>Tableau de bord</h2>
+            <span class="adm-date" id="admDate"></span>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#f68b1e,#ffb347)"><i class="fas fa-coins"></i></div>
+              <div class="kpi-body">
+                <div class="kpi-label">Chiffre d'affaires</div>
+                <div class="kpi-val" id="kpiCA">0 GNF</div>
+                <div class="kpi-trend up" id="kpiCATrend"><i class="fas fa-arrow-trend-up"></i> +0%</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#27ae60,#2ecc71)"><i class="fas fa-bag-shopping"></i></div>
+              <div class="kpi-body">
+                <div class="kpi-label">Commandes</div>
+                <div class="kpi-val" id="kpiOrders">0</div>
+                <div class="kpi-trend up" id="kpiOrdersTrend"><i class="fas fa-arrow-trend-up"></i> +0</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#3498db,#5dade2)"><i class="fas fa-users"></i></div>
+              <div class="kpi-body">
+                <div class="kpi-label">Clients</div>
+                <div class="kpi-val" id="kpiClients">0</div>
+                <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +0</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#9b59b6,#a569bd)"><i class="fas fa-box-open"></i></div>
+              <div class="kpi-body">
+                <div class="kpi-label">Produits actifs</div>
+                <div class="kpi-val">20</div>
+                <div class="kpi-trend neutral"><i class="fas fa-minus"></i> stable</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts row -->
+          <div class="charts-row">
+            <div class="chart-card wide">
+              <div class="chart-hdr">
+                <h4>Ventes des 7 derniers jours</h4>
+                <select class="chart-select" id="chartPeriod">
+                  <option value="7">7 jours</option>
+                  <option value="30">30 jours</option>
+                </select>
+              </div>
+              <canvas id="salesChart" height="200"></canvas>
+            </div>
+            <div class="chart-card">
+              <div class="chart-hdr"><h4>Ventes par catégorie</h4></div>
+              <canvas id="catChart" height="200"></canvas>
+            </div>
+          </div>
+
+          <!-- Tables row -->
+          <div class="dash-tables">
+            <div class="dash-table-card">
+              <div class="dt-hdr">
+                <h4>Dernières commandes</h4>
+                <button class="dt-see-all" onclick="switchTab('commandes')">Voir tout</button>
+              </div>
+              <div id="dashOrders"></div>
+            </div>
+            <div class="dash-table-card">
+              <div class="dt-hdr">
+                <h4>Produits les plus vendus</h4>
+                <button class="dt-see-all" onclick="switchTab('produits')">Voir tout</button>
+              </div>
+              <div id="dashTopProds"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── COMMANDES ── -->
+        <div class="tab-content" id="tab-commandes">
+          <div class="adm-page-hdr">
+            <h2>Commandes</h2>
+            <div class="page-hdr-actions">
+              <select class="adm-select" id="filterStatus">
+                <option value="">Tous les statuts</option>
+                <option value="nouvelle">Nouvelles</option>
+                <option value="confirmee">Confirmées</option>
+                <option value="en-cours">En cours</option>
+                <option value="livree">Livrées</option>
+                <option value="annulee">Annulées</option>
+              </select>
+              <button class="btn-adm-export" id="exportOrders"><i class="fas fa-download"></i> Exporter</button>
+            </div>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="ordersTable">
+              <thead><tr>
+                <th>Réf</th><th>Client</th><th>Articles</th>
+                <th>Total</th><th>Zone</th><th>Paiement</th>
+                <th>Statut</th><th>Date</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="ordersTbody"></tbody>
+            </table>
+            <div class="adm-empty" id="ordersEmpty" style="display:none">
+              <i class="fas fa-bag-shopping"></i>
+              <p>Aucune commande pour l'instant.<br>Les commandes passées sur la boutique apparaîtront ici.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PRODUITS ── -->
+        <div class="tab-content" id="tab-produits">
+
+          <!-- Sous-onglets Produits / Catégories -->
+          <div class="prod-subtabs">
+            <button class="prod-subtab active" onclick="switchProdSubtab('liste',this)"><i class="fas fa-box-open"></i> Produits</button>
+            <button class="prod-subtab" onclick="switchProdSubtab('categories',this)"><i class="fas fa-tags"></i> Catégories</button>
+          </div>
+
+          <!-- LISTE PRODUITS -->
+          <div id="prodSubListe">
+            <div class="adm-page-hdr">
+              <h2>Catalogue produits <span class="prod-count-badge" id="prodCountBadge">0</span></h2>
+              <div class="page-hdr-actions">
+                <input type="text" id="prodSearch" placeholder="Rechercher…" class="adm-search-input" />
+                <select class="adm-select" id="prodCatFilter">
+                  <option value="">Toutes catégories</option>
+                </select>
+                <button class="btn-adm-primary" id="btnAddProd"><i class="fas fa-plus"></i> Nouveau produit</button>
+              </div>
+            </div>
+            <div class="prod-grid-admin" id="prodGridAdmin"></div>
+          </div>
+
+          <!-- GESTION CATÉGORIES -->
+          <div id="prodSubCategories" style="display:none">
+            <div class="adm-page-hdr">
+              <h2>Gestion des catégories</h2>
+              <button class="btn-adm-primary" onclick="openAddCatModal()"><i class="fas fa-plus"></i> Nouvelle catégorie</button>
+            </div>
+            <div class="cat-admin-grid" id="catAdminGrid"></div>
+          </div>
+
+        </div>
+
+        <!-- ── COUPONS ── -->
+        <div class="tab-content" id="tab-coupons">
+          <div class="adm-page-hdr">
+            <h2>Codes promo</h2>
+            <button class="btn-adm-primary" id="btnAddCoupon"><i class="fas fa-plus"></i> Nouveau code</button>
+          </div>
+          <div class="coupons-grid" id="couponsGrid"></div>
+        </div>
+
+        <!-- ── CLIENTS ── -->
+        <div class="tab-content" id="tab-clients">
+          <div class="adm-page-hdr"><h2>Clients</h2></div>
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead><tr><th>Client</th><th>Téléphone</th><th>Ville</th><th>Commandes</th><th>Total dépensé</th><th>Dernière commande</th></tr></thead>
+              <tbody id="clientsTbody"></tbody>
+            </table>
+            <div class="adm-empty" id="clientsEmpty" style="display:none">
+              <i class="fas fa-users"></i><p>Aucun client enregistré.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── LIVRAISON ── -->
+        <div class="tab-content" id="tab-livraison">
+          <div class="adm-page-hdr"><h2>Zones de livraison</h2></div>
+          <div class="zones-admin-grid" id="zonesAdmin"></div>
+        </div>
+
+        <!-- ── RÉGLAGES ── -->
+        <!-- ═══════════════════════════════════════════════════
+             ONGLET EMPLOYÉS
+        ═══════════════════════════════════════════════════ -->
+        <div class="tab-content" id="tab-employes">
+
+          <!-- KPIs employés -->
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(52,152,219,.12);color:#3498db"><i class="fas fa-users"></i></div>
+              <div class="kpi-info"><div class="kpi-val" id="emp-total">0</div><div class="kpi-label">Total employés</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(34,197,94,.12);color:#22c55e"><i class="fas fa-circle-check"></i></div>
+              <div class="kpi-info"><div class="kpi-val" id="emp-actifs">0</div><div class="kpi-label">Actifs</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(246,139,30,.12);color:#f68b1e"><i class="fas fa-clipboard-list"></i></div>
+              <div class="kpi-info"><div class="kpi-val" id="emp-gc">0</div><div class="kpi-label">Gest. Commandes</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(155,89,182,.12);color:#9b59b6"><i class="fas fa-boxes-stacked"></i></div>
+              <div class="kpi-info"><div class="kpi-val" id="emp-gs">0</div><div class="kpi-label">Gest. Stock</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(231,76,60,.12);color:#e74c3c"><i class="fas fa-motorcycle"></i></div>
+              <div class="kpi-info"><div class="kpi-val" id="emp-livreurs">0</div><div class="kpi-label">Livreurs</div></div>
+            </div>
+          </div>
+
+          <!-- Barre actions -->
+          <div class="adm-bar" style="margin-bottom:16px">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <input type="text" class="adm-search" id="empSearch" placeholder="🔍 Rechercher un employé…" oninput="filtrerEmployes()" style="width:240px"/>
+              <select class="adm-select" id="empFiltreRole" onchange="filtrerEmployes()">
+                <option value="">Tous les rôles</option>
+                <option value="gestionnaire_commandes">Gestionnaire Commandes</option>
+                <option value="gestionnaire_stock">Gestionnaire Stock</option>
+                <option value="livreur">Livreur</option>
+              </select>
+              <select class="adm-select" id="empFiltreStatut" onchange="filtrerEmployes()">
+                <option value="">Tous statuts</option>
+                <option value="actif">Actif</option>
+                <option value="inactif">Inactif</option>
+              </select>
+            </div>
+            <button class="btn-adm-primary" onclick="ouvrirModalEmploye()"><i class="fas fa-plus"></i> Ajouter un employé</button>
+          </div>
+
+          <!-- Tableau employés -->
+          <div class="adm-table-wrap">
+            <table class="adm-table" id="empTable">
+              <thead>
+                <tr>
+                  <th>Employé</th>
+                  <th>Rôle</th>
+                  <th>Téléphone</th>
+                  <th>Login</th>
+                  <th>Date création</th>
+                  <th>Statut</th>
+                  <th>Dossier</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="empTableBody">
+                <tr><td colspan="8" style="text-align:center;padding:40px;color:#888">Aucun employé — Cliquez sur <strong>Ajouter un employé</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- ═══ TABLEAUX DE BORD PERFORMANCE ═══ -->
+          <div id="empPerfDashboard" style="margin-top:32px;display:none">
+
+            <!-- Sélecteur période -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:#f68b1e">
+                <i class="fas fa-chart-bar"></i> TABLEAUX DE BORD — PERFORMANCE
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="emp-periode-btn active" onclick="setPeriode('jour',this)">Jour</button>
+                <button class="emp-periode-btn" onclick="setPeriode('semaine',this)">Semaine</button>
+                <button class="emp-periode-btn" onclick="setPeriode('mois',this)">Mois</button>
+              </div>
+            </div>
+
+            <!-- GC — Gestionnaires Commandes -->
+            <div class="emp-perf-section">
+              <div class="emp-perf-sec-title" style="background:rgba(52,152,219,.15);border-left:4px solid #3498db">
+                <i class="fas fa-clipboard-list" style="color:#3498db"></i> GESTIONNAIRES DE COMMANDES
+              </div>
+              <div id="perfGC" class="emp-perf-grid"></div>
+            </div>
+
+            <!-- GS — Gestionnaires Stock -->
+            <div class="emp-perf-section">
+              <div class="emp-perf-sec-title" style="background:rgba(155,89,182,.15);border-left:4px solid #9b59b6">
+                <i class="fas fa-boxes-stacked" style="color:#9b59b6"></i> GESTIONNAIRES DE STOCK
+              </div>
+              <div id="perfGS" class="emp-perf-grid"></div>
+            </div>
+
+            <!-- Livreurs -->
+            <div class="emp-perf-section">
+              <div class="emp-perf-sec-title" style="background:rgba(246,139,30,.15);border-left:4px solid #f68b1e">
+                <i class="fas fa-motorcycle" style="color:#f68b1e"></i> LIVREURS
+              </div>
+              <div id="perfLivreurs" class="emp-perf-grid"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             MODAL AJOUTER / MODIFIER EMPLOYÉ
+        ═══════════════════════════════════════════════════ -->
+        <div class="adm-modal" id="empModal">
+          <div class="adm-modal-box wide" style="max-width:680px">
+            <div class="adm-modal-hdr">
+              <h3 id="empModalTitre"><i class="fas fa-id-badge"></i> Ajouter un employé</h3>
+              <button class="adm-modal-close" onclick="fermerModalEmploye()"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Sous-onglets modal -->
+            <div style="display:flex;gap:0;border-bottom:2px solid rgba(246,139,30,.2);margin-bottom:20px">
+              <button class="emp-stab active" onclick="switchEmpTab('infos',this)"><i class="fas fa-user"></i> Infos</button>
+              <button class="emp-stab" onclick="switchEmpTab('dossier',this)"><i class="fas fa-folder"></i> Dossier</button>
+              <button class="emp-stab" onclick="switchEmpTab('perf',this)"><i class="fas fa-chart-bar"></i> Performance</button>
+            </div>
+
+            <div class="adm-modal-body" style="padding-top:0">
+
+              <!-- TAB INFOS -->
+              <div id="empTab-infos">
+                <input type="hidden" id="empId"/>
+                <div class="pm-grid">
+                  <div class="pm-field">
+                    <label>Prénom *</label>
+                    <input id="empPrenom" class="lf-input" placeholder="Mamadou"/>
+                  </div>
+                  <div class="pm-field">
+                    <label>Nom *</label>
+                    <input id="empNom" class="lf-input" placeholder="Diallo"/>
+                  </div>
+                  <div class="pm-field">
+                    <label>Téléphone *</label>
+                    <input id="empTel" class="lf-input" placeholder="+224 627 90 05 78"/>
+                  </div>
+                  <div class="pm-field">
+                    <label>Rôle *</label>
+                    <select id="empRole" class="lf-input" onchange="onRoleChange()">
+                      <option value="">-- Choisir un rôle --</option>
+                      <option value="gestionnaire_commandes">🔵 Gestionnaire Commandes</option>
+                      <option value="gestionnaire_stock">🟣 Gestionnaire Stock</option>
+                      <option value="livreur">🟠 Livreur</option>
+                    </select>
+                  </div>
+                  <div class="pm-field full">
+                    <label>Domaines de travail</label>
+                    <div id="empDomaines" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                      <label class="emp-domaine-check"><input type="checkbox" value="Téléphones & Smartphones"/> Téléphones</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Informatique & Accessoires"/> Informatique</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Mode Homme"/> Mode Homme</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Mode Femme"/> Mode Femme</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Électroménager"/> Électroménager</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Beauté & Cosmétiques"/> Beauté</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Sport & Loisirs"/> Sport</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Maison & Décoration"/> Maison</label>
+                      <label class="emp-domaine-check"><input type="checkbox" value="Tous les produits"/> Tous</label>
+                    </div>
+                  </div>
+                  <div class="pm-field">
+                    <label>Login *</label>
+                    <div style="display:flex;gap:6px">
+                      <input id="empLogin" class="lf-input" placeholder="prenom.nom"/>
+                      <button class="btn-adm-secondary" onclick="genererLogin()" style="white-space:nowrap;padding:0 12px"><i class="fas fa-magic"></i></button>
+                    </div>
+                  </div>
+                  <div class="pm-field">
+                    <label>Mot de passe *</label>
+                    <div style="display:flex;gap:6px">
+                      <input id="empMdp" class="lf-input" placeholder="Mot de passe" type="text"/>
+                      <button class="btn-adm-secondary" onclick="genererMdp()" style="white-space:nowrap;padding:0 12px"><i class="fas fa-dice"></i></button>
+                    </div>
+                  </div>
+                  <div class="pm-field full">
+                    <label>Notes</label>
+                    <textarea id="empNotes" class="lf-input" rows="2" placeholder="Notes internes…" style="resize:vertical"></textarea>
+                  </div>
+                </div>
+
+                <!-- Carte accès app -->
+                <div id="empAccesCard" style="display:none;background:rgba(246,139,30,.08);border:1px solid rgba(246,139,30,.2);border-radius:10px;padding:14px;margin-top:8px">
+                  <div style="font-size:12px;font-weight:700;color:#f68b1e;margin-bottom:8px"><i class="fas fa-mobile-screen"></i> LIEN À ENVOYER À L'EMPLOYÉ</div>
+                  <div style="font-size:12px;color:#ccc;margin-bottom:6px">Application : <span id="accesAppUrl" style="color:#f68b1e;font-weight:600"></span></div>
+                  <div style="font-size:12px;color:#ccc;margin-bottom:6px">Login : <span id="accesLogin" style="color:#fff;font-weight:600"></span></div>
+                  <div style="font-size:12px;color:#ccc;margin-bottom:10px">Mot de passe : <span id="accesMdp" style="color:#fff;font-weight:600"></span></div>
+                  <button class="btn-adm-secondary" style="font-size:11px;padding:6px 12px" onclick="copierAcces()"><i class="fas fa-copy"></i> Copier le message WhatsApp</button>
+                </div>
+              </div>
+
+              <!-- TAB DOSSIER -->
+              <div id="empTab-dossier" style="display:none">
+                <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#fca5a5">
+                  <i class="fas fa-lock"></i> Documents confidentiels — Accès propriétaire uniquement
+                </div>
+                <div class="pm-grid">
+                  <div class="pm-field">
+                    <label><i class="fas fa-home"></i> Certificat de résidence</label>
+                    <select id="dossCertif" class="lf-input">
+                      <option value="">Non fourni</option>
+                      <option value="fourni">✅ Fourni</option>
+                      <option value="attente">⏳ En attente</option>
+                    </select>
+                  </div>
+                  <div class="pm-field">
+                    <label><i class="fas fa-camera"></i> 3 Photos fond rouge</label>
+                    <select id="dossPhotos" class="lf-input">
+                      <option value="">Non fourni</option>
+                      <option value="3_fourni">✅ 3 photos fournies</option>
+                      <option value="2_fourni">⚠️ 2 photos</option>
+                      <option value="1_fourni">⚠️ 1 photo</option>
+                      <option value="attente">⏳ En attente</option>
+                    </select>
+                  </div>
+                  <div class="pm-field">
+                    <label><i class="fas fa-id-card"></i> CNI Biométrique</label>
+                    <select id="dossCni" class="lf-input">
+                      <option value="">Non fourni</option>
+                      <option value="fourni">✅ Fourni</option>
+                      <option value="attente">⏳ En attente</option>
+                    </select>
+                  </div>
+                  <div class="pm-field">
+                    <label><i class="fas fa-file-alt"></i> CV</label>
+                    <select id="dossCv" class="lf-input">
+                      <option value="">Non fourni</option>
+                      <option value="fourni">✅ Fourni</option>
+                      <option value="attente">⏳ En attente</option>
+                    </select>
+                  </div>
+                  <div class="pm-field full">
+                    <label>Notes dossier</label>
+                    <textarea id="dossNotes" class="lf-input" rows="3" placeholder="Observations sur le dossier…" style="resize:vertical"></textarea>
+                  </div>
+                </div>
+                <!-- Indicateur complétude -->
+                <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,.2);border-radius:8px">
+                  <div style="font-size:11px;color:#888;margin-bottom:6px">COMPLÉTUDE DU DOSSIER</div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <div style="flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px">
+                      <div id="dossProgress" style="height:8px;background:linear-gradient(90deg,#f68b1e,#22c55e);border-radius:4px;width:0%;transition:.3s"></div>
+                    </div>
+                    <span id="dossPercent" style="font-size:12px;font-weight:700;color:#f68b1e">0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB PERFORMANCE -->
+              <div id="empTab-perf" style="display:none">
+                <div id="empPerfContent" style="text-align:center;padding:30px;color:#888;font-size:13px">
+                  <i class="fas fa-chart-bar" style="font-size:32px;color:rgba(246,139,30,.3);margin-bottom:12px;display:block"></i>
+                  Sauvegarde l'employé d'abord pour voir ses statistiques
+                </div>
+              </div>
+
+            </div><!-- fin modal-body -->
+
+            <div class="adm-modal-ftr">
+              <div style="display:flex;gap:6px;align-items:center">
+                <span id="empStatutBadge" style="font-size:12px;color:#888"></span>
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn-adm-secondary" onclick="fermerModalEmploye()">Annuler</button>
+                <button class="btn-adm-primary" onclick="sauvegarderEmploye()"><i class="fas fa-floppy-disk"></i> <span id="empBtnTxt">Ajouter l'employé</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ AFFILIATION ══════ -->
+        <!-- ══════ AFFILIATION ══════ -->
+        <div class="tab-content" id="tab-affiliation">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-handshake" style="color:#f68b1e"></i> Programme d'Affiliation</h2>
+            <div style="display:flex;gap:8px">
+              <button class="btn-adm-primary" onclick="showModalAffilié()"><i class="fas fa-plus"></i> Ajouter un affilié</button>
+              <button class="btn-adm-secondary" onclick="ouvrirDetailAffilié(null)"><i class="fas fa-chart-pie"></i> Vue globale</button>
+            </div>
+          </div>
+
+          <!-- KPIs globaux -->
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="statAffTotal">0</div><div class="kpi-label">Affiliés actifs</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statAffVentes">0</div><div class="kpi-label">Ventes générées</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statAffCommissions">0 GNF</div><div class="kpi-label">Commissions totales</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statAffClics">0</div><div class="kpi-label">Clics sur liens</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statAffDemandes">0</div><div class="kpi-label">Demandes en attente</div></div>
+          </div>
+
+          <!-- Demandes en attente -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4><i class="fas fa-clock" style="color:#f59e0b"></i> Demandes en attente de validation</h4>
+            <div id="listeDemandesAff" style="margin-top:12px"></div>
+          </div>
+
+          <!-- Tableau de bord affiliés — carte par personne -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <h4 style="margin:0"><i class="fas fa-id-card" style="color:#3b82f6"></i> Tableau de bord — Affiliés</h4>
+              <div style="display:flex;gap:6px">
+                <button onclick="setAffView('cartes')" id="btnAffCartes" class="aff-view-btn active"><i class="fas fa-grip"></i> Cartes</button>
+                <button onclick="setAffView('table')" id="btnAffTable" class="aff-view-btn"><i class="fas fa-table"></i> Tableau</button>
+              </div>
+            </div>
+
+            <!-- Vue cartes -->
+            <div id="affViewCartes">
+              <div id="grillAffiliés" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px"></div>
+            </div>
+
+            <!-- Vue tableau -->
+            <div id="affViewTable" style="display:none;overflow-x:auto">
+              <table class="adm-table">
+                <thead><tr>
+                  <th>Affilié</th><th>Code</th><th>Produits promus</th>
+                  <th>Clics</th><th>Commandes</th><th>CA généré</th><th>Commission</th><th>Statut</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="bodyAffiliés"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal détail affilié -->
+        <div class="adm-modal" id="modalDetailAffilié">
+          <div class="adm-modal-box" style="max-width:700px">
+            <div class="adm-modal-hdr">
+              <h3 id="detailAffNomTitre">Détail affilié</h3>
+              <button onclick="document.getElementById('modalDetailAffilié').style.display='none'"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="adm-modal-body" id="detailAffContenu"></div>
+          </div>
+        </div>
+
+        <!-- Modal ajouter affilié -->
+        <div class="adm-modal" id="modalAffilié">
+          <div class="adm-modal-box" style="max-width:500px">
+            <div class="adm-modal-hdr">
+              <h3>Ajouter / Modifier un affilié</h3>
+              <button onclick="closeModalAffilié()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="adm-modal-body">
+              <div class="rg-field"><label>Nom complet *</label><input class="lf-input" id="affNom" placeholder="Nom de l'affilié"></div>
+              <div class="rg-field"><label>Téléphone / WhatsApp *</label><input class="lf-input" id="affTel" placeholder="+224 6XX XX XX XX"></div>
+              <div class="rg-field"><label>Code d'affiliation personnalisé *</label>
+                <div style="display:flex;gap:8px">
+                  <input class="lf-input" id="affCode" placeholder="EX: MAMADOU10" style="flex:1">
+                  <button onclick="genererCodeAff()" style="background:rgba(246,139,30,.15);border:1px solid rgba(246,139,30,.3);color:#f68b1e;padding:0 14px;border-radius:8px;cursor:pointer;white-space:nowrap;font-size:12px"><i class="fas fa-wand-magic-sparkles"></i> Auto</button>
+                </div>
+              </div>
+              <div class="rg-field"><label>Catégorie principale</label>
+                <select class="lf-input" id="affCat">
+                  <option value="all">Tous les produits</option>
+                  <option value="phones">Téléphones & Tech</option>
+                  <option value="mode">Mode & Vêtements</option>
+                  <option value="beaute">Beauté & Parfums</option>
+                  <option value="bijoux">Bijoux & Montres</option>
+                  <option value="maison">Maison & Jardin</option>
+                </select>
+              </div>
+              <div class="rg-field"><label>Produits à promouvoir</label>
+                <div id="affProduitsChk" style="max-height:120px;overflow-y:auto;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+                  <span style="color:#666;font-size:12px">Chargement des produits...</span>
+                </div>
+              </div>
+              <div class="rg-field"><label>Taux de commission (%)</label><input class="lf-input" id="affCommission" type="number" min="1" max="30" value="10" placeholder="10"></div>
+              <div class="rg-field"><label>Lien d'affiliation généré</label>
+                <div style="display:flex;gap:8px">
+                  <input class="lf-input" id="affLien" readonly style="flex:1;opacity:.7">
+                  <button onclick="copierLienAff()" style="background:rgba(246,139,30,.15);border:1px solid rgba(246,139,30,.3);color:#f68b1e;padding:0 14px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-copy"></i></button>
+                </div>
+              </div>
+              <input type="hidden" id="affId">
+              <button class="btn-adm-primary" style="width:100%;margin-top:12px" onclick="sauvegarderAffilié()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ MODÉRATION ADMIN ══════ -->
+        <div class="tab-content" id="tab-moderation">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-shield-alt" style="color:#ef4444"></i> Modération & Sécurité</h2>
+          </div>
+
+          <!-- KPIs modération -->
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="modSignalements" style="color:#ef4444">0</div><div class="kpi-label">🚨 Signalements</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="modBloques" style="color:#ef4444">0</div><div class="kpi-label">🚫 Comptes bloqués</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="modEnAttente">0</div><div class="kpi-label">⏳ Annonces à approuver</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="modSpam" style="color:#f59e0b">0</div><div class="kpi-label">⚠️ Suspicions spam</div></div>
+          </div>
+
+          <!-- SIGNALEMENTS -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4 style="color:#ef4444"><i class="fas fa-flag"></i> Signalements en attente</h4>
+            <div id="modSignalementsListe" style="margin-top:12px"></div>
+          </div>
+
+          <!-- UTILISATEURS BLOQUÉS -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4><i class="fas fa-ban" style="color:#ef4444"></i> Gérer les utilisateurs</h4>
+            <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap">
+              <input class="lf-input" id="modBloquerTel" placeholder="Numéro à bloquer..." style="flex:1;min-width:200px">
+              <input class="lf-input" id="modBloquerRaison" placeholder="Raison..." style="flex:1;min-width:180px">
+              <button onclick="modBloquerUser()" class="btn-adm-danger">
+                <i class="fas fa-ban"></i> Bloquer
+              </button>
+            </div>
+            <div id="modUsersBlockes"></div>
+          </div>
+
+          <!-- ANNONCES À APPROUVER -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4><i class="fas fa-check-circle" style="color:#22c55e"></i> Annonces récentes</h4>
+            <div style="margin:8px 0 12px;display:flex;gap:8px;flex-wrap:wrap">
+              <button onclick="modFiltreAnn('toutes')"    class="mod-filtre-btn active" id="modBtnToutes">Toutes</button>
+              <button onclick="modFiltreAnn('signalees')" class="mod-filtre-btn" id="modBtnSignalees">🚨 Signalées</button>
+              <button onclick="modFiltreAnn('boost')"     class="mod-filtre-btn" id="modBtnBoost">🚀 Boostées</button>
+            </div>
+            <div id="modAnnoncesListe"></div>
+          </div>
+
+          <!-- ANTI-SPAM STATS -->
+          <div class="reglage-card">
+            <h4><i class="fas fa-robot" style="color:#f59e0b"></i> Activité anti-spam</h4>
+            <div id="modSpamStats" style="margin-top:12px"></div>
+          </div>
+        </div>
+
+        <!-- ══════ ABONNEMENTS VENDEURS ══════ -->
+
+        <div class="tab-content" id="tab-abonnements">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-crown" style="color:#ffd700"></i> Abonnements Vendeurs</h2>
+            <a href="abonnements.html" target="_blank" class="btn-adm-primary"><i class="fas fa-external-link-alt"></i> Page publique</a>
+          </div>
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="aboActifs">0</div><div class="kpi-label">Abonnements actifs</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="aboEnAttente">0</div><div class="kpi-label">⏳ En attente</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="aboRevenu">0</div><div class="kpi-label">Revenus (GNF)</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="aboExpires">0</div><div class="kpi-label">Expirés ce mois</div></div>
+          </div>
+
+          <!-- Paiements en attente -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4 style="color:#f68b1e"><i class="fas fa-clock"></i> Paiements en attente d'activation</h4>
+            <div id="payEnAttente" style="margin-top:12px">
+              <p style="color:#888;font-size:13px">Aucun paiement en attente</p>
+            </div>
+          </div>
+
+          <!-- Abonnements actifs -->
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Vendeur</th><th>Plan</th><th>Début</th><th>Fin</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="bodyAbonnements"></tbody>
+            </table>
+          </div>
+
+          <!-- Activation manuelle -->
+          <div class="reglage-card" style="margin-top:16px">
+            <h4><i class="fas fa-bolt" style="color:#f68b1e"></i> Activer manuellement un abonnement</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px">
+              <div class="rg-field">
+                <label>ID ou Téléphone Vendeur</label>
+                <input class="lf-input" id="activVendeurId" placeholder="ID vendeur ou téléphone">
+              </div>
+              <div class="rg-field">
+                <label>Plan</label>
+                <select class="lf-input" id="activPlanId">
+                  <option value="basic">Basic — 50 000 GNF/mois</option>
+                  <option value="pro">Pro — 100 000 GNF/mois</option>
+                  <option value="premium">Premium 👑 — 200 000 GNF/mois</option>
+                </select>
+              </div>
+              <div class="rg-field">
+                <label>Durée</label>
+                <select class="lf-input" id="activDuree">
+                  <option value="mensuel">1 mois</option>
+                  <option value="annuel">1 an</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn-adm-primary" style="margin-top:12px" onclick="activerAboAdmin()">
+              <i class="fas fa-check-circle"></i> Activer l'abonnement
+            </button>
+          </div>
+        </div>
+
+        <!-- ══════ MODÉRATION ANNONCES ══════ -->
+
+        <div class="tab-content" id="tab-annonces">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-bullhorn" style="color:#f68b1e"></i> Gestion des Annonces</h2>
+            <a href="annonces.html" target="_blank" class="btn-adm-primary"><i class="fas fa-eye"></i> Voir les annonces</a>
+          </div>
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="annTot">0</div><div class="kpi-label">Total annonces</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="annBoost">0</div><div class="kpi-label">🚀 Boostées</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="annVend">0</div><div class="kpi-label">Vendeurs</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="annPrem">0</div><div class="kpi-label">👑 Premium</div></div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Annonce</th><th>Vendeur</th><th>Prix</th><th>Ville</th><th>Vues</th><th>Statut</th><th>Actions</th></tr></thead>
+              <tbody id="bodyAnnonces"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ══════ FIDÉLITÉ CLIENTS ══════ -->
+
+        <div class="tab-content" id="tab-fidelite">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-star" style="color:#f68b1e"></i> Programme de Fidélité</h2>
+          </div>
+
+          <!-- KPIs fidélité -->
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="fidTotalClients">0</div><div class="kpi-label">Clients fidèles</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="fidTotalPoints">0</div><div class="kpi-label">Points distribués</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="fidNbOr">0</div><div class="kpi-label">🥇 Niveau Or</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="fidNbArgent">0</div><div class="kpi-label">🥈 Niveau Argent</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="fidNbBronze">0</div><div class="kpi-label">🥉 Niveau Bronze</div></div>
+          </div>
+
+          <!-- Configuration fidélité -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4><i class="fas fa-cog" style="color:#f68b1e"></i> Configuration du programme</h4>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px">
+              <div class="rg-field">
+                <label>Points par 1000 GNF dépensés</label>
+                <input class="lf-input" id="fidPointsRate" value="1" type="number" min="1">
+              </div>
+              <div class="rg-field">
+                <label>Seuil Argent (GNF dépensés)</label>
+                <input class="lf-input" id="fidSeuilArgent" value="2000000" type="number">
+              </div>
+              <div class="rg-field">
+                <label>Seuil Or (GNF dépensés)</label>
+                <input class="lf-input" id="fidSeuilOr" value="5000000" type="number">
+              </div>
+              <div class="rg-field">
+                <label>Réduction Bronze (%)</label>
+                <input class="lf-input" id="fidRedBronze" value="5" type="number">
+              </div>
+              <div class="rg-field">
+                <label>Réduction Argent (%)</label>
+                <input class="lf-input" id="fidRedArgent" value="10" type="number">
+              </div>
+              <div class="rg-field">
+                <label>Réduction Or (%)</label>
+                <input class="lf-input" id="fidRedOr" value="15" type="number">
+              </div>
+            </div>
+            <button class="btn-adm-primary" style="margin-top:14px" onclick="sauvegarderConfigFidelite()">
+              <i class="fas fa-floppy-disk"></i> Sauvegarder la configuration
+            </button>
+          </div>
+
+          <!-- Liste clients fidèles -->
+          <div class="reglage-card">
+            <h4><i class="fas fa-users" style="color:#22c55e"></i> Clients fidèles</h4>
+            <div style="overflow-x:auto;margin-top:12px">
+              <table class="adm-table">
+                <thead><tr>
+                  <th>Client</th><th>Niveau</th><th>Points</th><th>Total dépensé</th><th>Commandes</th><th>Réduction</th>
+                </tr></thead>
+                <tbody id="bodyFidelite"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ ÉQUIPE MARKETING ══════ -->
+
+        <div class="tab-content" id="tab-vendeurs">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-bullhorn" style="color:#f68b1e"></i> Équipe Marketing</h2>
+            <button class="btn-adm-primary" onclick="showModalVendeur()"><i class="fas fa-plus"></i> Ajouter un gestionnaire</button>
+          </div>
+
+          <!-- KPIs équipe marketing -->
+          <div class="kpi-row" style="margin-bottom:20px">
+            <div class="kpi-card"><div class="kpi-val" id="statVendTotal">0</div><div class="kpi-label">Gestionnaires actifs</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statMktCA">0 GNF</div><div class="kpi-label">CA total généré</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statMktDepense">0 GNF</div><div class="kpi-label">Budget total dépensé</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statMktProduits">0</div><div class="kpi-label">Produits promus</div></div>
+            <div class="kpi-card"><div class="kpi-val" id="statMktROI">0%</div><div class="kpi-label">ROI moyen</div></div>
+          </div>
+
+          <!-- Tableau de bord par gestionnaire — cartes -->
+          <div class="reglage-card" style="margin-bottom:16px">
+            <h4 style="margin-bottom:16px"><i class="fas fa-chart-bar" style="color:#a855f7"></i> Performance par gestionnaire</h4>
+            <div id="grillMarketing" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px"></div>
+          </div>
+
+          <!-- Tableau récapitulatif -->
+          <div class="reglage-card">
+            <h4 style="margin-bottom:12px"><i class="fas fa-table" style="color:#3b82f6"></i> Tableau récapitulatif</h4>
+            <div style="overflow-x:auto">
+              <table class="adm-table">
+                <thead><tr>
+                  <th>Gestionnaire</th><th>Réseaux</th><th>Produits promus</th>
+                  <th>Budget dépensé</th><th>CA généré</th><th>ROI</th><th>Statut</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="bodyVendeurs"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal détail gestionnaire marketing -->
+        <div class="adm-modal" id="modalDetailMkt">
+          <div class="adm-modal-box" style="max-width:700px">
+            <div class="adm-modal-hdr">
+              <h3 id="detailMktNomTitre">Détail gestionnaire</h3>
+              <button onclick="document.getElementById('modalDetailMkt').style.display='none'"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="adm-modal-body" id="detailMktContenu"></div>
+          </div>
+        </div>
+
+        <!-- Modal ajouter gestionnaire marketing -->
+        <div class="adm-modal" id="modalVendeur">
+          <div class="adm-modal-box" style="max-width:520px">
+            <div class="adm-modal-hdr">
+              <h3>Gestionnaire Marketing</h3>
+              <button onclick="closeModalVendeur()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="adm-modal-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="rg-field"><label>Prénom *</label><input class="lf-input" id="vendPrenom" placeholder="Prénom"></div>
+                <div class="rg-field"><label>Nom *</label><input class="lf-input" id="vendNom" placeholder="Nom"></div>
+              </div>
+              <div class="rg-field"><label>Téléphone / WhatsApp *</label><input class="lf-input" id="vendTel" placeholder="+224 6XX XX XX XX"></div>
+              <div class="rg-field"><label>Réseaux sociaux assignés</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                  <label style="display:flex;align-items:center;gap:5px;background:rgba(24,119,242,.1);border:1px solid rgba(24,119,242,.3);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px">
+                    <input type="checkbox" class="vend-cat-chk" value="facebook"> 📘 Facebook</label>
+                  <label style="display:flex;align-items:center;gap:5px;background:rgba(225,48,108,.1);border:1px solid rgba(225,48,108,.3);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px">
+                    <input type="checkbox" class="vend-cat-chk" value="instagram"> 📸 Instagram</label>
+                  <label style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px">
+                    <input type="checkbox" class="vend-cat-chk" value="tiktok"> 🎵 TikTok</label>
+                  <label style="display:flex;align-items:center;gap:5px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px">
+                    <input type="checkbox" class="vend-cat-chk" value="whatsapp"> 💬 WhatsApp</label>
+                  <label style="display:flex;align-items:center;gap:5px;background:rgba(255,0,0,.1);border:1px solid rgba(255,0,0,.2);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px">
+                    <input type="checkbox" class="vend-cat-chk" value="youtube"> 📺 YouTube</label>
+                </div>
+              </div>
+              <div class="rg-field"><label>Produits à promouvoir</label>
+                <div id="mktProduitsChk" style="max-height:140px;overflow-y:auto;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px;margin-top:4px;display:flex;flex-wrap:wrap;gap:6px"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="rg-field"><label>Budget alloué (GNF)</label><input class="lf-input" id="vendBudget" type="number" placeholder="Ex: 500000"></div>
+                <div class="rg-field"><label>Budget dépensé (GNF)</label><input class="lf-input" id="vendDepense" type="number" placeholder="0"></div>
+              </div>
+              <div class="rg-field"><label>CA généré (GNF)</label><input class="lf-input" id="vendCA" type="number" placeholder="0"></div>
+              <div class="rg-field"><label>Notes</label><textarea class="lf-input" id="vendNotes" rows="2" placeholder="Notes sur ce gestionnaire..."></textarea></div>
+              <input type="hidden" id="vendId">
+              <button class="btn-adm-primary" style="width:100%;margin-top:12px" onclick="sauvegarderVendeur()">
+                <i class="fas fa-floppy-disk"></i> Sauvegarder
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-reglages">
+          <div class="adm-page-hdr"><h2>Réglages</h2></div>
+          <div class="reglages-grid">
+            <div class="reglage-card" style="border-color:rgba(246,139,30,.25);background:rgba(246,139,30,.04)">
+              <h4><i class="fas fa-store-alt" style="color:#f68b1e"></i> Galy Market Vendeur — Contrôle accès</h4>
+              <p style="color:#888;font-size:13px;margin-bottom:16px">Activez ou désactivez le bouton flottant <strong style="color:#fff">"Galy Market Vendeur"</strong> visible sur toute la boutique.</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:12px">
+                <div>
+                  <div style="font-weight:700;color:#fff;font-size:14px">Bouton vendeur flottant</div>
+                  <div style="font-size:12px;color:#888;margin-top:2px">Affiche l'icône 🏪 "Vendeur" sous le bouton WhatsApp</div>
+                </div>
+                <button id="toggleVendeurBtn" onclick="adminToggleVendeurBtn()" style="width:52px;height:28px;border-radius:14px;border:none;cursor:pointer;position:relative;transition:background .3s;background:#22c55e">
+                  <span id="toggleVendeurDot" style="position:absolute;top:3px;left:27px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .3s;box-shadow:0 2px 6px rgba(0,0,0,.3)"></span>
+                </button>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.03);border-radius:10px">
+                <a href="facebook-instagram.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1877f2,#e1306c);color:#fff;text-decoration:none;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700">
+                  <i class="fab fa-facebook-f"></i><i class="fab fa-instagram"></i> Facebook & Instagram
+                </a>
+                <span style="color:#888;font-size:12px">Gérez le marketing social de vos vendeurs</span>
+              </div>
+            </div>
+
+            <div class="reglage-card">
+              <h4><i class="fas fa-store"></i> Informations boutique</h4>
+              <div class="rg-field"><label>Nom de la boutique</label><input class="lf-input" id="rgShopName" value="Galy Market" /></div>
+              <div class="rg-field"><label>Téléphone</label><input class="lf-input" id="rgShopTel" value="+224 627 90 05 78" /></div>
+              <div class="rg-field"><label>WhatsApp vendeur</label><input class="lf-input" id="rgShopWa" value="+224 627 90 05 78" /></div>
+              </div>
+            </div>
+
+            <!-- ── GALY MARKET VENDEUR ── -->
+            <div class="reglage-card" style="margin-top:16px;border-color:rgba(246,139,30,.25)">
+              <h4 style="color:#f68b1e"><i class="fas fa-store"></i> Galy Market Vendeur</h4>
+              <p style="color:#888;font-size:13px;margin-bottom:16px">
+                Contrôlez la visibilité du bouton d'accès à la plateforme vendeur sur le site client.
+              </p>
+
+              <!-- Toggle ON/OFF -->
+              <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.2);border-radius:14px;padding:16px 20px;margin-bottom:14px">
+                <div>
+                  <div style="font-weight:700;color:#fff;font-size:15px;margin-bottom:3px">
+                    <span id="vendeurBtnIcon">🟢</span> Bouton <span style="color:#f68b1e">« Galy Market Vendeur »</span>
+                  </div>
+                  <div style="font-size:12px;color:#888">Affiche l'icône flottante sur toutes les pages du site</div>
+                </div>
+                <button id="btnToggleVendeur" onclick="toggleVendeurBtn()"
+                  style="width:56px;height:30px;border-radius:15px;border:none;cursor:pointer;position:relative;transition:background .3s;background:#22c55e">
+                  <span id="toggleVendeurDot" style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .3s;transform:translateX(26px)"></span>
+                </button>
+              </div>
+
+              <!-- Preview -->
+              <div style="display:flex;align-items:center;gap:14px;padding:12px;background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:14px">
+                <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#f68b1e,#e07008);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(246,139,30,.4)">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.15)"/><path d="M16 7V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V7" stroke="white" stroke-width="2"/><path d="M12 12V16M10 14H14" stroke="white" stroke-width="2"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#fff">Aperçu du bouton</div>
+                  <div style="font-size:11px;font-weight:800;color:#f68b1e;text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Vendeur</div>
+                  <div style="font-size:11px;color:#888;margin-top:2px">Apparaît au-dessus du bouton WhatsApp sur le site</div>
+                </div>
+              </div>
+
+              <!-- Lien vers FB/IG -->
+              <div style="background:linear-gradient(135deg,rgba(24,119,242,.08),rgba(225,48,108,.08));border:1px solid rgba(24,119,242,.2);border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                <div style="display:flex;gap:8px">
+                  <span style="width:32px;height:32px;background:#1877f2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff"><i class="fab fa-facebook-f"></i></span>
+                  <span style="width:32px;height:32px;background:linear-gradient(135deg,#f09433,#dc2743);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff"><i class="fab fa-instagram"></i></span>
+                </div>
+                <div style="flex:1;min-width:180px">
+                  <div style="font-size:13px;font-weight:700;color:#fff">Facebook & Instagram Marketing</div>
+                  <div style="font-size:12px;color:#888">Gérez les ventes sociales des vendeurs</div>
+                </div>
+                <a href="facebook-instagram.html" target="_blank"
+                  style="background:linear-gradient(135deg,#1877f2,#e1306c);color:#fff;text-decoration:none;padding:9px 16px;border-radius:10px;font-size:12px;font-weight:700;white-space:nowrap">
+                  <i class="fas fa-external-link-alt"></i> Ouvrir
+                </a>
+              </div>
+
+              <div class="rg-field" style="display:none">
+              <div class="rg-field"><label>Devise</label><input class="lf-input" id="rgShopDevise" value="GNF" /></div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="sauvegarderReglages()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+            </div>
+
+            <!-- ═══ INTÉGRATIONS & BOUTONS FLOTTANTS ═══ -->
+            <div class="reglage-card">
+              <h4><i class="fas fa-puzzle-piece" style="color:#f68b1e"></i> Intégrations & Boutons flottants</h4>
+              <p style="color:#888;font-size:13px;margin-bottom:16px">Activez ou désactivez les fonctionnalités visibles sur le site public.</p>
+
+              <!-- Toggle Bouton Vendeur -->
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.2);border-radius:14px;margin-bottom:12px">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <div style="width:48px;height:48px;background:linear-gradient(135deg,#f68b1e,#e07008);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(246,139,30,.4)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.15)"/><path d="M16 7V5C16 4.46 15.79 3.96 15.41 3.59C15.04 3.21 14.53 3 14 3H10C9.47 3 8.96 3.21 8.59 3.59C8.21 3.96 8 4.46 8 5V7" stroke="white" stroke-width="2"/><path d="M12 12V16M10 14H14" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div>
+                    <div style="font-weight:700;color:#fff;font-size:14px">Bouton "Galy Market Vendeur"</div>
+                    <div style="font-size:12px;color:#888;margin-top:2px">Icône flottante visible sur toutes les pages du site public</div>
+                    <div style="font-size:11px;color:#f68b1e;margin-top:2px">📍 Position : bas-droite, au-dessus du bouton WhatsApp</div>
+                  </div>
+                </div>
+                <label class="adm-toggle-wrap" style="cursor:pointer">
+                  <input type="checkbox" id="toggleVendeurBtn" onchange="toggleVendeurBouton(this.checked)" style="display:none">
+                  <div class="adm-toggle" id="toggleVendeurDisplay">
+                    <div class="adm-toggle-knob"></div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Toggle Facebook & Instagram -->
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:rgba(24,119,242,.06);border:1px solid rgba(24,119,242,.2);border-radius:14px;margin-bottom:12px">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <div style="display:flex;gap:4px">
+                    <div style="width:24px;height:24px;background:#1877f2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff"><i class="fab fa-facebook-f"></i></div>
+                    <div style="width:24px;height:24px;background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff"><i class="fab fa-instagram"></i></div>
+                  </div>
+                  <div>
+                    <div style="font-weight:700;color:#fff;font-size:14px">Facebook & Instagram</div>
+                    <div style="font-size:12px;color:#888;margin-top:2px">Outil de marketing réseaux sociaux pour les vendeurs</div>
+                  </div>
+                </div>
+                <label class="adm-toggle-wrap" style="cursor:pointer">
+                  <input type="checkbox" id="toggleFbIg" onchange="toggleFbIgBtn(this.checked)" style="display:none">
+                  <div class="adm-toggle" id="toggleFbIgDisplay">
+                    <div class="adm-toggle-knob"></div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Lien direct vers les outils -->
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+                <a href="dashboard-vendeur.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(246,139,30,.1);color:#f68b1e;border:1px solid rgba(246,139,30,.2);padding:8px 14px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:700">
+                  <i class="fas fa-store"></i> Voir Dashboard Vendeur
+                </a>
+                <a href="facebook-instagram.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(24,119,242,.1);color:#60a5fa;border:1px solid rgba(24,119,242,.2);padding:8px 14px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:700">
+                  <i class="fab fa-facebook-f"></i> Voir Facebook & Instagram
+                </a>
+              </div>
+            </div>
+
+            <!-- Prix de livraison -->
+            <div class="reglage-card">
+              <h4><i class="fas fa-truck"></i> Prix de livraison (GNF)</h4>
+              <div class="rg-field"><label>Conakry Centre</label><input class="lf-input" id="rgLivConakryCentre" value="0" /></div>
+              <div class="rg-field"><label>Conakry Périphérie</label><input class="lf-input" id="rgLivConakryPeriph" value="25000" /></div>
+              <div class="rg-field"><label>Basse Guinée</label><input class="lf-input" id="rgLivBasse" value="50000" /></div>
+              <div class="rg-field"><label>Moyen Guinée</label><input class="lf-input" id="rgLivMoyen" value="50000" /></div>
+              <div class="rg-field"><label>Haute Guinée</label><input class="lf-input" id="rgLivHaute" value="70000" /></div>
+              <div class="rg-field"><label>Guinée Forestière</label><input class="lf-input" id="rgLivForestiere" value="80000" /></div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="sauvegarderLivraison()"><i class="fas fa-floppy-disk"></i> Sauvegarder les prix</button>
+            </div>
+            <!-- Administrateurs associés (super admin seulement) -->
+            <div class="reglage-card" id="cardAssocies">
+              <h4><i class="fas fa-user-shield"></i> Administrateurs associés</h4>
+              <p style="color:var(--adm-muted);font-size:12px;margin-bottom:12px">Ajoutez des admins avec des permissions limitées</p>
+              <div id="listeAssocies"></div>
+              <div class="rg-field"><label>Nom d'utilisateur</label><input class="lf-input" id="rgAssocieUser" placeholder="nomassocié" /></div>
+              <div class="rg-field"><label>Mot de passe</label><input class="lf-input" id="rgAssociePasse" placeholder="••••••••" /></div>
+              <div class="rg-field"><label>Permissions</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                  <label style="display:flex;align-items:center;gap:4px;font-size:12px"><input type="checkbox" id="permProduits"> Produits</label>
+                  <label style="display:flex;align-items:center;gap:4px;font-size:12px"><input type="checkbox" id="permCommandes"> Commandes</label>
+                  <label style="display:flex;align-items:center;gap:4px;font-size:12px"><input type="checkbox" id="permClients"> Clients</label>
+                  <label style="display:flex;align-items:center;gap:4px;font-size:12px"><input type="checkbox" id="permMarketing"> Marketing</label>
+                </div>
+              </div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="ajouterAssocie()"><i class="fas fa-plus"></i> Ajouter l'admin associé</button>
+            </div>
+            <div class="reglage-card">
+              <h4><i class="fas fa-lock"></i> Sécurité</h4>
+              <div class="rg-field"><label>Nouveau mot de passe</label><input type="password" class="lf-input" placeholder="••••••••" /></div>
+              <div class="rg-field"><label>Confirmer</label><input type="password" class="lf-input" placeholder="••••••••" /></div>
+              <button class="btn-adm-primary" style="margin-top:14px" id="btnUpdateMdp" onclick="changerMotDePasse()"><i class="fas fa-shield-check"></i> Mettre à jour</button>
+            </div>
+            <!-- Gestionnaires par catégorie -->
+            <div class="reglage-card" style="grid-column:1/-1">
+              <h4><i class="fab fa-whatsapp" style="color:#25d366"></i> Gestionnaires par catégorie (Bouton "Discuter ici")</h4>
+              <p style="color:#888;font-size:12px;margin-bottom:14px">Chaque catégorie peut avoir un gestionnaire WhatsApp dédié pour répondre aux clients.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px" id="gestCatsGrid">
+                <!-- Généré par JS -->
+              </div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="sauvegarderGestionnaires()">
+                <i class="fas fa-floppy-disk"></i> Sauvegarder les gestionnaires
+              </button>
+            </div>
+
+            <!-- Images Slider -->
+            <div class="reglage-card" style="grid-column:1/-1">
+              <h4><i class="fas fa-images" style="color:#f68b1e"></i> Images du Slider (Page d'accueil)</h4>
+              <p style="color:#888;font-size:12px;margin-bottom:14px">Ajoutez des liens d'images pour chaque slide. Laissez vide pour garder l'animation par défaut.</p>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div class="rg-field">
+                  <label>📱 Technologie Premium</label>
+                  <input class="lf-input" id="rgSliderImg0" placeholder="https://... (lien image)">
+                  <div id="prevSlider0" style="margin-top:6px;height:80px;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+                    <span style="color:#555;font-size:12px">Aperçu</span>
+                  </div>
+                </div>
+                <div class="rg-field">
+                  <label>👗 Élégance Authentique</label>
+                  <input class="lf-input" id="rgSliderImg1" placeholder="https://... (lien image)">
+                  <div id="prevSlider1" style="margin-top:6px;height:80px;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+                    <span style="color:#555;font-size:12px">Aperçu</span>
+                  </div>
+                </div>
+                <div class="rg-field">
+                  <label>🌹 Beauté Naturelle</label>
+                  <input class="lf-input" id="rgSliderImg2" placeholder="https://... (lien image)">
+                  <div id="prevSlider2" style="margin-top:6px;height:80px;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+                    <span style="color:#555;font-size:12px">Aperçu</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="sauvegarderSliderImages()">
+                <i class="fas fa-floppy-disk"></i> Sauvegarder les images
+              </button>
+            </div>
+
+            <div class="reglage-card">
+              <h4><i class="fas fa-truck-fast"></i> Livraison gratuite</h4>
+              <div class="rg-field"><label>Seuil (GNF)</label><input class="lf-input" value="500000" id="freeThreshold" /></div>
+              <div class="rg-field"><label>Message ticker</label><input class="lf-input" value="Livraison offerte dès 2 000 000 GNF" /></div>
+              <button class="btn-adm-primary" style="margin-top:14px" onclick="showToastAdm('✅ Seuil mis à jour')"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+            </div>
+            <div class="reglage-card danger-card">
+              <h4><i class="fas fa-triangle-exclamation"></i> Zone de danger</h4>
+              <p style="color:var(--adm-muted);font-size:13px;margin-bottom:14px">Ces actions sont irréversibles.</p>
+              <button class="btn-danger" onclick="if(confirm('Supprimer toutes les commandes ?')){localStorage.removeItem('GM_ORDERS');showToastAdm('🗑️ Commandes supprimées');renderAll()}">
+                <i class="fas fa-trash"></i> Supprimer toutes les commandes
+              </button>
+              <button class="btn-danger" style="margin-top:10px" onclick="if(confirm('Réinitialiser tout ?')){localStorage.clear();location.reload()}">
+                <i class="fas fa-rotate-left"></i> Réinitialiser toutes les données
+              </button>
+            </div>
+          </div>
+        </div>
+
+        
+        <!-- ═══════════════ TAB BOOSTS ═══════════════ -->
+        <div class="tab-content" id="tab-boosts">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-rocket" style="color:var(--gold)"></i> Demandes de Boost</h2>
+            <p class="adm-page-sub">Validez ou refusez les demandes de boost des vendeurs</p>
+          </div>
+          <div id="boostsList"></div>
+        </div>
+        <!-- ═══════════════ /TAB BOOSTS ═══════════════ -->
+        <!-- ═══════════════ TAB MARKETING ═══════════════ -->
+        <div class="tab-content" id="tab-marketing">
+          <div class="adm-page-hdr">
+            <h2><i class="fas fa-bullhorn" style="color:var(--gold)"></i> Marketing Réseaux Sociaux</h2>
+            <p class="adm-page-sub">Créez, programmez et partagez vos publicités produits sur Facebook, Instagram et WhatsApp</p>
+          </div>
+
+          <!-- STATS MARKETING -->
+          <div class="mkt-stats-row">
+            <div class="mkt-stat-card">
+              <div class="mkt-stat-icon" style="background:rgba(24,119,242,.12);color:#1877f2"><i class="fab fa-facebook-f"></i></div>
+              <div class="mkt-stat-info">
+                <div class="mkt-stat-val" id="mktFbShares">0</div>
+                <div class="mkt-stat-label">Partages Facebook</div>
+              </div>
+            </div>
+            <div class="mkt-stat-card">
+              <div class="mkt-stat-icon" style="background:rgba(225,48,108,.12);color:#e1306c"><i class="fab fa-instagram"></i></div>
+              <div class="mkt-stat-info">
+                <div class="mkt-stat-val" id="mktIgShares">0</div>
+                <div class="mkt-stat-label">Partages Instagram</div>
+              </div>
+            </div>
+            <div class="mkt-stat-card">
+              <div class="mkt-stat-icon" style="background:rgba(37,211,102,.12);color:#25d366"><i class="fab fa-whatsapp"></i></div>
+              <div class="mkt-stat-info">
+                <div class="mkt-stat-val" id="mktWaShares">0</div>
+                <div class="mkt-stat-label">Partages WhatsApp</div>
+              </div>
+            </div>
+            <div class="mkt-stat-card">
+              <div class="mkt-stat-icon" style="background:rgba(246,139,30,.12);color:var(--gold)"><i class="fas fa-mouse-pointer"></i></div>
+              <div class="mkt-stat-info">
+                <div class="mkt-stat-val" id="mktClicks">0</div>
+                <div class="mkt-stat-label">Clics "Commander"</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mkt-layout">
+
+            <!-- COLONNE GAUCHE : Créer une pub -->
+            <div class="mkt-col-left">
+
+              <!-- SÉLECTION PRODUIT -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-box-open"></i> 1. Choisir un produit à promouvoir</div>
+                <div class="mkt-card-body">
+                  <div class="mkt-prod-select-wrap">
+                    <select id="mktProdSelect" class="lf-input" onchange="mktLoadProduct(this.value)">
+                      <option value="">— Sélectionnez un produit —</option>
+                    </select>
+                  </div>
+                  <!-- Aperçu produit sélectionné -->
+                  <div id="mktProdPreview" class="mkt-prod-preview" style="display:none">
+                    <div class="mpp-emoji" id="mppEmoji">📱</div>
+                    <div class="mpp-info">
+                      <div class="mpp-name" id="mppName">—</div>
+                      <div class="mpp-price" id="mppPrice">—</div>
+                      <div class="mpp-disc" id="mppDisc"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GÉNÉRATEUR DE POST -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-pen-to-square"></i> 2. Générer le texte du post</div>
+                <div class="mkt-card-body">
+                  <div class="mkt-tone-row">
+                    <span class="mkt-tone-label">Ton :</span>
+                    <button class="mkt-tone-btn active" data-tone="promo" onclick="mktSetTone(this,'promo')">🔥 Promo</button>
+                    <button class="mkt-tone-btn" data-tone="elegant" onclick="mktSetTone(this,'elegant')">✨ Élégant</button>
+                    <button class="mkt-tone-btn" data-tone="urgent" onclick="mktSetTone(this,'urgent')">⚡ Urgent</button>
+                    <button class="mkt-tone-btn" data-tone="simple" onclick="mktSetTone(this,'simple')">📋 Simple</button>
+                  </div>
+                  <button class="mkt-gen-btn" id="mktGenBtn" onclick="mktGeneratePost()">
+                    <i class="fas fa-wand-magic-sparkles"></i> Générer le post
+                  </button>
+                  <div class="mkt-post-output" id="mktPostOutput" style="display:none">
+                    <div class="mkt-post-toolbar">
+                      <span class="mkt-post-label"><i class="fas fa-align-left"></i> Texte généré</span>
+                      <button class="mkt-copy-btn" onclick="mktCopyPost()"><i class="fas fa-copy"></i> Copier</button>
+                    </div>
+                    <textarea id="mktPostText" class="mkt-post-textarea" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- VISUEL PRODUIT -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-image"></i> 3. Créer le visuel partageable</div>
+                <div class="mkt-card-body">
+                  <div class="mkt-visual-opts">
+                    <label class="mkt-vis-opt active" onclick="mktSetTheme(this,'dark')">
+                      <div class="mvo-preview dark-prev"></div>
+                      <span>Sombre</span>
+                    </label>
+                    <label class="mkt-vis-opt" onclick="mktSetTheme(this,'light')">
+                      <div class="mvo-preview light-prev"></div>
+                      <span>Clair</span>
+                    </label>
+                    <label class="mkt-vis-opt" onclick="mktSetTheme(this,'gold')">
+                      <div class="mvo-preview gold-prev"></div>
+                      <span>Or</span>
+                    </label>
+                  </div>
+                  <!-- Canvas visuel -->
+                  <canvas id="mktCanvas" width="600" height="600" class="mkt-canvas"></canvas>
+                  <div class="mkt-canvas-actions">
+                    <button class="btn-adm-primary" onclick="mktDownloadImage()">
+                      <i class="fas fa-download"></i> Télécharger l'image
+                    </button>
+                    <button class="btn-adm-secondary" onclick="mktDrawCanvas()">
+                      <i class="fas fa-rotate"></i> Actualiser
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- COLONNE DROITE : Partager + Programmer -->
+            <div class="mkt-col-right">
+
+              <!-- PARTAGE DIRECT -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-share-nodes"></i> Partager maintenant</div>
+                <div class="mkt-card-body">
+                  <p class="mkt-share-hint">Le lien "Commander maintenant" dans la pub redirige directement vers la fiche produit sur votre boutique.</p>
+                  <div class="mkt-share-btns">
+                    <button class="mkt-share-fb" onclick="mktShareFacebook()">
+                      <i class="fab fa-facebook-f"></i>
+                      <span>Partager sur Facebook</span>
+                      <div class="mkt-share-sub">Ouvre Facebook avec votre post prêt</div>
+                    </button>
+                    <button class="mkt-share-wa" onclick="mktShareWhatsApp()">
+                      <i class="fab fa-whatsapp"></i>
+                      <span>Partager sur WhatsApp</span>
+                      <div class="mkt-share-sub">Envoie le texte + lien produit</div>
+                    </button>
+                    <button class="mkt-share-ig" onclick="mktShareInstagram()">
+                      <i class="fab fa-instagram"></i>
+                      <span>Préparer pour Instagram</span>
+                      <div class="mkt-share-sub">Copie le texte + ouvre Instagram</div>
+                    </button>
+                    <button class="mkt-share-tg" onclick="mktShareTelegram()">
+                      <i class="fab fa-telegram"></i>
+                      <span>Partager sur Telegram</span>
+                      <div class="mkt-share-sub">Partage sur votre canal Galy Market</div>
+                    </button>
+                    <button class="mkt-share-tt" onclick="mktShareTikTok()" style="background:linear-gradient(135deg,#010101,#69c9d0);color:#fff;border:none;border-radius:12px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;text-align:left;font-family:'DM Sans',sans-serif;transition:opacity .2s">
+                      <i class="fab fa-tiktok" style="font-size:22px;width:28px;text-align:center"></i>
+                      <div>
+                        <span style="font-size:14px;font-weight:700;display:block">Préparer pour TikTok</span>
+                        <div class="mkt-share-sub">Copie le texte + hashtags · Ouvre TikTok</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PROGRAMMATION -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-calendar-clock"></i> Programmer un post</div>
+                <div class="mkt-card-body">
+                  <div class="mkt-sched-form">
+                    <div class="mkt-field">
+                      <label>Date et heure</label>
+                      <input type="datetime-local" id="mktSchedDate" class="lf-input" />
+                    </div>
+                    <div class="mkt-field">
+                      <label>Réseau</label>
+                      <select id="mktSchedNet" class="lf-input">
+                        <option value="facebook">📘 Facebook</option>
+                        <option value="instagram">📸 Instagram</option>
+                        <option value="whatsapp">💬 WhatsApp</option>
+                        <option value="tiktok">🎵 TikTok</option>
+                        <option value="telegram">✈️ Telegram</option>
+                      </select>
+                    </div>
+                    <div class="mkt-field">
+                      <label>Note (optionnel)</label>
+                      <input type="text" id="mktSchedNote" class="lf-input" placeholder="Ex: Promo weekend" />
+                    </div>
+                    <button class="btn-adm-primary" onclick="mktSchedulePost()" style="width:100%;margin-top:6px">
+                      <i class="fas fa-calendar-plus"></i> Programmer ce post
+                    </button>
+                  </div>
+                  <!-- Liste posts programmés -->
+                  <div class="mkt-sched-list" id="mktSchedList"></div>
+                </div>
+              </div>
+
+              <!-- LIEN CAMPAGNE -->
+              <div class="mkt-card">
+                <div class="mkt-card-hdr"><i class="fas fa-link"></i> Lien campagne produit</div>
+                <div class="mkt-card-body">
+                  <p class="mkt-share-hint">Ce lien redirige directement vers la fiche produit. Collez-le dans vos pubs Facebook Ads avec le bouton <strong>"Commander maintenant"</strong>.</p>
+                  <div class="mkt-link-box" id="mktLinkBox">
+                    <code id="mktProdLink">— Sélectionnez un produit —</code>
+                    <button class="mkt-copy-btn" onclick="mktCopyLink()"><i class="fas fa-copy"></i></button>
+                  </div>
+                  <div class="mkt-link-cta-info">
+                    <i class="fas fa-circle-info"></i>
+                    Quand un client clique sur votre pub → il arrive sur la fiche produit → il clique <strong>"Ajouter au panier"</strong> → il commande.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- HISTORIQUE POSTS -->
+          <div class="mkt-card" style="margin-top:0">
+            <div class="mkt-card-hdr"><i class="fas fa-clock-rotate-left"></i> Historique des posts partagés</div>
+            <div class="mkt-card-body">
+              <div id="mktHistory" class="mkt-history"></div>
+            </div>
+          </div>
+
+        </div>
+        <!-- ═══════════════ /TAB MARKETING ═══════════════ -->
+
+      </div><!-- /adm-content -->
+    </div><!-- /adm-main -->
+  </div><!-- /admin-panel -->
+
+  <!-- MODAL PRODUIT -->
+  <div class="adm-modal" id="prodModal">
+    <div class="adm-modal-box extra-wide">
+      <div class="adm-modal-hdr">
+        <h3 id="prodModalTitle"><i class="fas fa-box-open"></i> Ajouter un produit</h3>
+        <button class="adm-modal-close" onclick="closeProdModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="adm-modal-body pm-layout">
+        <input type="hidden" id="pmId" />
+
+        <!-- COLONNE GAUCHE : Infos produit -->
+        <div class="pm-col-left">
+
+          <!-- Infos de base -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-info-circle"></i> Informations générales</div>
+            <div class="pm-grid">
+              <div class="pm-field full"><label>Nom du produit *</label><input id="pmName" class="lf-input" placeholder="Ex: iPhone 15 Pro Max" /></div>
+              <div class="pm-field">
+                <label>Catégorie *</label>
+                <select id="pmCat" class="lf-input"></select>
+              </div>
+              <div class="pm-field"><label>Marque</label><input id="pmBrand" class="lf-input" placeholder="Samsung, Apple, Nike…" /></div>
+              <div class="pm-field"><label>Emoji</label><input id="pmEm" class="lf-input" placeholder="📱" maxlength="4" /></div>
+              <div class="pm-field full"><label>Description courte *</label><textarea id="pmDesc" class="lf-input" rows="3" placeholder="Décrivez le produit en quelques mots…"></textarea></div>
+              <div class="pm-field full"><label>Description complète</label><textarea id="pmDescFull" class="lf-input" rows="4" placeholder="Description détaillée, composition, utilisation…"></textarea></div>
+            </div>
+          </div>
+
+          <!-- Prix & Stock -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-tag"></i> Prix &amp; Stock</div>
+            <div class="pm-grid">
+              <div class="pm-field"><label>Prix de vente (GNF) *</label><input id="pmPrice" type="number" class="lf-input" placeholder="0" min="0" /></div>
+              <div class="pm-field"><label>Ancien prix (GNF)</label><input id="pmOld" type="number" class="lf-input" placeholder="0" min="0" /></div>
+              <div class="pm-field"><label>Stock disponible</label><input id="pmStock" type="number" class="lf-input" placeholder="0" min="0" /></div>
+              <div class="pm-field"><label>Note produit (0-5)</label><input id="pmRating" type="number" step="0.1" min="0" max="5" class="lf-input" placeholder="4.5" /></div>
+            </div>
+            <div class="pm-badges-row">
+              <label class="pm-badge-toggle" id="pmFlashLabel">
+                <input type="checkbox" id="pmFlash" />
+                <span class="pbt-inner"><i class="fas fa-bolt"></i> Flash Sale</span>
+              </label>
+              <label class="pm-badge-toggle" id="pmNewLabel">
+                <input type="checkbox" id="pmNew" />
+                <span class="pbt-inner"><i class="fas fa-star"></i> Nouveau</span>
+              </label>
+              <label class="pm-badge-toggle" id="pmPromoLabel">
+                <input type="checkbox" id="pmPromo" />
+                <span class="pbt-inner"><i class="fas fa-percent"></i> Promo</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Variantes -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-sliders"></i> Variantes (tailles, couleurs…)</div>
+            <div class="pm-variants-wrap">
+              <div class="pm-var-row">
+                <div class="pm-field" style="flex:1"><label>Type de variante</label>
+                  <select id="pmVarType" class="lf-input">
+                    <option value="">— Aucune variante —</option>
+                    <option value="taille">Taille (S, M, L, XL…)</option>
+                    <option value="couleur">Couleur</option>
+                    <option value="pointure">Pointure</option>
+                    <option value="custom">Personnalisé</option>
+                  </select>
+                </div>
+              </div>
+              <div id="pmVarInput" style="display:none" class="pm-var-input-wrap">
+                <label>Valeurs (séparées par virgule)</label>
+                <div class="pm-var-add-row">
+                  <input type="text" id="pmVarValues" class="lf-input" placeholder="Ex: S, M, L, XL ou Rouge, Bleu, Vert" />
+                  <button class="btn-adm-secondary" type="button" onclick="pmAddVariants()"><i class="fas fa-plus"></i> Ajouter</button>
+                </div>
+                <div class="pm-var-tags" id="pmVarTags"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spécifications techniques -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-list-check"></i> Spécifications techniques</div>
+            <div id="pmSpecsList" class="pm-specs-list"></div>
+            <button class="btn-adm-secondary pm-add-spec-btn" type="button" onclick="pmAddSpec()">
+              <i class="fas fa-plus"></i> Ajouter une spécification
+            </button>
+          </div>
+
+        </div>
+
+        <!-- COLONNE DROITE : Photos & Vidéo -->
+        <div class="pm-col-right">
+
+          <!-- PHOTOS -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-images"></i> Photos du produit</div>
+            <div class="pm-photos-drop" id="pmPhotosDrop" onclick="document.getElementById('pmPhotosInput').click()">
+              <i class="fas fa-cloud-arrow-up"></i>
+              <span>Cliquez ou glissez vos photos ici</span>
+              <small>JPG, PNG, WEBP · Max 5MB par photo · Illimité</small>
+              <input type="file" id="pmPhotosInput" accept="image/*" multiple style="display:none" onchange="pmHandlePhotos(this.files)" />
+            </div>
+            <div class="pm-photos-grid" id="pmPhotosGrid"></div>
+            <p class="pm-photos-hint">La 1ère photo sera l'image principale. Glissez pour réordonner.</p>
+          </div>
+
+          <!-- VIDÉO -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-video"></i> Vidéo du produit</div>
+            <div class="pm-video-tabs">
+              <button class="pm-vtab active" onclick="pmSetVideoTab(this,'link')">🔗 Lien YouTube/TikTok</button>
+              <button class="pm-vtab" onclick="pmSetVideoTab(this,'upload')">📁 Upload vidéo</button>
+            </div>
+            <!-- Lien -->
+            <div id="pmVidLink">
+              <input type="url" id="pmVideoUrl" class="lf-input" placeholder="https://youtube.com/watch?v=... ou https://tiktok.com/..." />
+              <div class="pm-vid-preview" id="pmVidPreview" style="display:none">
+                <iframe id="pmVidIframe" width="100%" height="180" frameborder="0" allowfullscreen style="border-radius:8px"></iframe>
+              </div>
+            </div>
+            <!-- Upload -->
+            <div id="pmVidUpload" style="display:none">
+              <div class="pm-photos-drop" onclick="document.getElementById('pmVideoInput').click()">
+                <i class="fas fa-film"></i>
+                <span>Cliquez pour uploader une vidéo</span>
+                <small>MP4, MOV · Max 20MB</small>
+                <input type="file" id="pmVideoInput" accept="video/*" style="display:none" onchange="pmHandleVideo(this.files[0])" />
+              </div>
+              <div id="pmVideoPreviewBox" style="display:none">
+                <video id="pmVideoEl" controls style="width:100%;border-radius:8px;margin-top:8px"></video>
+                <button class="pm-remove-vid" onclick="pmRemoveVideo()"><i class="fas fa-times"></i> Supprimer la vidéo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aperçu carte produit -->
+          <div class="pm-section">
+            <div class="pm-section-title"><i class="fas fa-eye"></i> Aperçu carte</div>
+            <div class="pm-card-preview" id="pmCardPreview">
+              <div class="pcp-img" id="pcpImg">📦</div>
+              <div class="pcp-body">
+                <div class="pcp-name" id="pcpName">Nom du produit</div>
+                <div class="pcp-price" id="pcpPrice">0 GNF</div>
+                <div class="pcp-tags" id="pcpTags"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="adm-modal-ftr">
+        <div class="pm-storage-info" id="pmStorageInfo"></div>
+        <button class="btn-adm-secondary" onclick="closeProdModal()">Annuler</button>
+        <button class="btn-adm-primary" id="saveProdBtn"><i class="fas fa-floppy-disk"></i> Sauvegarder le produit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CATÉGORIE -->
+  <div class="adm-modal" id="catModal">
+    <div class="adm-modal-box">
+      <div class="adm-modal-hdr">
+        <h3 id="catModalTitle"><i class="fas fa-tag"></i> Nouvelle catégorie</h3>
+        <button class="adm-modal-close" onclick="closeCatModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="adm-modal-body">
+        <input type="hidden" id="catId" />
+        <div class="pm-grid">
+          <div class="pm-field full"><label>Nom de la catégorie *</label><input id="catName" class="lf-input" placeholder="Ex: Électronique, Chaussures…" /></div>
+          <div class="pm-field"><label>Slug (identifiant) *</label><input id="catSlug" class="lf-input" placeholder="Ex: electronique" /></div>
+          <div class="pm-field"><label>Emoji</label><input id="catEm" class="lf-input" placeholder="📱" maxlength="4" /></div>
+          <div class="pm-field full"><label>Description</label><input id="catDesc" class="lf-input" placeholder="Description courte…" /></div>
+        </div>
+      </div>
+      <div class="adm-modal-ftr">
+        <button class="btn-adm-secondary" onclick="closeCatModal()">Annuler</button>
+        <button class="btn-adm-primary" onclick="saveCat()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COMMANDE DÉTAIL -->
+  <div class="adm-modal" id="orderModal">
+    <div class="adm-modal-box wide">
+      <div class="adm-modal-hdr">
+        <h3>Détail commande <span id="orderModalRef"></span></h3>
+        <button class="adm-modal-close" onclick="closeOrderModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="adm-modal-body" id="orderModalBody"></div>
+      <div class="adm-modal-ftr">
+        <select class="adm-select" id="orderStatusSelect"></select>
+        <button class="btn-adm-primary" id="saveOrderStatus"><i class="fas fa-floppy-disk"></i> Mettre à jour le statut</button>
+        <button class="btn-adm-secondary" onclick="closeOrderModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="adm-overlay" id="admOverlay"></div>
+
+  <!-- TOAST -->
+  <div class="adm-toast" id="admToast"></div>
+
+  <style>
+  /* ═══ ONGLET EMPLOYÉS ═══ */
+  .emp-stab{background:none;border:none;padding:10px 18px;font-size:13px;font-weight:600;color:#888;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit}
+  .emp-stab.active{color:#f68b1e;border-bottom-color:#f68b1e}
+  .emp-stab:hover{color:#f68b1e}
+  .emp-domaine-check{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;cursor:pointer;transition:all .2s;user-select:none}
+  .emp-domaine-check:has(input:checked){background:rgba(246,139,30,.15);border-color:rgba(246,139,30,.4);color:#f68b1e}
+  .emp-domaine-check input{width:12px;height:12px;accent-color:#f68b1e}
+  .emp-role-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+  .emp-role-gc{background:rgba(52,152,219,.15);color:#3498db}
+  .emp-role-gs{background:rgba(155,89,182,.15);color:#9b59b6}
+  .emp-role-lv{background:rgba(246,139,30,.15);color:#f68b1e}
+  .emp-statut-actif{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(34,197,94,.15);color:#22c55e}
+  .emp-statut-inactif{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(239,68,68,.15);color:#ef4444}
+  .emp-dossier-ok{color:#22c55e;font-size:12px}
+  .emp-dossier-warn{color:#f59e0b;font-size:12px}
+  .emp-action-btn{background:none;border:1px solid rgba(255,255,255,.1);padding:4px 10px;border-radius:6px;color:#ccc;cursor:pointer;font-size:11px;transition:all .2s}
+  .emp-action-btn:hover{border-color:#f68b1e;color:#f68b1e}
+  .emp-action-btn.danger:hover{border-color:#ef4444;color:#ef4444}
+  .emp-periode-btn{padding:6px 16px;border-radius:20px;border:1px solid rgba(246,139,30,.25);background:transparent;color:#888;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+  .emp-periode-btn.active{background:rgba(246,139,30,.15);border-color:#f68b1e;color:#f68b1e}
+  .emp-perf-section{margin-bottom:24px}
+  .emp-perf-sec-title{padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .emp-perf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+  .emp-perf-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px}
+  .emp-perf-name{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .emp-perf-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .emp-perf-stat{background:rgba(0,0,0,.2);border-radius:8px;padding:10px;text-align:center}
+  .emp-perf-stat-val{font-size:22px;font-weight:700;color:#f68b1e}
+  .emp-perf-stat-label{font-size:10px;color:#888;margin-top:2px}
+  .emp-perf-livraisons{margin-top:8px;font-size:11px;color:#888;padding:8px;background:rgba(0,0,0,.2);border-radius:6px;max-height:60px;overflow-y:auto}
+  
+  /* Modération */
+  .btn-adm-danger { background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);padding:10px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px; }
+  .btn-adm-danger:hover { background:rgba(239,68,68,.25); }
+  .mod-filtre-btn { background:rgba(255,255,255,.05);color:#888;border:1px solid rgba(255,255,255,.1);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s; }
+  .mod-filtre-btn.active { background:rgba(246,139,30,.15);color:#f68b1e;border-color:rgba(246,139,30,.3); }
+  .mod-ann-row { display:flex;align-items:flex-start;gap:12px;padding:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:8px; }
+  .mod-ann-row.signale { border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.05); }
+  .mod-user-row { display:flex;align-items:center;gap:12px;padding:10px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:10px;margin-bottom:8px; }
+</style>
+
+  <script>
+  // ════════════════════════════════════════════
+  // GALY MARKET — MODULE EMPLOYÉS (ADMIN)
+  // ════════════════════════════════════════════
+
+  const SITE_URL = window.location.origin + window.location.pathname.replace('admin.html','');
+  const ROLE_LABELS = {
+    gestionnaire_commandes: 'Gestionnaire Commandes',
+    gestionnaire_stock:     'Gestionnaire Stock',
+    livreur:                'Livreur'
+  };
+  const ROLE_APPS = {
+    gestionnaire_commandes: 'employes/app-commandes.html',
+    gestionnaire_stock:     'employes/app-stock.html',
+    livreur:                'employes/app-livreur.html'
+  };
+
+  // ── Charger les employés depuis localStorage ──
+  function getEmployes(){ return JSON.parse(localStorage.getItem('GM_EMPLOYES')||'[]'); }
+  function setEmployes(list){ localStorage.setItem('GM_EMPLOYES', JSON.stringify(list)); }
+
+  // ── Rafraîchir les KPIs ──
+  function refreshEmpKpis(){
+    const emps = getEmployes();
+    const actifs = emps.filter(e=>e.actif);
+    document.getElementById('emp-total').textContent    = emps.length;
+    document.getElementById('emp-actifs').textContent   = actifs.length;
+    document.getElementById('emp-gc').textContent       = emps.filter(e=>e.role==='gestionnaire_commandes').length;
+    document.getElementById('emp-gs').textContent       = emps.filter(e=>e.role==='gestionnaire_stock').length;
+    document.getElementById('emp-livreurs').textContent = emps.filter(e=>e.role==='livreur').length;
+    const badge = document.getElementById('nbEmployes');
+    if(badge) badge.textContent = emps.length;
+  }
+
+  // ── Rendu du tableau employés ──
+  function rendreTableEmployes(list){
+    const tbody = document.getElementById('empTableBody');
+    if(!list || list.length===0){
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#888">Aucun employé trouvé</td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(e=>{
+      const roleCls = e.role==='gestionnaire_commandes'?'emp-role-gc':e.role==='gestionnaire_stock'?'emp-role-gs':'emp-role-lv';
+      const roleLabel = ROLE_LABELS[e.role]||e.role;
+      const statut = e.actif
+        ? '<span class="emp-statut-actif"><i class="fas fa-circle" style="font-size:6px"></i> Actif</span>'
+        : '<span class="emp-statut-inactif"><i class="fas fa-circle" style="font-size:6px"></i> Inactif</span>';
+      const dossier = getDossierStatus(e.id);
+      const appUrl  = SITE_URL + ROLE_APPS[e.role];
+      return `<tr>
+        <td><div style="font-weight:700;font-size:13px">${e.prenom} ${e.nom}</div><div style="font-size:11px;color:#888">${e.tel}</div></td>
+        <td><span class="emp-role-badge ${roleCls}">${roleLabel}</span></td>
+        <td style="font-size:12px">${e.tel}</td>
+        <td><code style="background:rgba(255,255,255,.06);padding:2px 8px;border-radius:4px;font-size:12px">${e.login}</code></td>
+        <td style="font-size:12px">${e.dateCreation||''}</td>
+        <td>${statut}</td>
+        <td>${dossier}</td>
+        <td>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button class="emp-action-btn" onclick="editerEmploye('${e.id}')"><i class="fas fa-pen"></i></button>
+            <button class="emp-action-btn" onclick="toggleActif('${e.id}')">${e.actif?'<i class="fas fa-pause"></i>':'<i class="fas fa-play"></i>'}</button>
+            <button class="emp-action-btn" onclick="copierWhatsApp('${e.id}')"><i class="fab fa-whatsapp"></i></button>
+            <button class="emp-action-btn danger" onclick="supprimerEmploye('${e.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function getDossierStatus(empId){
+    const d = JSON.parse(localStorage.getItem('GM_DOSSIER_'+empId)||'{}');
+    const total = 4;
+    const ok = [d.certif,d.photos,d.cni,d.cv].filter(v=>v==='fourni'||v==='3_fourni').length;
+    if(ok===total) return '<span class="emp-dossier-ok"><i class="fas fa-check-circle"></i> Complet</span>';
+    if(ok===0) return '<span style="font-size:11px;color:#888">Vide</span>';
+    return `<span class="emp-dossier-warn"><i class="fas fa-triangle-exclamation"></i> ${ok}/${total}</span>`;
+  }
+
+  // ── Filtrer ──
+  function filtrerEmployes(){
+    const q     = document.getElementById('empSearch').value.toLowerCase();
+    const role  = document.getElementById('empFiltreRole').value;
+    const stat  = document.getElementById('empFiltreStatut').value;
+    let list    = getEmployes();
+    if(q)    list = list.filter(e=>(e.prenom+' '+e.nom+' '+e.login).toLowerCase().includes(q));
+    if(role) list = list.filter(e=>e.role===role);
+    if(stat) list = list.filter(e=>stat==='actif'?e.actif:!e.actif);
+    rendreTableEmployes(list);
+    renderPerfDashboard();
+  }
+
+  // ── Ouvrir modal ajout ──
+  function ouvrirModalEmploye(){
+    document.getElementById('empId').value   = '';
+    document.getElementById('empPrenom').value = '';
+    document.getElementById('empNom').value    = '';
+    document.getElementById('empTel').value    = '';
+    document.getElementById('empRole').value   = '';
+    document.getElementById('empLogin').value  = '';
+    document.getElementById('empMdp').value    = '';
+    document.getElementById('empNotes').value  = '';
+    document.getElementById('dossCertif').value = '';
+    document.getElementById('dossPhotos').value = '';
+    document.getElementById('dossCni').value   = '';
+    document.getElementById('dossCv').value    = '';
+    document.getElementById('dossNotes').value = '';
+    document.querySelectorAll('#empDomaines input').forEach(cb=>cb.checked=false);
+    document.getElementById('empModalTitre').innerHTML = '<i class="fas fa-id-badge"></i> Ajouter un employé';
+    document.getElementById('empBtnTxt').textContent  = 'Ajouter l\'employé';
+    document.getElementById('accesAccesCard') && (document.getElementById('accesAccesCard').style.display='none');
+    document.getElementById('empAccesCard').style.display = 'none';
+    document.getElementById('empPerfContent').innerHTML = '<i class="fas fa-chart-bar" style="font-size:32px;color:rgba(246,139,30,.3);margin-bottom:12px;display:block"></i>Sauvegarde l\'employé d\'abord pour voir ses statistiques';
+    switchEmpTab('infos', document.querySelector('.emp-stab'));
+    majDossierProgress();
+    document.getElementById('empModal').classList.add('open');
+    document.getElementById('admOverlay').classList.add('open');
+  }
+
+  function fermerModalEmploye(){
+    document.getElementById('empModal').classList.remove('open');
+    document.getElementById('admOverlay').classList.remove('open');
+  }
+
+  // ── Générer login / mdp ──
+  function genererLogin(){
+    const p = document.getElementById('empPrenom').value.trim().toLowerCase().replace(/\s+/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const n = document.getElementById('empNom').value.trim().toLowerCase().replace(/\s+/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if(p&&n) document.getElementById('empLogin').value = p+'.'+n;
+    else showToastAdm('⚠️ Remplis prénom et nom d\'abord');
+  }
+
+  function genererMdp(){
+    const chars='abcdefghijkmnpqrstuvwxyz23456789@#!';
+    let mdp='';
+    for(let i=0;i<8;i++) mdp+=chars[Math.floor(Math.random()*chars.length)];
+    document.getElementById('empMdp').value = mdp;
+  }
+
+  // ── Changer rôle → montrer lien app ──
+  function onRoleChange(){
+    const role  = document.getElementById('empRole').value;
+    const login = document.getElementById('empLogin').value;
+    const mdp   = document.getElementById('empMdp').value;
+    if(role){
+      const card = document.getElementById('empAccesCard');
+      card.style.display = 'block';
+      document.getElementById('accesAppUrl').textContent  = SITE_URL + ROLE_APPS[role];
+      document.getElementById('accesLogin').textContent   = login||'(pas encore défini)';
+      document.getElementById('accesMdp').textContent     = mdp||'(pas encore défini)';
+    }
+  }
+
+  // ── Sauvegarder employé ──
+  function sauvegarderEmploye(){
+    const id     = document.getElementById('empId').value;
+    const prenom = document.getElementById('empPrenom').value.trim();
+    const nom    = document.getElementById('empNom').value.trim();
+    const tel    = document.getElementById('empTel').value.trim();
+    const role   = document.getElementById('empRole').value;
+    const login  = document.getElementById('empLogin').value.trim();
+    const mdp    = document.getElementById('empMdp').value.trim();
+    const notes  = document.getElementById('empNotes').value.trim();
+
+    if(!prenom||!nom||!tel||!role||!login||!mdp){
+      showToastAdm('⚠️ Remplis tous les champs obligatoires (*)');
+      return;
+    }
+
+    // Vérifier login unique
+    const emps = getEmployes();
+    const loginExiste = emps.find(e=>e.login===login && e.id!==id);
+    if(loginExiste){ showToastAdm('❌ Ce login existe déjà'); return; }
+
+    // Domaines cochés
+    const domaines = [...document.querySelectorAll('#empDomaines input:checked')].map(cb=>cb.value);
+
+    // Dossier
+    const dossier = {
+      certif: document.getElementById('dossCertif').value,
+      photos: document.getElementById('dossPhotos').value,
+      cni:    document.getElementById('dossCni').value,
+      cv:     document.getElementById('dossCv').value,
+      notes:  document.getElementById('dossNotes').value,
+    };
+
+    const now = new Date().toLocaleDateString('fr-FR');
+
+    if(id){
+      // Modifier
+      const idx = emps.findIndex(e=>e.id===id);
+      if(idx>-1){
+        emps[idx] = {...emps[idx], prenom, nom, tel, role, login, mdp, notes, domaines};
+      }
+      showToastAdm('✅ Employé modifié avec succès');
+    } else {
+      // Créer
+      const newEmp = {
+        id: 'EMP_'+Date.now(),
+        prenom, nom, tel, role, login, mdp, notes, domaines,
+        actif: true,
+        dateCreation: now,
+        derniereConnexion: ''
+      };
+      emps.push(newEmp);
+      // Sauvegarder dossier séparé
+      localStorage.setItem('GM_DOSSIER_'+newEmp.id, JSON.stringify(dossier));
+      showToastAdm('✅ Employé ajouté avec succès ! Envoie les infos par WhatsApp 📱');
+    }
+
+    setEmployes(emps);
+    refreshEmpKpis();
+    filtrerEmployes();
+    fermerModalEmploye();
+  }
+
+  // ── Éditer un employé ──
+  function editerEmploye(id){
+    const emps = getEmployes();
+    const e = emps.find(emp=>emp.id===id);
+    if(!e) return;
+
+    document.getElementById('empId').value     = e.id;
+    document.getElementById('empPrenom').value = e.prenom;
+    document.getElementById('empNom').value    = e.nom;
+    document.getElementById('empTel').value    = e.tel;
+    document.getElementById('empRole').value   = e.role;
+    document.getElementById('empLogin').value  = e.login;
+    document.getElementById('empMdp').value    = e.mdp;
+    document.getElementById('empNotes').value  = e.notes||'';
+
+    // Domaines
+    document.querySelectorAll('#empDomaines input').forEach(cb=>{
+      cb.checked = (e.domaines||[]).includes(cb.value);
+    });
+
+    // Dossier
+    const d = JSON.parse(localStorage.getItem('GM_DOSSIER_'+id)||'{}');
+    document.getElementById('dossCertif').value = d.certif||'';
+    document.getElementById('dossPhotos').value = d.photos||'';
+    document.getElementById('dossCni').value    = d.cni||'';
+    document.getElementById('dossCv').value     = d.cv||'';
+    document.getElementById('dossNotes').value  = d.notes||'';
+
+    // Performance
+    const tb = JSON.parse(localStorage.getItem('GM_TB_'+id)||'{}');
+    const cmdCount  = (tb.commandes_acceptees||[]).length;
+    const stckCount = (tb.verifications_stock||[]).length;
+    const livrCount = (tb.livraisons_effectuees||[]).length;
+    document.getElementById('empPerfContent').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">
+        <div style="padding:16px;background:rgba(52,152,219,.1);border-radius:10px">
+          <div style="font-size:28px;font-weight:700;color:#3498db">${cmdCount}</div>
+          <div style="font-size:11px;color:#888;margin-top:4px">Commandes traitées</div>
+        </div>
+        <div style="padding:16px;background:rgba(155,89,182,.1);border-radius:10px">
+          <div style="font-size:28px;font-weight:700;color:#9b59b6">${stckCount}</div>
+          <div style="font-size:11px;color:#888;margin-top:4px">Vérif. stock</div>
+        </div>
+        <div style="padding:16px;background:rgba(246,139,30,.1);border-radius:10px">
+          <div style="font-size:28px;font-weight:700;color:#f68b1e">${livrCount}</div>
+          <div style="font-size:11px;color:#888;margin-top:4px">Livraisons</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:#888;text-align:center">Dernière connexion : ${e.derniereConnexion||'Jamais'}</div>
+    `;
+
+    document.getElementById('empModalTitre').innerHTML = `<i class="fas fa-pen"></i> Modifier — ${e.prenom} ${e.nom}`;
+    document.getElementById('empBtnTxt').textContent   = 'Sauvegarder';
+    onRoleChange();
+    majDossierProgress();
+    document.getElementById('empModal').classList.add('open');
+    document.getElementById('admOverlay').classList.add('open');
+  }
+
+  // ── Activer / désactiver ──
+  function toggleActif(id){
+    const emps = getEmployes();
+    const idx  = emps.findIndex(e=>e.id===id);
+    if(idx>-1){
+      emps[idx].actif = !emps[idx].actif;
+      setEmployes(emps);
+      refreshEmpKpis();
+      filtrerEmployes();
+      showToastAdm(emps[idx].actif ? '✅ Employé activé' : '⏸️ Employé désactivé');
+    }
+  }
+
+  // ── Supprimer ──
+  function supprimerEmploye(id){
+    if(!confirm('Supprimer cet employé définitivement ?')) return;
+    const emps = getEmployes().filter(e=>e.id!==id);
+    setEmployes(emps);
+    localStorage.removeItem('GM_DOSSIER_'+id);
+    refreshEmpKpis();
+    filtrerEmployes();
+    showToastAdm('🗑️ Employé supprimé');
+  }
+
+  // ── Copier message WhatsApp ──
+  function copierWhatsApp(id){
+    const emps = getEmployes();
+    const e = emps.find(emp=>emp.id===id);
+    if(!e) return;
+    const appUrl = window.location.origin + '/' + ROLE_APPS[e.role];
+    const msg = `Bonjour ${e.prenom} 👋\n\nVoici votre application Galy Market :\n🔗 ${appUrl}\n\n🔑 Login : ${e.login}\n🔑 Mot de passe : ${e.mdp}\n\nPour installer l'app :\n1. Ouvre le lien dans Chrome\n2. Menu ⋮ → "Ajouter à l'écran d'accueil"\n3. L'app s'installe ✅\n\nBonne journée !`;
+    navigator.clipboard.writeText(msg).then(()=>showToastAdm('✅ Message WhatsApp copié !'));
+  }
+
+  function copierAcces(){
+    const role  = document.getElementById('empRole').value;
+    const login = document.getElementById('empLogin').value;
+    const mdp   = document.getElementById('empMdp').value;
+    const prenom= document.getElementById('empPrenom').value;
+    const appUrl= window.location.origin + '/' + (ROLE_APPS[role]||'employes/login.html');
+    const msg = `Bonjour ${prenom} 👋\n\nVoici votre application Galy Market :\n🔗 ${appUrl}\n\n🔑 Login : ${login}\n🔑 Mot de passe : ${mdp}\n\nPour installer l'app :\n1. Ouvre le lien dans Chrome\n2. Menu ⋮ → "Ajouter à l'écran d'accueil"\n3. L'app s'installe ✅`;
+    navigator.clipboard.writeText(msg).then(()=>showToastAdm('✅ Message copié ! Colle sur WhatsApp'));
+  }
+
+  // ── Sous-onglets modal ──
+  function switchEmpTab(name, btn){
+    document.querySelectorAll('[id^="empTab-"]').forEach(t=>t.style.display='none');
+    document.querySelectorAll('.emp-stab').forEach(b=>b.classList.remove('active'));
+    document.getElementById('empTab-'+name).style.display = 'block';
+    if(btn) btn.classList.add('active');
+  }
+
+  // ── Barre de progression dossier ──
+  function majDossierProgress(){
+    const vals = [
+      document.getElementById('dossCertif').value,
+      document.getElementById('dossPhotos').value,
+      document.getElementById('dossCni').value,
+      document.getElementById('dossCv').value,
+    ];
+    const ok = vals.filter(v=>v==='fourni'||v==='3_fourni').length;
+    const pct = Math.round((ok/4)*100);
+    document.getElementById('dossProgress').style.width = pct+'%';
+    document.getElementById('dossPercent').textContent  = pct+'%';
+  }
+
+  // ═══ TABLEAUX DE BORD PERFORMANCE ═══
+  let currentPeriode = 'jour';
+
+  function setPeriode(p, btn) {
+    currentPeriode = p;
+    document.querySelectorAll('.emp-periode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPerfDashboard();
+  }
+
+  function renderPerfDashboard() {
+    const emps = getEmployes();
+    const dashboard = document.getElementById('empPerfDashboard');
+    if (emps.length === 0) { dashboard.style.display = 'none'; return; }
+    dashboard.style.display = 'block';
+
+    const gc = emps.filter(e => e.role === 'gestionnaire_commandes');
+    const gs = emps.filter(e => e.role === 'gestionnaire_stock');
+    const lv = emps.filter(e => e.role === 'livreur');
+
+    renderPerfGC(gc);
+    renderPerfGS(gs);
+    renderPerfLivreurs(lv);
+  }
+
+  function getPerfData(empId, type) {
+    const tb = JSON.parse(localStorage.getItem('GM_TB_' + empId) || '{}');
+    const now = new Date();
+    const today = now.toDateString();
+    const weekAgo = new Date(now - 7*24*60*60*1000);
+    const monthAgo = new Date(now - 30*24*60*60*1000);
+
+    let items = [];
+    if (type === 'commandes') items = tb.commandes_acceptees || [];
+    if (type === 'stock') items = tb.verifications_stock || [];
+    if (type === 'livraisons') items = tb.livraisons_effectuees || [];
+
+    const filterByPeriode = (list) => {
+      if (currentPeriode === 'jour') return list.filter(i => new Date(i.date).toDateString() === today);
+      if (currentPeriode === 'semaine') return list.filter(i => new Date(i.date) >= weekAgo);
+      return list.filter(i => new Date(i.date) >= monthAgo);
+    };
+
+    return filterByPeriode(items);
+  }
+
+  function renderPerfGC(gcs) {
+    const container = document.getElementById('perfGC');
+    if (!gcs.length) { container.innerHTML = '<div style="color:#888;font-size:13px;padding:12px">Aucun gestionnaire de commandes</div>'; return; }
+    container.innerHTML = gcs.map(e => {
+      const data = getPerfData(e.id, 'commandes');
+      const ca = data.reduce((sum, c) => sum + (c.montant || 0), 0);
+      const fmt = n => n.toLocaleString('fr-FR') + ' GNF';
+      const periodeLabel = currentPeriode === 'jour' ? "Aujourd'hui" : currentPeriode === 'semaine' ? 'Cette semaine' : 'Ce mois';
+      return `<div class="emp-perf-card">
+        <div class="emp-perf-name">
+          <span style="width:32px;height:32px;border-radius:50%;background:rgba(52,152,219,.2);display:flex;align-items:center;justify-content:center;font-size:14px">👤</span>
+          ${e.prenom} ${e.nom}
+          <span style="font-size:10px;color:#888;font-weight:400;margin-left:auto">${periodeLabel}</span>
+        </div>
+        <div class="emp-perf-stats">
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#3498db">${data.length}</div>
+            <div class="emp-perf-stat-label">Commandes acceptées</div>
+          </div>
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#22c55e;font-size:14px">${fmt(ca)}</div>
+            <div class="emp-perf-stat-label">Chiffre d'affaires</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderPerfGS(gss) {
+    const container = document.getElementById('perfGS');
+    if (!gss.length) { container.innerHTML = '<div style="color:#888;font-size:13px;padding:12px">Aucun gestionnaire de stock</div>'; return; }
+    container.innerHTML = gss.map(e => {
+      const data = getPerfData(e.id, 'stock');
+      const dispo = data.filter(d => d.disponible).length;
+      const indispo = data.filter(d => !d.disponible).length;
+      const periodeLabel = currentPeriode === 'jour' ? "Aujourd'hui" : currentPeriode === 'semaine' ? 'Cette semaine' : 'Ce mois';
+      return `<div class="emp-perf-card">
+        <div class="emp-perf-name">
+          <span style="width:32px;height:32px;border-radius:50%;background:rgba(155,89,182,.2);display:flex;align-items:center;justify-content:center;font-size:14px">👤</span>
+          ${e.prenom} ${e.nom}
+          <span style="font-size:10px;color:#888;font-weight:400;margin-left:auto">${periodeLabel}</span>
+        </div>
+        <div class="emp-perf-stats">
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#9b59b6">${data.length}</div>
+            <div class="emp-perf-stat-label">Vérifications totales</div>
+          </div>
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#22c55e">${dispo}</div>
+            <div class="emp-perf-stat-label">Disponibles ✅</div>
+          </div>
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#ef4444">${indispo}</div>
+            <div class="emp-perf-stat-label">Indisponibles ❌</div>
+          </div>
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#f68b1e">${data.length ? Math.round(dispo/data.length*100) : 0}%</div>
+            <div class="emp-perf-stat-label">Taux disponibilité</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderPerfLivreurs(livs) {
+    const container = document.getElementById('perfLivreurs');
+    if (!livs.length) { container.innerHTML = '<div style="color:#888;font-size:13px;padding:12px">Aucun livreur</div>'; return; }
+    container.innerHTML = livs.map(e => {
+      const data = getPerfData(e.id, 'livraisons');
+      const ca = data.reduce((sum, l) => sum + (l.montant || 0), 0);
+      const lieux = [...new Set(data.map(l => l.lieu).filter(Boolean))];
+      const fmt = n => n.toLocaleString('fr-FR') + ' GNF';
+      const periodeLabel = currentPeriode === 'jour' ? "Aujourd'hui" : currentPeriode === 'semaine' ? 'Cette semaine' : 'Ce mois';
+      return `<div class="emp-perf-card">
+        <div class="emp-perf-name">
+          <span style="width:32px;height:32px;border-radius:50%;background:rgba(246,139,30,.2);display:flex;align-items:center;justify-content:center;font-size:14px">🏍️</span>
+          ${e.prenom} ${e.nom}
+          <span style="font-size:10px;color:#888;font-weight:400;margin-left:auto">${periodeLabel}</span>
+        </div>
+        <div class="emp-perf-stats">
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#f68b1e">${data.length}</div>
+            <div class="emp-perf-stat-label">Livraisons</div>
+          </div>
+          <div class="emp-perf-stat">
+            <div class="emp-perf-stat-val" style="color:#22c55e;font-size:14px">${fmt(ca)}</div>
+            <div class="emp-perf-stat-label">CA encaissé</div>
+          </div>
+        </div>
+        ${lieux.length ? `<div class="emp-perf-livraisons"><i class="fas fa-map-marker-alt" style="color:#f68b1e"></i> Lieux : ${lieux.join(' · ')}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // ═══ RÉGLAGES — SAUVEGARDE RÉELLE ═══
+  function chargerReglages() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    const el = id => document.getElementById(id);
+    if (el('rgShopName'))         el('rgShopName').value         = s.shopName    || 'Galy Market';
+    if (el('rgShopTel'))          el('rgShopTel').value          = s.shopTel     || '+224 627 90 05 78';
+    if (el('rgShopWa'))           el('rgShopWa').value           = s.shopWa      || '+224 627 90 05 78';
+    chargerGestionnaires();
+    // Charger images slider
+    const imgs = s.sliderImages || [];
+    [0,1,2].forEach(i => {
+      if (el('rgSliderImg'+i)) {
+        el('rgSliderImg'+i).value = imgs[i] || '';
+        el('rgSliderImg'+i).addEventListener('input', () => previewSliderImg(i));
+        if (imgs[i]) previewSliderImg(i, imgs[i]);
+      }
+    });
+    if (el('rgShopDevise'))       el('rgShopDevise').value       = s.shopDevise  || 'GNF';
+    if (el('rgLivConakryCentre')) el('rgLivConakryCentre').value = s.livConakryCentre || '0';
+    if (el('rgLivConakryPeriph')) el('rgLivConakryPeriph').value = s.livConakryPeriph || '25000';
+    if (el('rgLivBasse'))         el('rgLivBasse').value         = s.livBasse    || '50000';
+    if (el('rgLivMoyen'))         el('rgLivMoyen').value         = s.livMoyen    || '50000';
+    if (el('rgLivHaute'))         el('rgLivHaute').value         = s.livHaute    || '70000';
+    if (el('rgLivForestiere'))    el('rgLivForestiere').value    = s.livForestiere || '80000';
+    // Afficher admins associés
+    afficherAssocies();
+    // Masquer section admins associés si pas super admin
+    const cardA = el('cardAssocies');
+    if (cardA && localStorage.getItem('GM_ADMIN_ROLE') !== 'super') cardA.style.display = 'none';
+  }
+  chargerReglages();
+
+  window.sauvegarderReglages = function() {
+    const el = id => document.getElementById(id);
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    if (el('rgShopName'))   s.shopName   = el('rgShopName').value.trim();
+    if (el('rgShopTel'))    s.shopTel    = el('rgShopTel').value.trim();
+    if (el('rgShopWa'))     s.shopWa     = el('rgShopWa').value.trim();
+    if (el('rgShopDevise')) s.shopDevise = el('rgShopDevise').value.trim();
+    // Sauvegarder état bouton vendeur
+    const knob = document.getElementById('toggleVendeurKnob');
+    if (knob) s.vendeurBtnActif = parseFloat(knob.style.left) > 10;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    showToastAdm('✅ Paramètres sauvegardés !');
+  };
+
+  window.sauvegarderLivraison = function() {
+    const el = id => document.getElementById(id);
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    s.livConakryCentre = parseInt(el('rgLivConakryCentre')?.value) || 0;
+    s.livConakryPeriph = parseInt(el('rgLivConakryPeriph')?.value) || 25000;
+    s.livBasse         = parseInt(el('rgLivBasse')?.value)         || 50000;
+    s.livMoyen         = parseInt(el('rgLivMoyen')?.value)         || 50000;
+    s.livHaute         = parseInt(el('rgLivHaute')?.value)         || 70000;
+    s.livForestiere    = parseInt(el('rgLivForestiere')?.value)    || 80000;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    showToastAdm('✅ Prix de livraison sauvegardés !');
+  };
+
+  window.changerMotDePasse = function() {
+    const pw = document.querySelectorAll('input[type="password"]');
+    if (!pw[0] || !pw[1]) return;
+    const p1 = pw[0].value.trim(), p2 = pw[1].value.trim();
+    if (!p1) { showToastAdm('⚠️ Entrez un mot de passe', true); return; }
+    if (p1 !== p2) { showToastAdm('⚠️ Les mots de passe ne correspondent pas', true); return; }
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    s.adminMdp = p1;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    pw[0].value = ''; pw[1].value = '';
+    showToastAdm('✅ Mot de passe mis à jour !');
+  };
+
+  window.ajouterAssocie = function() {
+    const u = document.getElementById('rgAssocieUser')?.value.trim();
+    const p = document.getElementById('rgAssociePasse')?.value.trim();
+    if (!u || !p) { showToastAdm('⚠️ Remplissez le nom et le mot de passe', true); return; }
+    const perms = [];
+    if (document.getElementById('permProduits')?.checked)  perms.push('produits');
+    if (document.getElementById('permCommandes')?.checked) perms.push('commandes');
+    if (document.getElementById('permClients')?.checked)   perms.push('clients');
+    if (document.getElementById('permMarketing')?.checked) perms.push('marketing');
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    if (!s.adminAssocies) s.adminAssocies = [];
+    s.adminAssocies.push({ user: u, pass: p, role: 'associe', perms });
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    document.getElementById('rgAssocieUser').value = '';
+    document.getElementById('rgAssociePasse').value = '';
+    afficherAssocies();
+    showToastAdm('✅ Admin associé ajouté !');
+  };
+
+  function afficherAssocies() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    const list = s.adminAssocies || [];
+    const el = document.getElementById('listeAssocies');
+    if (!el) return;
+    if (!list.length) { el.innerHTML = '<p style="color:#888;font-size:12px">Aucun admin associé</p>'; return; }
+    el.innerHTML = list.map((a, i) => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:rgba(255,255,255,.04);border-radius:6px;margin-bottom:6px">
+        <div>
+          <span style="font-weight:600;font-size:13px">👤 ${a.user}</span>
+          <span style="font-size:11px;color:#888;margin-left:8px">${(a.perms||[]).join(', ') || 'aucune'}</span>
+        </div>
+        <button onclick="supprimerAssocie(${i})" style="background:none;border:none;color:#ef4444;cursor:pointer"><i class="fas fa-trash"></i></button>
+      </div>`).join('');
+  }
+
+  window.supprimerAssocie = function(i) {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS') || '{}');
+    s.adminAssocies.splice(i, 1);
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    afficherAssocies();
+    showToastAdm('🗑️ Admin supprimé');
+  };
+
+  // ═══ ACCÈS ADMIN SECRET — 6 clics sur logo ═══
+
+  // Écouter les changements dossier pour la barre de progression
+  ['dossCertif','dossPhotos','dossCni','dossCv'].forEach(id=>{
+    document.addEventListener('DOMContentLoaded',()=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('change', majDossierProgress);
+    });
+  });
+
+  // ── Init au chargement ──
+  document.addEventListener('DOMContentLoaded', ()=>{
+    refreshEmpKpis();
+    filtrerEmployes();
+    // Mettre à jour les infos accès quand login/mdp change
+    ['empLogin','empMdp'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', onRoleChange);
+    });
+  });
+
+
+  // ══════════════════════════════════════════
+  //  FIDÉLITÉ — ADMIN
+  // ══════════════════════════════════════════
+  function renderFidelite() {
+    const users = JSON.parse(localStorage.getItem('GM_USERS') || '[]');
+    const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+    const el = id => document.getElementById(id);
+
+    // Récupérer fidélité de chaque client depuis leurs données
+    // Pour la démo, on utilise GM_FIDELITE du navigateur actuel
+    const fidData = JSON.parse(localStorage.getItem('GM_FIDELITE') || '{"points":0,"total_depense":0,"niveau":"Bronze","historique":[]}');
+    const orders = JSON.parse(localStorage.getItem('GM_ORDERS') || '[]');
+
+    // Regrouper commandes par client
+    const clientsMap = {};
+    orders.forEach(o => {
+      const key = o.client?.tel || 'inconnu';
+      if (!clientsMap[key]) clientsMap[key] = {
+        nom: `${o.client?.prenom||''} ${o.client?.nom||''}`.trim(),
+        tel: key,
+        commandes: 0,
+        total: 0,
+        points: 0
+      };
+      clientsMap[key].commandes++;
+      clientsMap[key].total += o.total || 0;
+      clientsMap[key].points += Math.floor((o.total||0) / 1000);
+    });
+
+    const clients = Object.values(clientsMap).map(c => ({
+      ...c,
+      niveau: c.total >= 5000000 ? 'Or' : c.total >= 2000000 ? 'Argent' : 'Bronze',
+      reduction: c.total >= 5000000 ? '15%' : c.total >= 2000000 ? '10%' : '5%'
+    }));
+
+    const niveauEmoji = {Bronze:'🥉', Argent:'🥈', Or:'🥇'};
+
+    if(el('fidTotalClients')) el('fidTotalClients').textContent = clients.length;
+    if(el('fidTotalPoints'))  el('fidTotalPoints').textContent  = clients.reduce((s,c)=>s+c.points,0);
+    if(el('fidNbOr'))         el('fidNbOr').textContent         = clients.filter(c=>c.niveau==='Or').length;
+    if(el('fidNbArgent'))     el('fidNbArgent').textContent     = clients.filter(c=>c.niveau==='Argent').length;
+    if(el('fidNbBronze'))     el('fidNbBronze').textContent     = clients.filter(c=>c.niveau==='Bronze').length;
+    if(el('nbFidelite'))      el('nbFidelite').textContent      = clients.length;
+
+    const tbody = el('bodyFidelite');
+    if (tbody) {
+      tbody.innerHTML = clients.length ? clients.sort((a,b)=>b.total-a.total).map(c => `
+        <tr>
+          <td><strong>${c.nom||'Client'}</strong><br><small style="color:#888">${c.tel}</small></td>
+          <td><span style="font-size:18px">${niveauEmoji[c.niveau]||'🥉'}</span> ${c.niveau}</td>
+          <td style="color:#f68b1e;font-weight:700">${c.points} pts</td>
+          <td style="color:#22c55e">${fmt(c.total)}</td>
+          <td style="color:#3b82f6">${c.commandes}</td>
+          <td><span style="background:rgba(246,139,30,.15);color:#f68b1e;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">${c.reduction}</span></td>
+        </tr>`).join('')
+        : '<tr><td colspan="6" style="text-align:center;color:#888;padding:24px">Aucun client fidèle pour le moment</td></tr>';
+    }
+  }
+
+  window.sauvegarderConfigFidelite = function() {
+    const el = id => document.getElementById(id);
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    s.fidelite = {
+      pointsRate:   parseInt(el('fidPointsRate')?.value)   || 1,
+      seuilArgent:  parseInt(el('fidSeuilArgent')?.value)  || 2000000,
+      seuilOr:      parseInt(el('fidSeuilOr')?.value)      || 5000000,
+      redBronze:    parseInt(el('fidRedBronze')?.value)    || 5,
+      redArgent:    parseInt(el('fidRedArgent')?.value)    || 10,
+      redOr:        parseInt(el('fidRedOr')?.value)        || 15,
+    };
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    showToastAdm('✅ Configuration fidélité sauvegardée !');
+  };
+
+  // ════════════════════════════════════════
+  //  AFFILIATION — TABLEAU DE BORD COMPLET
+  // ════════════════════════════════════════
+  function getAffiliés() { return JSON.parse(localStorage.getItem('GM_AFFILIES') || '[]'); }
+  function saveAffiliés(a) { localStorage.setItem('GM_AFFILIES', JSON.stringify(a)); }
+
+  window.setAffView = function(v) {
+    document.getElementById('affViewCartes').style.display = v === 'cartes' ? '' : 'none';
+    document.getElementById('affViewTable').style.display  = v === 'table'  ? '' : 'none';
+    document.getElementById('btnAffCartes').classList.toggle('active', v === 'cartes');
+    document.getElementById('btnAffTable').classList.toggle('active', v === 'table');
+  };
+
+  function renderAffiliation() {
+    const affiliés = getAffiliés();
+    const demandes  = JSON.parse(localStorage.getItem('GM_PARTENAIRES') || '[]');
+    const enAttente = demandes.filter(d => d.statut === 'en_attente');
+    const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+
+    // KPIs
+    const totalActifs = affiliés.filter(a => a.actif).length;
+    const totalVentes = affiliés.reduce((s,a) => s + (a.ventes||0), 0);
+    const totalComm   = affiliés.reduce((s,a) => s + (a.commissions||0), 0);
+    const totalClics  = affiliés.reduce((s,a) => s + (a.clics||0), 0);
+    const el = id => document.getElementById(id);
+    if(el('statAffTotal'))       el('statAffTotal').textContent = totalActifs;
+    if(el('statAffVentes'))      el('statAffVentes').textContent = totalVentes;
+    if(el('statAffCommissions')) el('statAffCommissions').textContent = fmt(totalComm);
+    if(el('statAffClics'))       el('statAffClics').textContent = totalClics;
+    if(el('statAffDemandes'))    el('statAffDemandes').textContent = enAttente.length;
+    if(el('nbAffiliés'))         el('nbAffiliés').textContent = affiliés.length;
+
+    // Demandes en attente
+    const ldiv = el('listeDemandesAff');
+    if (ldiv) {
+      ldiv.innerHTML = !enAttente.length
+        ? '<p style="color:#888;font-size:13px;padding:8px">Aucune demande en attente</p>'
+        : enAttente.map((d, i) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;margin-bottom:8px">
+            <div>
+              <strong style="font-size:14px">👤 ${d.nom}</strong>
+              <span style="color:#aaa;font-size:12px;margin-left:8px">${d.tel}</span>
+              <span style="color:#f68b1e;font-size:11px;margin-left:8px">📱 ${d.plateforme||''}</span>
+              ${d.categorie ? `<span style="background:rgba(246,139,30,.15);color:#f68b1e;padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px">${d.categorie}</span>` : ''}
+            </div>
+            <div style="display:flex;gap:6px">
+              <button onclick="accepterDemande(${i})" style="background:#22c55e;color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600"><i class="fas fa-check"></i> Accepter</button>
+              <button onclick="refuserDemande(${i})" style="background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px"><i class="fas fa-times"></i> Refuser</button>
+            </div>
+          </div>`).join('');
+    }
+
+    // Grille cartes — une carte par affilié
+    const grille = el('grillAffiliés');
+    if (grille) {
+      grille.innerHTML = !affiliés.length
+        ? '<p style="color:#888;grid-column:1/-1;text-align:center;padding:32px">Aucun affilié pour le moment</p>'
+        : affiliés.map((a, i) => {
+            const produits = a.produits || [];
+            const taux = a.clics ? Math.round((a.ventes / a.clics) * 100) : 0;
+            return `
+            <div class="aff-card">
+              <div class="aff-card-hdr">
+                <div class="aff-avatar">${(a.nom||'?')[0].toUpperCase()}</div>
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:15px">${a.nom}</div>
+                  <div style="font-size:12px;color:#888">${a.tel}</div>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <span class="aff-badge-code">${a.code}</span>
+                  <span style="color:${a.actif?'#22c55e':'#ef4444'};font-size:11px">${a.actif?'●  Actif':'● Inactif'}</span>
+                </div>
+              </div>
+              <div class="aff-card-stats">
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#3b82f6">${a.clics||0}</div>
+                  <div class="aff-stat-lbl">Clics lien</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#22c55e">${a.ventes||0}</div>
+                  <div class="aff-stat-lbl">Commandes</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#f68b1e">${taux}%</div>
+                  <div class="aff-stat-lbl">Taux conv.</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#a855f7">${((a.commissions||0)/1000).toFixed(0)}K</div>
+                  <div class="aff-stat-lbl">Commission</div>
+                </div>
+              </div>
+              <div style="margin:10px 0 6px;font-size:12px;font-weight:600;color:#aaa">PRODUITS PROMUS (${produits.length})</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;max-height:80px;overflow-y:auto">
+                ${produits.length
+                  ? produits.map(p => `<span style="background:rgba(246,139,30,.1);border:1px solid rgba(246,139,30,.2);color:#f68b1e;padding:3px 10px;border-radius:20px;font-size:11px">${p.nom} <span style="color:#888">(${p.clics||0} clics)</span></span>`).join('')
+                  : '<span style="color:#555;font-size:11px">Aucun produit assigné</span>'}
+              </div>
+              <div style="display:flex;gap:6px">
+                <button onclick="ouvrirDetailAffilié(${i})" style="flex:1;background:rgba(59,130,246,.15);color:#3b82f6;border:1px solid rgba(59,130,246,.2);padding:7px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600"><i class="fas fa-chart-line"></i> Détail</button>
+                <button onclick="editAffilié(${i})" style="background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-edit"></i></button>
+                <button onclick="toggleAffilié(${i})" style="background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.2);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-power-off"></i></button>
+                <button onclick="supprimerAffilié(${i})" style="background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>`;
+          }).join('');
+    }
+
+    // Vue tableau
+    const tbody = el('bodyAffiliés');
+    if (tbody) {
+      tbody.innerHTML = affiliés.length ? affiliés.map((a, i) => `
+        <tr>
+          <td><strong>${a.nom}</strong><br><small style="color:#888">${a.tel}</small></td>
+          <td><span class="aff-badge-code">${a.code}</span></td>
+          <td style="font-size:11px">${(a.produits||[]).map(p=>p.nom).join(', ')||'—'}</td>
+          <td style="color:#3b82f6">${a.clics||0}</td>
+          <td style="color:#22c55e">${a.ventes||0}</td>
+          <td style="color:#f68b1e">${((a.caGenere||0)/1000).toFixed(0)}K GNF</td>
+          <td style="color:#a855f7">${((a.commissions||0)/1000).toFixed(0)}K GNF</td>
+          <td><span style="color:${a.actif?'#22c55e':'#ef4444'}">${a.actif?'✅':'❌'}</span></td>
+          <td>
+            <button onclick="ouvrirDetailAffilié(${i})" style="background:rgba(59,130,246,.15);color:#3b82f6;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:3px"><i class="fas fa-eye"></i></button>
+            <button onclick="editAffilié(${i})" style="background:rgba(255,255,255,.06);color:#aaa;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:3px"><i class="fas fa-edit"></i></button>
+            <button onclick="supprimerAffilié(${i})" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 8px;border-radius:6px;cursor:pointer"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`).join('')
+        : '<tr><td colspan="9" style="text-align:center;color:#888;padding:20px">Aucun affilié</td></tr>';
+    }
+  }
+
+  window.ouvrirDetailAffilié = function(i) {
+    const affiliés = getAffiliés();
+    const modal = document.getElementById('modalDetailAffilié');
+    const contenu = document.getElementById('detailAffContenu');
+    const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+    if (i === null) {
+      // Vue globale
+      document.getElementById('detailAffNomTitre').textContent = '📊 Vue globale — Tous les affiliés';
+      const total = affiliés.length;
+      const totalClics = affiliés.reduce((s,a) => s+(a.clics||0), 0);
+      const totalVentes = affiliés.reduce((s,a) => s+(a.ventes||0), 0);
+      const totalCA = affiliés.reduce((s,a) => s+(a.caGenere||0), 0);
+      const totalComm = affiliés.reduce((s,a) => s+(a.commissions||0), 0);
+      contenu.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+          <div class="aff-stat-box" style="padding:16px;border-radius:10px;background:rgba(255,255,255,.04)">
+            <div style="font-size:28px;font-weight:800;color:#f68b1e">${total}</div>
+            <div style="color:#888;font-size:12px">Affiliés total</div>
+          </div>
+          <div class="aff-stat-box" style="padding:16px;border-radius:10px;background:rgba(255,255,255,.04)">
+            <div style="font-size:28px;font-weight:800;color:#3b82f6">${totalClics}</div>
+            <div style="color:#888;font-size:12px">Clics totaux</div>
+          </div>
+          <div class="aff-stat-box" style="padding:16px;border-radius:10px;background:rgba(255,255,255,.04)">
+            <div style="font-size:28px;font-weight:800;color:#22c55e">${totalVentes}</div>
+            <div style="color:#888;font-size:12px">Commandes</div>
+          </div>
+          <div class="aff-stat-box" style="padding:16px;border-radius:10px;background:rgba(255,255,255,.04)">
+            <div style="font-size:28px;font-weight:800;color:#a855f7">${fmt(totalComm)}</div>
+            <div style="color:#888;font-size:12px">Commissions</div>
+          </div>
+        </div>
+        <h4 style="margin-bottom:12px">Classement des affiliés</h4>
+        ${[...affiliés].sort((a,b)=>(b.ventes||0)-(a.ventes||0)).map((a,rank) => `
+          <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(246,139,30,.2);color:#f68b1e;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px">${rank+1}</div>
+            <div style="flex:1"><strong>${a.nom}</strong><span style="color:#888;font-size:12px;margin-left:8px">${a.code}</span></div>
+            <div style="text-align:right"><div style="color:#22c55e;font-weight:700">${a.ventes||0} cmd</div><div style="color:#a855f7;font-size:12px">${fmt(a.commissions)}</div></div>
+          </div>`).join('') || '<p style="color:#888">Aucun affilié</p>'}`;
+    } else {
+      const a = affiliés[i];
+      if (!a) return;
+      document.getElementById('detailAffNomTitre').textContent = `👤 ${a.nom} — ${a.code}`;
+      const produits = a.produits || [];
+      contenu.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+          <div style="text-align:center;padding:14px;background:rgba(59,130,246,.08);border-radius:10px;border:1px solid rgba(59,130,246,.2)">
+            <div style="font-size:24px;font-weight:800;color:#3b82f6">${a.clics||0}</div>
+            <div style="color:#888;font-size:11px">Clics sur son lien</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(34,197,94,.08);border-radius:10px;border:1px solid rgba(34,197,94,.2)">
+            <div style="font-size:24px;font-weight:800;color:#22c55e">${a.ventes||0}</div>
+            <div style="color:#888;font-size:11px">Commandes passées</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(246,139,30,.08);border-radius:10px;border:1px solid rgba(246,139,30,.2)">
+            <div style="font-size:24px;font-weight:800;color:#f68b1e">${((a.caGenere||0)/1000).toFixed(0)}K</div>
+            <div style="color:#888;font-size:11px">CA généré (GNF)</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(168,85,247,.08);border-radius:10px;border:1px solid rgba(168,85,247,.2)">
+            <div style="font-size:24px;font-weight:800;color:#a855f7">${((a.commissions||0)/1000).toFixed(0)}K</div>
+            <div style="color:#888;font-size:11px">Commission due</div>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;color:#888;margin-bottom:6px">🔗 Lien d'affiliation</div>
+          <div style="background:rgba(255,255,255,.04);padding:10px 14px;border-radius:8px;font-family:monospace;font-size:12px;word-break:break-all;color:#f68b1e">${a.lien||'—'}</div>
+        </div>
+        <h4 style="margin-bottom:12px">Produits promus (${produits.length})</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+          ${produits.length
+            ? produits.map(p => `
+              <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px">
+                <div style="font-weight:600;font-size:13px;margin-bottom:8px">${p.nom}</div>
+                <div style="display:flex;justify-content:space-between;font-size:12px">
+                  <span style="color:#888">Clics</span><span style="color:#3b82f6;font-weight:700">${p.clics||0}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px">
+                  <span style="color:#888">Ventes</span><span style="color:#22c55e;font-weight:700">${p.ventes||0}</span>
+                </div>
+              </div>`)
+            .join('')
+            : '<p style="color:#888;font-size:13px">Aucun produit assigné</p>'}
+        </div>`;
+    }
+    modal.style.display = 'flex';
+  };
+
+  window.showModalAffilié = function() {
+    const el = id => document.getElementById(id);
+    el('affId').value=''; el('affNom').value=''; el('affTel').value='';
+    el('affCode').value=''; el('affCommission').value='10';
+    el('affCat').value='all'; el('affLien').value='';
+    // Charger la liste des produits à cocher
+    chargerProduitsAff();
+    el('modalAffilié').style.display='flex';
+  };
+  window.closeModalAffilié = function() { document.getElementById('modalAffilié').style.display='none'; };
+
+  function chargerProduitsAff() {
+    const chkDiv = document.getElementById('affProduitsChk');
+    if (!chkDiv || typeof GM_PRODUCTS === 'undefined') return;
+    chkDiv.innerHTML = GM_PRODUCTS.map(p => `
+      <label style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:5px 10px;border-radius:20px;cursor:pointer;font-size:11px;white-space:nowrap">
+        <input type="checkbox" class="aff-prod-chk" value="${p.id}" data-nom="${p.name}"> ${p.em||'📦'} ${p.name}
+      </label>`).join('');
+  }
+
+  window.genererCodeAff = function() {
+    const nom = document.getElementById('affNom').value.trim().toUpperCase().replace(/\s+/,'').slice(0,6) || 'AFF';
+    const code = nom + Math.floor(Math.random()*900+100);
+    document.getElementById('affCode').value = code;
+    mettreAJourLienAff();
+  };
+  function mettreAJourLienAff() {
+    const code = document.getElementById('affCode').value.trim();
+    if (code) document.getElementById('affLien').value = location.origin + '/index.html?ref=' + code;
+  }
+  document.getElementById('affCode')?.addEventListener('input', mettreAJourLienAff);
+
+  window.copierLienAff = function() {
+    navigator.clipboard.writeText(document.getElementById('affLien').value)
+      .then(() => showToastAdm('✅ Lien copié !'));
+  };
+
+  window.sauvegarderAffilié = function() {
+    const g = id => document.getElementById(id);
+    const nom=g('affNom').value.trim(), tel=g('affTel').value.trim(), code=g('affCode').value.trim().toUpperCase();
+    if (!nom||!tel||!code) { showToastAdm('⚠️ Remplissez nom, téléphone et code',true); return; }
+    const produits = [...document.querySelectorAll('.aff-prod-chk:checked')].map(c=>({id:c.value,nom:c.dataset.nom,clics:0,ventes:0}));
+    const affiliés = getAffiliés();
+    const idx = g('affId').value;
+    const obj = { nom, tel, code, categorie:g('affCat').value, commission:parseInt(g('affCommission').value)||10,
+                  lien:g('affLien').value, produits, actif:true, ventes:0, clics:0, caGenere:0, commissions:0,
+                  date:new Date().toISOString() };
+    if (idx!=='') affiliés[parseInt(idx)] = {...affiliés[parseInt(idx)], ...obj};
+    else affiliés.push(obj);
+    saveAffiliés(affiliés);
+    closeModalAffilié();
+    renderAffiliation();
+    showToastAdm('✅ Affilié sauvegardé !');
+  };
+
+  window.editAffilié = function(i) {
+    const a = getAffiliés()[i];
+    const g = id => document.getElementById(id);
+    chargerProduitsAff();
+    setTimeout(() => {
+      if(a.produits) a.produits.forEach(p => {
+        const chk = document.querySelector(`.aff-prod-chk[value="${p.id}"]`);
+        if(chk) chk.checked=true;
+      });
+    }, 50);
+    g('affId').value=i; g('affNom').value=a.nom; g('affTel').value=a.tel;
+    g('affCode').value=a.code; g('affCommission').value=a.commission;
+    g('affCat').value=a.categorie; g('affLien').value=a.lien||'';
+    g('modalAffilié').style.display='flex';
+  };
+  window.toggleAffilié = function(i) {
+    const affiliés=getAffiliés(); affiliés[i].actif=!affiliés[i].actif;
+    saveAffiliés(affiliés); renderAffiliation();
+  };
+  window.supprimerAffilié = function(i) {
+    if(!confirm('Supprimer cet affilié ?')) return;
+    const affiliés=getAffiliés(); affiliés.splice(i,1);
+    saveAffiliés(affiliés); renderAffiliation(); showToastAdm('🗑️ Affilié supprimé');
+  };
+  window.accepterDemande = function(i) {
+    const demandes=JSON.parse(localStorage.getItem('GM_PARTENAIRES')||'[]');
+    const d=demandes[i]; demandes[i].statut='accepté';
+    localStorage.setItem('GM_PARTENAIRES',JSON.stringify(demandes));
+    document.getElementById('affNom').value=d.nom;
+    document.getElementById('affTel').value=d.tel;
+    genererCodeAff();
+    document.getElementById('affCat').value=d.categorie||'all';
+    document.getElementById('modalAffilié').style.display='flex';
+    renderAffiliation();
+  };
+  window.refuserDemande = function(i) {
+    const demandes=JSON.parse(localStorage.getItem('GM_PARTENAIRES')||'[]');
+    demandes[i].statut='refusé'; localStorage.setItem('GM_PARTENAIRES',JSON.stringify(demandes));
+    renderAffiliation(); showToastAdm('Demande refusée');
+  };
+
+  // ════════════════════════════════════════
+  //  ÉQUIPE MARKETING — TABLEAU DE BORD
+  // ════════════════════════════════════════
+  function getVendeurs() { return JSON.parse(localStorage.getItem('GM_MARKETEURS') || '[]'); }
+  function saveVendeurs(v) { localStorage.setItem('GM_MARKETEURS', JSON.stringify(v)); }
+  const fmt = n => (n||0).toLocaleString('fr-FR') + ' GNF';
+
+  function renderVendeurs() {
+    const mkt = getVendeurs();
+    const el = id => document.getElementById(id);
+    const totalCA     = mkt.reduce((s,m) => s+(m.ca||0), 0);
+    const totalDep    = mkt.reduce((s,m) => s+(m.depense||0), 0);
+    const totalProds  = mkt.reduce((s,m) => s+(m.produits||[]).length, 0);
+    const avgROI      = mkt.length ? Math.round(mkt.reduce((s,m) => {
+      return s + (m.depense ? ((m.ca - m.depense)/m.depense*100) : 0);
+    }, 0) / mkt.length) : 0;
+
+    if(el('statVendTotal'))   el('statVendTotal').textContent   = mkt.filter(m=>m.actif).length;
+    if(el('statMktCA'))       el('statMktCA').textContent       = fmt(totalCA);
+    if(el('statMktDepense'))  el('statMktDepense').textContent  = fmt(totalDep);
+    if(el('statMktProduits')) el('statMktProduits').textContent = totalProds;
+    if(el('statMktROI'))      el('statMktROI').textContent      = avgROI + '%';
+    if(el('nbVendeurs'))      el('nbVendeurs').textContent      = mkt.length;
+
+    // Grille cartes
+    const grille = el('grillMarketing');
+    if (grille) {
+      grille.innerHTML = !mkt.length
+        ? '<p style="color:#888;grid-column:1/-1;text-align:center;padding:32px">Aucun gestionnaire pour le moment</p>'
+        : mkt.map((m, i) => {
+            const roi = m.depense ? Math.round((m.ca - m.depense)/m.depense*100) : 0;
+            const reseaux = (m.reseaux||[]);
+            const produits = (m.produits||[]);
+            const roiColor = roi >= 0 ? '#22c55e' : '#ef4444';
+            return `
+            <div class="aff-card">
+              <div class="aff-card-hdr">
+                <div class="aff-avatar" style="background:linear-gradient(135deg,#a855f7,#3b82f6)">${((m.prenom||'?')[0]+(m.nom||'?')[0]).toUpperCase()}</div>
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:15px">${m.prenom||''} ${m.nom||''}</div>
+                  <div style="font-size:12px;color:#888">${m.tel||''}</div>
+                </div>
+                <span style="color:${m.actif?'#22c55e':'#ef4444'};font-size:11px">${m.actif?'● Actif':'● Inactif'}</span>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
+                ${reseaux.map(r => {
+                  const icons = {facebook:'📘',instagram:'📸',tiktok:'🎵',whatsapp:'💬',youtube:'📺'};
+                  return `<span style="background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px;font-size:11px">${icons[r]||''} ${r}</span>`;
+                }).join('')}
+              </div>
+              <div class="aff-card-stats">
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#f68b1e">${((m.ca||0)/1000).toFixed(0)}K</div>
+                  <div class="aff-stat-lbl">CA généré</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#ef4444">${((m.depense||0)/1000).toFixed(0)}K</div>
+                  <div class="aff-stat-lbl">Dépensé</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:${roiColor}">${roi}%</div>
+                  <div class="aff-stat-lbl">ROI</div>
+                </div>
+                <div class="aff-stat-box">
+                  <div class="aff-stat-val" style="color:#3b82f6">${produits.length}</div>
+                  <div class="aff-stat-lbl">Produits</div>
+                </div>
+              </div>
+              <div style="margin:8px 0 4px;font-size:11px;font-weight:600;color:#aaa">PRODUITS PROMUS</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;max-height:70px;overflow-y:auto">
+                ${produits.length
+                  ? produits.map(p=>`<span style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:#a855f7;padding:3px 10px;border-radius:20px;font-size:11px">${p}</span>`).join('')
+                  : '<span style="color:#555;font-size:11px">Aucun produit assigné</span>'}
+              </div>
+              ${m.notes ? `<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px;font-size:12px;color:#aaa;margin-bottom:10px;font-style:italic">${m.notes}</div>` : ''}
+              <div style="display:flex;gap:6px">
+                <button onclick="ouvrirDetailMkt(${i})" style="flex:1;background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.2);padding:7px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600"><i class="fas fa-chart-bar"></i> Détail</button>
+                <button onclick="editVendeur(${i})" style="background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-edit"></i></button>
+                <button onclick="toggleVendeur(${i})" style="background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.2);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-power-off"></i></button>
+                <button onclick="supprimerVendeur(${i})" style="background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>`;
+          }).join('');
+    }
+
+    // Tableau récap
+    const tbody = el('bodyVendeurs');
+    if (tbody) {
+      tbody.innerHTML = mkt.length ? mkt.map((m,i) => {
+        const roi = m.depense ? Math.round((m.ca-m.depense)/m.depense*100) : 0;
+        const icons = {facebook:'📘',instagram:'📸',tiktok:'🎵',whatsapp:'💬',youtube:'📺'};
+        return `<tr>
+          <td><strong>${m.prenom||''} ${m.nom||''}</strong><br><small style="color:#888">${m.tel||''}</small></td>
+          <td>${(m.reseaux||[]).map(r=>icons[r]||r).join(' ')}</td>
+          <td style="font-size:11px">${(m.produits||[]).join(', ')||'—'}</td>
+          <td style="color:#ef4444">${fmt(m.depense)}</td>
+          <td style="color:#f68b1e">${fmt(m.ca)}</td>
+          <td style="color:${roi>=0?'#22c55e':'#ef4444'};font-weight:700">${roi}%</td>
+          <td><span style="color:${m.actif?'#22c55e':'#ef4444'}">${m.actif?'✅':'❌'}</span></td>
+          <td>
+            <button onclick="ouvrirDetailMkt(${i})" style="background:rgba(168,85,247,.15);color:#a855f7;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:3px"><i class="fas fa-eye"></i></button>
+            <button onclick="editVendeur(${i})" style="background:rgba(255,255,255,.06);color:#aaa;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;margin-right:3px"><i class="fas fa-edit"></i></button>
+            <button onclick="supprimerVendeur(${i})" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 8px;border-radius:6px;cursor:pointer"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`;
+      }).join('') : '<tr><td colspan="8" style="text-align:center;color:#888;padding:20px">Aucun gestionnaire</td></tr>';
+    }
+  }
+
+  window.ouvrirDetailMkt = function(i) {
+    const mkt = getVendeurs();
+    const m = mkt[i];
+    if (!m) return;
+    document.getElementById('detailMktNomTitre').textContent = `📊 ${m.prenom||''} ${m.nom||''} — Performance`;
+    const roi = m.depense ? Math.round((m.ca-m.depense)/m.depense*100) : 0;
+    const icons = {facebook:'📘 Facebook',instagram:'📸 Instagram',tiktok:'🎵 TikTok',whatsapp:'💬 WhatsApp',youtube:'📺 YouTube'};
+    document.getElementById('detailMktContenu').innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        <div style="text-align:center;padding:14px;background:rgba(246,139,30,.08);border-radius:10px;border:1px solid rgba(246,139,30,.2)">
+          <div style="font-size:22px;font-weight:800;color:#f68b1e">${fmt(m.ca)}</div>
+          <div style="color:#888;font-size:11px">CA généré</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:rgba(239,68,68,.08);border-radius:10px;border:1px solid rgba(239,68,68,.2)">
+          <div style="font-size:22px;font-weight:800;color:#ef4444">${fmt(m.depense)}</div>
+          <div style="color:#888;font-size:11px">Budget dépensé</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:rgba(34,197,94,.08);border-radius:10px;border:1px solid rgba(34,197,94,.2)">
+          <div style="font-size:22px;font-weight:800;color:${roi>=0?'#22c55e':'#ef4444'}">${roi}%</div>
+          <div style="color:#888;font-size:11px">ROI</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:rgba(59,130,246,.08);border-radius:10px;border:1px solid rgba(59,130,246,.2)">
+          <div style="font-size:22px;font-weight:800;color:#3b82f6">${fmt(m.budget)}</div>
+          <div style="color:#888;font-size:11px">Budget alloué</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;font-weight:600;color:#aaa;margin-bottom:8px">RÉSEAUX ASSIGNÉS</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${(m.reseaux||[]).map(r=>`<span style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:13px">${icons[r]||r}</span>`).join('') || '<span style="color:#555">Aucun réseau assigné</span>'}
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;font-weight:600;color:#aaa;margin-bottom:8px">PRODUITS PROMUS (${(m.produits||[]).length})</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(m.produits||[]).map(p=>`<span style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:#a855f7;padding:5px 14px;border-radius:20px;font-size:12px">${p}</span>`).join('') || '<span style="color:#555;font-size:12px">Aucun produit</span>'}
+        </div>
+      </div>
+      ${m.notes ? `<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:12px;font-size:13px;color:#aaa"><strong style="color:#fff">Notes :</strong> ${m.notes}</div>` : ''}`;
+    document.getElementById('modalDetailMkt').style.display = 'flex';
+  };
+
+  window.showModalVendeur = function() {
+    const g = id => document.getElementById(id);
+    g('vendId').value=''; g('vendPrenom').value=''; g('vendNom').value='';
+    g('vendTel').value=''; g('vendBudget').value=''; g('vendDepense').value='';
+    g('vendCA').value=''; g('vendNotes').value='';
+    document.querySelectorAll('.vend-cat-chk').forEach(c => c.checked=false);
+    // Charger les produits
+    const div = g('mktProduitsChk');
+    if (div && typeof GM_PRODUCTS !== 'undefined') {
+      div.innerHTML = GM_PRODUCTS.map(p => `
+        <label style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:4px 10px;border-radius:16px;cursor:pointer;font-size:11px;white-space:nowrap">
+          <input type="checkbox" class="mkt-prod-chk" value="${p.name}"> ${p.em||'📦'} ${p.name}
+        </label>`).join('');
+    }
+    g('modalVendeur').style.display='flex';
+  };
+  window.closeModalVendeur = function() { document.getElementById('modalVendeur').style.display='none'; };
+
+  window.sauvegarderVendeur = function() {
+    const g = id => document.getElementById(id);
+    const prenom=g('vendPrenom').value.trim(), nom=g('vendNom').value.trim(), tel=g('vendTel').value.trim();
+    if (!prenom||!nom||!tel) { showToastAdm('⚠️ Remplissez prénom, nom et téléphone',true); return; }
+    const reseaux = [...document.querySelectorAll('.vend-cat-chk:checked')].map(c=>c.value);
+    const produits = [...document.querySelectorAll('.mkt-prod-chk:checked')].map(c=>c.value);
+    const mkt = getVendeurs();
+    const idx = g('vendId').value;
+    const obj = { prenom, nom, tel, reseaux, produits,
+                  budget:parseInt(g('vendBudget').value)||0,
+                  depense:parseInt(g('vendDepense').value)||0,
+                  ca:parseInt(g('vendCA').value)||0,
+                  notes:g('vendNotes').value.trim(), actif:true,
+                  date:new Date().toISOString() };
+    if (idx!=='') mkt[parseInt(idx)] = {...mkt[parseInt(idx)], ...obj};
+    else mkt.push(obj);
+    saveVendeurs(mkt); closeModalVendeur(); renderVendeurs();
+    showToastAdm('✅ Gestionnaire marketing sauvegardé !');
+  };
+
+  window.editVendeur = function(i) {
+    const m = getVendeurs()[i];
+    const g = id => document.getElementById(id);
+    showModalVendeur();
+    setTimeout(() => {
+      g('vendId').value=i; g('vendPrenom').value=m.prenom||''; g('vendNom').value=m.nom||'';
+      g('vendTel').value=m.tel||''; g('vendBudget').value=m.budget||'';
+      g('vendDepense').value=m.depense||''; g('vendCA').value=m.ca||'';
+      g('vendNotes').value=m.notes||'';
+      document.querySelectorAll('.vend-cat-chk').forEach(c => { c.checked=(m.reseaux||[]).includes(c.value); });
+      document.querySelectorAll('.mkt-prod-chk').forEach(c => { c.checked=(m.produits||[]).includes(c.value); });
+    }, 80);
+  };
+  window.toggleVendeur = function(i) {
+    const mkt=getVendeurs(); mkt[i].actif=!mkt[i].actif;
+    saveVendeurs(mkt); renderVendeurs();
+  };
+  window.supprimerVendeur = function(i) {
+    if(!confirm('Supprimer ce gestionnaire ?')) return;
+    const mkt=getVendeurs(); mkt.splice(i,1);
+    saveVendeurs(mkt); renderVendeurs(); showToastAdm('🗑️ Gestionnaire supprimé');
+  };
+
+
+  // ══════════════════════════════════════════
+  //  MODÉRATION ADMIN COMPLÈTE
+  // ══════════════════════════════════════════
+
+
+  // ══════════════════════════════════════════
+  //  TOGGLE BOUTON VENDEUR FLOTTANT
+  // ══════════════════════════════════════════
+  function initToggleVendeur() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    const actif = s.vendeurBtnActif !== false; // true par défaut
+    const btn = document.getElementById('btnToggleVendeur');
+    const dot = document.getElementById('toggleVendeurDot');
+    const icon = document.getElementById('vendeurBtnIcon');
+    if (btn)  btn.style.background  = actif ? '#22c55e' : 'rgba(255,255,255,.1)';
+    if (dot)  dot.style.transform   = actif ? 'translateX(26px)' : 'translateX(0)';
+    if (icon) icon.textContent      = actif ? '🟢' : '🔴';
+  }
+
+  window.toggleVendeurBtn = function() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    s.vendeurBtnActif = s.vendeurBtnActif === false ? true : false;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    initToggleVendeur();
+    showToastAdm(s.vendeurBtnActif ? '✅ Bouton Vendeur activé sur le site' : '🔴 Bouton Vendeur masqué');
+  };
+  window.renderModeration = function() {
+    const signalements = JSON.parse(localStorage.getItem('GM_SIGNALEMENTS')||'[]');
+    const bloques      = JSON.parse(localStorage.getItem('GM_USERS_BLOQUES')||'[]');
+    const anns         = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+    const spam         = JSON.parse(localStorage.getItem('GM_ANTISPAM')||'{}');
+    const el = id => document.getElementById(id);
+    const enAttenteSignal = signalements.filter(s=>s.statut==='en_attente').length;
+    if(el('modSignalements')) el('modSignalements').textContent = enAttenteSignal;
+    if(el('modBloques'))      el('modBloques').textContent      = bloques.length;
+    if(el('modEnAttente'))    el('modEnAttente').textContent    = anns.filter(a=>!a.approuve).length;
+    if(el('nbModeration'))    el('nbModeration').textContent    = enAttenteSignal + bloques.length;
+    const suspSpam = Object.values(spam).filter(s=>s.nb>=2).length;
+    if(el('modSpam')) el('modSpam').textContent = suspSpam;
+    // Signalements
+    const sigListe = el('modSignalementsListe');
+    if (sigListe) {
+      const actifs = signalements.filter(s=>s.statut==='en_attente');
+      sigListe.innerHTML = actifs.length ? actifs.map(s => {
+        const ann = anns.find(a=>a.id===s.annId)||{titre:'Annonce supprimée'};
+        return '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:12px;margin-bottom:8px"><i class="fas fa-flag" style="color:#ef4444;margin-top:2px;font-size:16px"></i><div style="flex:1"><div style="font-weight:700;color:#fff;font-size:14px">'+ann.titre+'</div><div style="color:#ef4444;font-size:12px;margin-top:3px">⚠️ '+s.raison+'</div>'+(s.details?'<div style="color:#888;font-size:12px;margin-top:2px">'+s.details+'</div>':'')+'<div style="color:#666;font-size:11px;margin-top:4px">'+new Date(s.date).toLocaleString('fr-FR')+'</div></div><div style="display:flex;flex-direction:column;gap:6px"><button onclick="modApprouverSignalement(''+s.id+'')" style="background:rgba(34,197,94,.15);color:#22c55e;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700">Ignorer</button><button onclick="modSupprimerAnnSignalee(''+s.annId+'',''+s.id+'')" style="background:rgba(239,68,68,.15);color:#ef4444;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700">Supprimer</button></div></div>';
+      }).join('') : '<p style="color:#888;font-size:13px;padding:8px 0">Aucun signalement en attente ✅</p>';
+    }
+    // Utilisateurs bloqués
+    const usersEl = el('modUsersBlockes');
+    if (usersEl) {
+      usersEl.innerHTML = bloques.length ? bloques.map(b=>
+        '<div class="mod-user-row"><i class="fas fa-user-slash" style="color:#ef4444"></i><div style="flex:1"><div style="font-weight:700;color:#fff;font-size:13px">'+(b.tel||b.id)+'</div><div style="color:#888;font-size:11px">'+(b.raison||'—')+' · '+new Date(b.date).toLocaleDateString('fr-FR')+'</div></div><button onclick="modDebloquer(''+b.tel+'')" style="background:rgba(34,197,94,.12);color:#22c55e;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px">Débloquer</button></div>'
+      ).join('') : '<p style="color:#888;font-size:13px">Aucun utilisateur bloqué</p>';
+    }
+    modFiltreAnn('toutes');
+    // Anti-spam
+    const spamEl = el('modSpamStats');
+    if (spamEl) {
+      const entries = Object.entries(spam).sort((a,b)=>b[1].nb-a[1].nb).slice(0,10);
+      spamEl.innerHTML = entries.length ? '<table class="adm-table"><thead><tr><th>Numéro</th><th>Publications</th><th>Date</th><th>Action</th></tr></thead><tbody>'+entries.map(([tel,s])=>'<tr><td>'+tel+'</td><td style="color:'+(s.nb>=3?'#ef4444':s.nb>=2?'#f59e0b':'#22c55e')+'">'+s.nb+' publi.</td><td style="font-size:12px">'+s.date+'</td><td><button onclick="modBloquerTelDirect(''+tel+'')" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:11px"><i class=\"fas fa-ban\"></i></button></td></tr>').join('')+'</tbody></table>'
+        : '<p style="color:#888;font-size:13px">Aucune activité suspecte ✅</p>';
+    }
+  };
+
+  window.modFiltreAnn = function(filtre) {
+    ['toutes','signalees','boost'].forEach(f => {
+      const b = document.getElementById('modBtn'+f.charAt(0).toUpperCase()+f.slice(1));
+      if(b) b.classList.toggle('active', f===filtre);
+    });
+    const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+    const sigs = JSON.parse(localStorage.getItem('GM_SIGNALEMENTS')||'[]');
+    const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    let filtered = [...anns];
+    if (filtre==='signalees') filtered = anns.filter(a=>sigs.find(s=>s.annId===a.id&&s.statut==='en_attente'));
+    if (filtre==='boost')     filtered = anns.filter(a=>a.boost);
+    const el = document.getElementById('modAnnoncesListe');
+    const fmt = n => (n||0).toLocaleString('fr-FR')+' GNF';
+    if (!el) return;
+    el.innerHTML = filtered.slice(0,20).map(a=>{
+      const v = vends.find(v=>v.id===a.vendeurId)||{};
+      const signale = sigs.find(s=>s.annId===a.id&&s.statut==='en_attente');
+      return '<div class="mod-ann-row'+(signale?' signale':'')+'"><div style="flex:1"><div style="font-weight:700;color:#fff;font-size:13px">'+a.titre+'</div><div style="font-size:12px;color:#888;margin-top:2px">'+(v.nom||'—')+' · '+fmt(a.prix)+' · '+(a.ville||'—')+' · 👁️'+(a.vues||0)+(signale?'<span style="color:#ef4444;font-weight:700;margin-left:6px">🚨 '+signale.raison+'</span>':'')+(a.boost?'<span style="color:#f68b1e;margin-left:6px">🚀</span>':'')+'</div></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button onclick="modToggleBoostAdm(''+a.id+'')" style="background:rgba(246,139,30,.1);color:#f68b1e;border:none;padding:5px 10px;border-radius:7px;cursor:pointer;font-size:11px"><i class=\"fas fa-rocket\"></i></button><button onclick="modSuppAnn(''+a.id+'')" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 10px;border-radius:7px;cursor:pointer;font-size:11px"><i class=\"fas fa-trash\"></i></button></div></div>';
+    }).join('') || '<p style="color:#888;font-size:13px;padding:8px">Aucune annonce</p>';
+  };
+
+  window.modApprouverSignalement = function(sigId) {
+    const sigs = JSON.parse(localStorage.getItem('GM_SIGNALEMENTS')||'[]');
+    const s = sigs.find(x=>x.id===sigId); if(s) s.statut='ignoré';
+    localStorage.setItem('GM_SIGNALEMENTS', JSON.stringify(sigs));
+    renderModeration(); showToastAdm('✅ Signalement ignoré');
+  };
+  window.modSupprimerAnnSignalee = function(annId, sigId) {
+    if (!confirm('Supprimer cette annonce signalée ?')) return;
+    const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]').filter(a=>a.id!==annId);
+    localStorage.setItem('GM_ANNONCES', JSON.stringify(anns));
+    const sigs = JSON.parse(localStorage.getItem('GM_SIGNALEMENTS')||'[]');
+    const s = sigs.find(x=>x.id===sigId); if(s) s.statut='traité';
+    localStorage.setItem('GM_SIGNALEMENTS', JSON.stringify(sigs));
+    renderModeration(); showToastAdm('🗑️ Annonce signalée supprimée');
+  };
+  window.modSuppAnn = function(id) {
+    if (!confirm('Supprimer cette annonce ?')) return;
+    const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]').filter(a=>a.id!==id);
+    localStorage.setItem('GM_ANNONCES', JSON.stringify(anns));
+    renderModeration(); showToastAdm('🗑️ Annonce supprimée');
+  };
+  window.modToggleBoostAdm = function(id) {
+    const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+    const a = anns.find(x=>x.id===id); if(a) a.boost=!a.boost;
+    localStorage.setItem('GM_ANNONCES', JSON.stringify(anns));
+    renderModeration(); showToastAdm(a?.boost?'🚀 Boost activé':'Boost retiré');
+  };
+  // ══════════════════════════════════════════
+  //  TOGGLE BOUTON VENDEUR FLOTTANT
+  // ══════════════════════════════════════════
+  window.toggleVendeurBouton = function() {
+    const btn   = document.getElementById('toggleVendeurBtn');
+    const knob  = document.getElementById('toggleVendeurKnob');
+    const label = document.getElementById('vendeurBtnLabel');
+    if (!btn || !knob) return;
+    const isOn = parseFloat(knob.style.left||'26') > 10;
+    if (isOn) {
+      // Désactiver
+      knob.style.left  = '3px';
+      btn.style.background = '#555';
+      if (label) { label.textContent = 'Désactivé'; label.style.color = '#888'; }
+    } else {
+      // Activer
+      knob.style.left  = '26px';
+      btn.style.background = '#22c55e';
+      if (label) { label.textContent = 'Activé'; label.style.color = '#22c55e'; }
+    }
+    // Sauvegarder immédiatement
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    s.vendeurBtnActif = !isOn;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    showToastAdm(s.vendeurBtnActif ? '✅ Bouton vendeur activé' : '🔴 Bouton vendeur désactivé');
+  };
+
+  // Init état toggle au chargement
+  (function initToggleVendeur() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    const isOn = s.vendeurBtnActif !== false; // true par défaut
+    const btn   = document.getElementById('toggleVendeurBtn');
+    const knob  = document.getElementById('toggleVendeurKnob');
+    const label = document.getElementById('vendeurBtnLabel');
+    if (!btn || !knob) {
+      // Réessayer après DOM chargé
+      document.addEventListener('DOMContentLoaded', initToggleVendeur);
+      return;
+    }
+    if (isOn) {
+      knob.style.left = '26px'; btn.style.background = '#22c55e';
+      if (label) { label.textContent = 'Activé'; label.style.color = '#22c55e'; }
+    } else {
+      knob.style.left = '3px'; btn.style.background = '#555';
+      if (label) { label.textContent = 'Désactivé'; label.style.color = '#888'; }
+    }
+  })();
+
+  window.modBloquerUser = function() {
+    const tel    = document.getElementById('modBloquerTel')?.value.trim();
+    const raison = document.getElementById('modBloquerRaison')?.value.trim();
+    if (!tel) { showToastAdm('⚠️ Entrez un numéro'); return; }
+    const bloques = JSON.parse(localStorage.getItem('GM_USERS_BLOQUES')||'[]');
+    if (bloques.find(b=>b.tel===tel)) { showToastAdm('⚠️ Déjà bloqué'); return; }
+    bloques.push({ tel, raison, date: new Date().toISOString() });
+    localStorage.setItem('GM_USERS_BLOQUES', JSON.stringify(bloques));
+    const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    const vend = vends.find(v=>(v.tel||'').replace(/[^0-9]/g,'')===(tel.replace(/[^0-9]/g,'')));
+    if (vend) {
+      const anns = JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+      anns.forEach(a=>{ if(a.vendeurId===vend.id) a.bloque=true; });
+      localStorage.setItem('GM_ANNONCES', JSON.stringify(anns));
+    }
+    const ti = document.getElementById('modBloquerTel');   if(ti) ti.value='';
+    const ri = document.getElementById('modBloquerRaison');if(ri) ri.value='';
+    renderModeration(); showToastAdm('🚫 Utilisateur bloqué');
+  };
+  window.modBloquerTelDirect = function(tel) {
+    const ti = document.getElementById('modBloquerTel');   if(ti) ti.value=tel;
+    const ri = document.getElementById('modBloquerRaison');if(ri) ri.value='Spam détecté';
+    modBloquerUser();
+  };
+  window.modDebloquer = function(tel) {
+    const bloques = JSON.parse(localStorage.getItem('GM_USERS_BLOQUES')||'[]').filter(b=>b.tel!==tel);
+    localStorage.setItem('GM_USERS_BLOQUES', JSON.stringify(bloques));
+    renderModeration(); showToastAdm('✅ Utilisateur débloqué');
+  };
+
+  // Abonnements admin
+  window.renderAdminAbonnements = function() {
+    const abos  = JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+    const pays  = JSON.parse(localStorage.getItem('GM_PAIEMENTS')||'[]');
+    const vends = JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    const fmt = n => (n||0).toLocaleString('fr-FR')+' GNF';
+    const el = id => document.getElementById(id);
+    const now = new Date();
+    const actifs  = abos.filter(a=>a.statut==='actif'&&new Date(a.date_fin)>now);
+    const attente = pays.filter(p=>p.statut==='en_attente');
+    const revenu  = pays.filter(p=>p.statut==='payé').reduce((s,p)=>s+p.montant,0);
+    const expires = abos.filter(a=>a.statut==='expiré'&&new Date(a.date_fin)>new Date(Date.now()-30*86400000));
+    if(el('aboActifs'))    el('aboActifs').textContent    = actifs.length;
+    if(el('aboEnAttente')) el('aboEnAttente').textContent = attente.length;
+    if(el('aboRevenu'))    el('aboRevenu').textContent    = fmt(revenu);
+    if(el('aboExpires'))   el('aboExpires').textContent   = expires.length;
+    if(el('nbAbonnements'))el('nbAbonnements').textContent= attente.length;
+    const payDiv = el('payEnAttente');
+    if (payDiv) {
+      payDiv.innerHTML = attente.length ? attente.map(p=>
+        '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(246,139,30,.08);border:1px solid rgba(246,139,30,.2);border-radius:12px;margin-bottom:8px"><div style="flex:1"><strong style="color:#fff">'+(p.vendeurNom||'Vendeur')+'</strong><div style="font-size:12px;color:#888">Plan: <span style="color:#f68b1e">'+p.planId+'</span> · '+fmt(p.montant)+' · '+p.methode+' · Réf: '+p.id+'</div><div style="font-size:11px;color:#666">'+new Date(p.date).toLocaleString('fr-FR')+'</div></div><div style="display:flex;gap:8px"><button onclick="validerPaiement(''+p.id+'')" style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700"><i class=\"fas fa-check\"></i> Valider</button><button onclick="refuserPaiement(''+p.id+'')" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:12px"><i class=\"fas fa-times\"></i></button></div></div>'
+      ).join('') : '<p style="color:#888;font-size:13px">Aucun paiement en attente ✅</p>';
+    }
+    const tbody = el('bodyAbonnements');
+    if (tbody) tbody.innerHTML = abos.slice(0,30).map(a=>{
+      const v=vends.find(v=>v.id===a.vendeurId)||{};
+      const fin=new Date(a.date_fin); const jours=Math.ceil((fin-now)/86400000);
+      return '<tr><td><strong>'+(v.nom||a.vendeurId)+'</strong><br><small style="color:#888">'+(v.tel||'')+'</small></td><td>'+({basic:'⭐',pro:'🚀',premium:'👑',gratuit:'🆓'}[a.planId]||'—')+' '+a.planId+'</td><td style="font-size:12px">'+new Date(a.date_debut).toLocaleDateString('fr-FR')+'</td><td style="font-size:12px;color:'+(jours<=5?'#ef4444':'#22c55e')+'">'+fin.toLocaleDateString('fr-FR')+(jours>0?' ('+jours+'j)':'')+'</td><td><span style="background:'+(a.statut==='actif'?'rgba(34,197,94,.15)':'rgba(239,68,68,.15)')+';color:'+(a.statut==='actif'?'#22c55e':'#ef4444')+';padding:3px 10px;border-radius:20px;font-size:11px">'+a.statut+'</span></td><td><button onclick="revoquerAbo(''+a.id+'')" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class=\"fas fa-ban\"></i></button></td></tr>';
+    }).join('') || '<tr><td colspan="6" style="text-align:center;color:#888;padding:24px">Aucun abonnement</td></tr>';
+  };
+
+  window.validerPaiement = function(payId) {
+    const pays = JSON.parse(localStorage.getItem('GM_PAIEMENTS')||'[]');
+    const pay = pays.find(p=>p.id===payId); if(!pay) return;
+    pay.statut='payé';
+    localStorage.setItem('GM_PAIEMENTS', JSON.stringify(pays));
+    const abos = JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+    abos.forEach(a=>{ if(a.vendeurId===pay.vendeurId) a.statut='expiré'; });
+    const debut=new Date(), fin=new Date();
+    fin.setDate(fin.getDate()+(pay.duree==='annuel'?365:30));
+    abos.push({id:'abo'+Date.now(),vendeurId:pay.vendeurId,planId:pay.planId,date_debut:debut.toISOString(),date_fin:fin.toISOString(),statut:'actif'});
+    localStorage.setItem('GM_ABONNEMENTS', JSON.stringify(abos));
+    const vends=JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    const v=vends.find(v=>v.id===pay.vendeurId);
+    if(v){v.premium=pay.planId==='premium';v.verifie=['pro','premium'].includes(pay.planId);localStorage.setItem('GM_VENDEURS',JSON.stringify(vends));}
+    renderAdminAbonnements(); showToastAdm('✅ Abonnement activé pour '+(pay.vendeurNom||'vendeur'));
+  };
+  window.refuserPaiement = function(payId) {
+    if(!confirm('Refuser ce paiement ?')) return;
+    const pays=JSON.parse(localStorage.getItem('GM_PAIEMENTS')||'[]');
+    const p=pays.find(x=>x.id===payId); if(p) p.statut='refusé';
+    localStorage.setItem('GM_PAIEMENTS',JSON.stringify(pays));
+    renderAdminAbonnements(); showToastAdm('❌ Paiement refusé');
+  };
+  window.revoquerAbo = function(aboId) {
+    if(!confirm('Révoquer cet abonnement ?')) return;
+    const abos=JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+    const a=abos.find(x=>x.id===aboId); if(a) a.statut='révoqué';
+    localStorage.setItem('GM_ABONNEMENTS',JSON.stringify(abos));
+    renderAdminAbonnements(); showToastAdm('✅ Abonnement révoqué');
+  };
+  window.activerAboAdmin = function() {
+    const vendId=document.getElementById('activVendeurId')?.value.trim();
+    const planId=document.getElementById('activPlanId')?.value;
+    const duree =document.getElementById('activDuree')?.value;
+    if(!vendId){showToastAdm('⚠️ Entrez un ID vendeur');return;}
+    const abos=JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+    abos.forEach(a=>{if(a.vendeurId===vendId)a.statut='expiré';});
+    const debut=new Date(),fin=new Date();
+    fin.setDate(fin.getDate()+(duree==='annuel'?365:30));
+    abos.push({id:'abo'+Date.now(),vendeurId:vendId,planId,date_debut:debut.toISOString(),date_fin:fin.toISOString(),duree,statut:'actif'});
+    localStorage.setItem('GM_ABONNEMENTS',JSON.stringify(abos));
+    renderAdminAbonnements(); showToastAdm('✅ Abonnement '+planId+' activé !');
+  };
+
+  // Annonces admin
+  window.renderAdminAnnonces = function() {
+    const anns=JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+    const vends=JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    const fmt=n=>(n||0).toLocaleString('fr-FR')+' GNF';
+    const el=id=>document.getElementById(id);
+    if(el('annTot'))   el('annTot').textContent   = anns.length;
+    if(el('annBoost')) el('annBoost').textContent = anns.filter(a=>a.boost).length;
+    if(el('annVend'))  el('annVend').textContent  = [...new Set(anns.map(a=>a.vendeurId))].length;
+    const vnd=JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+    if(el('annPrem'))  el('annPrem').textContent  = vnd.filter(v=>v.premium).length;
+    if(el('nbAnnonces'))el('nbAnnonces').textContent=anns.length;
+    const tbody=el('bodyAnnonces');
+    if(tbody) tbody.innerHTML=anns.slice(0,50).map(a=>{
+      const v=vends.find(v=>v.id===a.vendeurId)||{};
+      return '<tr><td><strong style="font-size:13px">'+(a.titre||'—').slice(0,40)+'</strong></td><td>'+(v.nom||'—')+'</td><td style="color:#f68b1e">'+fmt(a.prix)+'</td><td>'+(a.ville||'—')+'</td><td>'+(a.vues||0)+'</td><td><span style="background:'+(a.dispo?'rgba(34,197,94,.15)':'rgba(239,68,68,.15)')+';color:'+(a.dispo?'#22c55e':'#ef4444')+';padding:3px 10px;border-radius:20px;font-size:11px">'+(a.dispo?'Disponible':'Vendu')+'</span>'+(a.boost?'<span style="background:rgba(246,139,30,.15);color:#f68b1e;padding:3px 8px;border-radius:20px;font-size:10px;margin-left:4px">🚀 Boost</span>':'')+'</td><td><button onclick="supprimerAnnonce(''+a.id+'')" style="background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px"><i class=\"fas fa-trash\"></i></button><button onclick="toggleBoostAdmin(''+a.id+'')" style="background:rgba(246,139,30,.1);color:#f68b1e;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;margin-left:4px"><i class=\"fas fa-rocket\"></i></button></td></tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;color:#888;padding:24px">Aucune annonce</td></tr>';
+  };
+  window.supprimerAnnonce = function(id) {
+    if(!confirm('Supprimer cette annonce ?')) return;
+    const anns=JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]').filter(a=>a.id!==id);
+    localStorage.setItem('GM_ANNONCES',JSON.stringify(anns));
+    renderAdminAnnonces(); showToastAdm('✅ Annonce supprimée');
+  };
+  window.toggleBoostAdmin = function(id) {
+    const anns=JSON.parse(localStorage.getItem('GM_ANNONCES')||'[]');
+    const a=anns.find(a=>a.id===id); if(a) a.boost=!a.boost;
+    localStorage.setItem('GM_ANNONCES',JSON.stringify(anns));
+    renderAdminAnnonces(); showToastAdm(a?.boost?'🚀 Annonce boostée!':'✅ Boost retiré');
+  };
+
+
+  // ══ TOGGLE BOUTON VENDEUR ══
+  window.adminToggleVendeurBtn = function() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    // Par défaut actif (true), on bascule
+    const actuel = s.vendeurBtnActif !== false;
+    s.vendeurBtnActif = !actuel;
+    localStorage.setItem('GM_SETTINGS', JSON.stringify(s));
+    majToggleVendeur(s.vendeurBtnActif);
+    showToastAdm(s.vendeurBtnActif ? '✅ Bouton Vendeur activé' : '🔴 Bouton Vendeur désactivé');
+  };
+  function majToggleVendeur(actif) {
+    const btn = document.getElementById('toggleVendeurBtn');
+    const dot = document.getElementById('toggleVendeurDot');
+    if (!btn || !dot) return;
+    btn.style.background = actif ? '#22c55e' : 'rgba(255,255,255,.15)';
+    dot.style.left = actif ? '27px' : '3px';
+  }
+  // Init état toggle au chargement
+  (function() {
+    const s = JSON.parse(localStorage.getItem('GM_SETTINGS')||'{}');
+    const actif = s.vendeurBtnActif !== false;
+    setTimeout(() => majToggleVendeur(actif), 300);
+  })();
+
+  </script>
+
+  <script src="js/products.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/marketing.js"></script>
+  <script src="js/produits-admin.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/footer.js"></script>
+</body>
+</html>

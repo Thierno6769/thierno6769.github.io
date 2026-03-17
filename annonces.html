@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Toutes les annonces des vendeurs sur Galy Market. Achetez et vendez en Guinée facilement."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Annonces — Galy Market"/>
+  <meta property="og:description" content="Toutes les annonces des vendeurs sur Galy Market. Achetez et vendez en Guinée facilement."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/annonces.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Annonces — Galy Market"/>
+  <meta name="twitter:description" content="Toutes les annonces des vendeurs sur Galy Market. Achetez et vendez en Guinée facilement."/>
+  <title>Annonces — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:70px}
+    /* HEADER */
+    .gz-header{background:#1a1206;padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    .gz-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .gz-logo-icon{width:36px;height:36px;background:#f68b1e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .gz-logo-text{font-size:15px;font-weight:800;color:#f68b1e}
+    .gz-search-wrap{flex:1;display:flex;align-items:center;background:rgba(246,139,30,.06);border-radius:8px;padding:8px 12px;gap:8px}
+    .gz-search-wrap i{color:#8a7560;font-size:13px}
+    .gz-search-wrap input{border:none;background:none;outline:none;font-size:13px;width:100%;font-family:'DM Sans',sans-serif}
+    .gz-header-right{display:flex;gap:14px;align-items:center}
+    .gz-header-right a{color:#fdf8f0;font-size:20px;text-decoration:none;position:relative}
+    .gz-cart-badge{position:absolute;top:-5px;right:-5px;background:#e53935;color:#fff;font-size:9px;font-weight:800;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+    /* CATS */
+    .gz-cats{background:#1a1206;overflow-x:auto;white-space:nowrap;padding:8px 12px;border-bottom:1px solid #eee;scrollbar-width:none}
+    .gz-cats::-webkit-scrollbar{display:none}
+    .gz-cat{display:inline-flex;align-items:center;gap:5px;background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.15);border-radius:18px;padding:5px 12px;margin-right:6px;font-size:11px;font-weight:600;color:#444;cursor:pointer;white-space:nowrap;transition:all .2s;user-select:none}
+    .gz-cat:hover,.gz-cat.active{background:#f68b1e;color:#fff;border-color:#f68b1e}
+    /* SLIDER */
+    .gz-slider{overflow:hidden;position:relative}
+    .gz-slide{display:none;height:170px;position:relative}
+    .gz-slide.active{display:flex;align-items:center;justify-content:center}
+    .gz-slide-content{text-align:center;color:#fff;padding:20px}
+    .gz-slide-content h3{font-size:17px;font-weight:800;margin-bottom:6px}
+    .gz-slide-content p{font-size:12px;opacity:.85}
+    .gz-slide-btn{position:absolute;bottom:12px;right:12px;background:#1a1206;color:#f68b1e;border:none;border-radius:16px;padding:6px 14px;font-size:11px;font-weight:800;cursor:pointer}
+    .gz-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px}
+    .gz-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}
+    .gz-dot.active{background:#1a1206;width:16px;border-radius:3px}
+    /* STATS */
+    .gz-stats{background:#1a1206;display:flex;border-bottom:1px solid #eee}
+    .gz-stat{flex:1;text-align:center;padding:8px;border-right:1px solid #eee}
+    .gz-stat:last-child{border:none}
+    .gz-stat-val{font-size:16px;font-weight:800;color:#f68b1e}
+    .gz-stat-lbl{font-size:9px;color:#8a7560}
+    /* PUBLIER */
+    .gz-pub-bar{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:8px 14px;display:flex;align-items:center;justify-content:space-between}
+    .gz-pub-bar span{color:#fff;font-size:12px;font-weight:600}
+    .gz-pub-btn{background:#1a1206;color:#f68b1e;border:none;border-radius:16px;padding:6px 16px;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:5px}
+    /* FILTRES */
+    .gz-filtres{background:#1a1206;padding:6px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #eee;align-items:center}
+    .gz-filtres::-webkit-scrollbar{display:none}
+    .gz-fchip{background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.15);border-radius:14px;padding:4px 10px;font-size:10px;font-weight:600;color:#8a7560;cursor:pointer;white-space:nowrap;user-select:none}
+    .gz-fchip.active{background:#f68b1e;color:#fff;border-color:#f68b1e}
+    .gz-fsel{background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.15);border-radius:14px;padding:4px 10px;font-size:10px;font-weight:600;color:#8a7560;cursor:pointer;outline:none;font-family:'DM Sans',sans-serif}
+    /* SECTIONS */
+    .gz-section{padding:12px 12px 0}
+    .gz-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .gz-sec-title{font-size:14px;font-weight:800;color:#fdf8f0}
+    .gz-voir-tout{font-size:11px;color:#f68b1e;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:2px}
+    /* GRILLE */
+    .gz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    @media(min-width:540px){.gz-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:800px){.gz-grid{grid-template-columns:repeat(4,1fr)}}
+    /* CARTE */
+    .gz-card{background:#1a1206;border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:transform .15s,box-shadow .15s}
+    .gz-card:active{transform:scale(.98)}
+    .gz-card-img{position:relative;height:145px;overflow:hidden;background:rgba(246,139,30,.06)}
+    .gz-card-img img{width:100%;height:100%;object-fit:cover}
+    .gz-card-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px}
+    .gz-bur{position:absolute;top:5px;left:5px;background:#e53935;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;z-index:2}
+    .gz-bfl{position:absolute;top:5px;left:5px;background:#ff6f00;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;z-index:2}
+    .gz-fav{position:absolute;top:5px;right:5px;width:28px;height:28px;border-radius:50%;background:#1a1206;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.15);font-size:13px;z-index:2}
+    .gz-body{padding:7px 9px 9px}
+    .gz-titre{font-size:11px;font-weight:600;color:#fdf8f0;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:30px;margin-bottom:3px}
+    .gz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+    .gz-ville{font-size:10px;color:#e53935;font-weight:500;display:flex;align-items:center;gap:2px}
+    .gz-pro{background:#fff3e0;color:#f68b1e;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;border:1px solid #fde8c0}
+    .gz-prix{font-size:14px;font-weight:800;color:#fdf8f0;margin-bottom:5px}
+    .gz-prix.gratuit{color:#f68b1e}
+    .gz-btn-add{width:100%;background:#f68b1e;color:#fff;border:none;border-radius:6px;padding:7px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:'DM Sans',sans-serif}
+    .gz-btn-voir{width:100%;background:#1a1206;color:#f68b1e;border:1.5px solid #f68b1e;border-radius:6px;padding:7px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:'DM Sans',sans-serif}
+    /* BOTTOM NAV */
+    .gz-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);display:flex;z-index:200;box-shadow:0 -2px 6px rgba(0,0,0,.06)}
+    .gz-nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;cursor:pointer;text-decoration:none;color:#999;font-size:9px;font-weight:600;gap:2px}
+    .gz-nitem.active{color:#f68b1e}
+    .gz-nitem i{font-size:19px}
+    .gz-npub{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none}
+    .gz-npub-icon{width:42px;height:42px;background:#f68b1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 3px 10px rgba(246,139,30,.4)}
+    .gz-npub-icon i{font-size:19px;color:#fff}
+    .gz-npub span{font-size:9px;font-weight:600;color:#f68b1e}
+    /* MODAL */
+    .gz-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-end}
+    .gz-modal.open{display:flex}
+    .gz-mbox{background:#1a1206;border-radius:18px 18px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:16px}
+    .gz-mhandle{width:36px;height:4px;background:rgba(246,139,30,.2);border-radius:2px;margin:0 auto 14px}
+    /* TOAST */
+    .gz-toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(0,0,0,.8);color:#fff;padding:8px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap;pointer-events:none}
+    .gz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    /* LOAD MORE */
+    .gz-more{display:block;width:calc(100% - 24px);margin:12px;background:#1a1206;border:1.5px solid #f68b1e;color:#f68b1e;border-radius:8px;padding:11px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<!-- HEADER -->
+<header class="gz-header">
+  <a href="index.html" class="gz-logo">
+    <div class="gz-logo-icon">🛍️</div>
+    <span class="gz-logo-text">GALY MARKET</span>
+  </a>
+  <div class="gz-search-wrap">
+    <i class="fas fa-search"></i>
+    <input type="text" id="annSearchInput" placeholder="Rechercher une annonce..." onkeyup="renderSections()">
+  </div>
+  <div class="gz-header-right">
+    <a href="panier.html" style="position:relative">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="gz-cart-badge" id="cartBadge">0</span>
+    </a>
+    <a href="account.html"><i class="fas fa-user-circle"></i></a>
+  </div>
+</header>
+
+<!-- CATÉGORIES -->
+<div class="gz-cats" id="gzCats">
+  <div class="gz-cat active" onclick="filtrerCat('',this)">🏠 Tout</div>
+  <div class="gz-cat" onclick="filtrerCat('vehicules',this)">🚗 Voitures</div>
+  <div class="gz-cat" onclick="filtrerCat('mode',this)">👗 Vêtements</div>
+  <div class="gz-cat" onclick="filtrerCat('informatique',this)">💻 Informatique</div>
+  <div class="gz-cat" onclick="filtrerCat('phones',this)">📱 Téléphonies</div>
+  <div class="gz-cat" onclick="filtrerCat('electromenager',this)">🔌 Électroménager</div>
+  <div class="gz-cat" onclick="filtrerCat('meubles',this)">🛋️ Ameublement</div>
+  <div class="gz-cat" onclick="filtrerCat('emploi',this)">🔔 Services</div>
+  <div class="gz-cat" onclick="filtrerCat('immobilier',this)">🏢 Immo</div>
+  <div class="gz-cat" onclick="filtrerCat('bijoux',this)">💍 Bijoux</div>
+  <div class="gz-cat" onclick="filtrerCat('beaute',this)">💄 Cosmétiques</div>
+  <div class="gz-cat" onclick="filtrerCat('alimentation',this)">🍎 Alimentation</div>
+  <div class="gz-cat" onclick="filtrerCat('sport',this)">⚽ Sport</div>
+  <div class="gz-cat" onclick="filtrerCat('bebe',this)">👶 Bébé</div>
+  <div class="gz-cat" onclick="filtrerCat('animaux',this)">🐾 Animaux</div>
+</div>
+
+<!-- SLIDER -->
+<div class="gz-slider">
+  <div class="gz-slide active" style="background:linear-gradient(135deg,#f68b1e,#e07b0e)">
+    <div class="gz-slide-content">
+      <div style="font-size:28px;margin-bottom:6px">🛍️</div>
+      <h3>Achetez et Vendez en toute simplicité</h3>
+      <p>Des milliers d'annonces sur Galy Market</p>
+    </div>
+    <button class="gz-slide-btn" onclick="window.location.href='publier-annonce.html'">+ Publier une annonce</button>
+    <div class="gz-dots"><div class="gz-dot active"></div><div class="gz-dot"></div><div class="gz-dot"></div></div>
+  </div>
+  <div class="gz-slide" style="background:linear-gradient(135deg,#0d47a1,#1565c0)">
+    <div class="gz-slide-content">
+      <div style="font-size:28px;margin-bottom:6px">⭐</div>
+      <h3>Boostez vos ventes en ligne</h3>
+      <p>Abonnez-vous pour plus de visibilité</p>
+    </div>
+    <button class="gz-slide-btn" onclick="window.location.href='abonnements.html'">Voir les plans</button>
+    <div class="gz-dots"><div class="gz-dot"></div><div class="gz-dot active"></div><div class="gz-dot"></div></div>
+  </div>
+  <div class="gz-slide" style="background:linear-gradient(135deg,#b71c1c,#c62828)">
+    <div class="gz-slide-content">
+      <div style="font-size:28px;margin-bottom:6px">🇬🇳</div>
+      <h3>100% Guinéen · Conakry & Provinces</h3>
+      <p>Livraison rapide partout en Guinée</p>
+    </div>
+    <button class="gz-slide-btn" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+    <div class="gz-dots"><div class="gz-dot"></div><div class="gz-dot"></div><div class="gz-dot active"></div></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="gz-stats">
+  <div class="gz-stat"><div class="gz-stat-val">100K+</div><div class="gz-stat-lbl">Utilisateurs</div></div>
+  <div class="gz-stat"><div class="gz-stat-val" id="statAnns">0</div><div class="gz-stat-lbl">Annonces</div></div>
+  <div class="gz-stat"><div class="gz-stat-val">1 500+</div><div class="gz-stat-lbl">Boutiques</div></div>
+</div>
+
+<!-- PUBLIER -->
+<div class="gz-pub-bar">
+  <span><i class="fas fa-plus-circle"></i> Vous avez quelque chose à vendre ?</span>
+  <a href="publier-annonce.html" class="gz-pub-btn"><i class="fas fa-plus"></i> Publier</a>
+</div>
+
+<!-- FILTRES -->
+<div class="gz-filtres">
+  <div class="gz-fchip active" onclick="setTri('recent',this)">🕐 Récentes</div>
+  <div class="gz-fchip" onclick="setTri('prix_asc',this)">Prix ↑</div>
+  <div class="gz-fchip" onclick="setTri('prix_desc',this)">Prix ↓</div>
+  <div class="gz-fchip" onclick="setTri('vues',this)">👁 + Vues</div>
+  <select class="gz-fsel" id="filtreVille" onchange="renderSections()">
+    <option value="">📍 Toute la Guinée</option>
+    <option>Conakry</option><option>Labé</option><option>Kankan</option>
+    <option>N'Zérékoré</option><option>Kindia</option><option>Boké</option>
+    <option>Faranah</option><option>Mamou</option><option>Siguiri</option>
+  </select>
+</div>
+
+<!-- CONTENU -->
+<div id="gzContent"></div>
+<button class="gz-more" id="gzMore" style="display:none" onclick="chargerPlus()">
+  <i class="fas fa-chevron-down"></i> Voir plus d'annonces
+</button>
+
+<!-- MODAL -->
+<div class="gz-modal" id="annModal" onclick="if(event.target===this)fermerModal()">
+  <div class="gz-mbox">
+    <div class="gz-mhandle"></div>
+    <div id="annModalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="gz-toast" id="gzToast"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="gz-nav">
+  <a href="index.html" class="gz-nitem"><i class="fas fa-home"></i><span>Accueil</span></a>
+  <a href="annonces.html" class="gz-nitem active"><i class="fas fa-tag"></i><span>Offres</span></a>
+  <a href="publier-annonce.html" class="gz-npub">
+    <div class="gz-npub-icon"><i class="fas fa-plus"></i></div>
+    <span>Publier</span>
+  </a>
+  <a href="boutiques.html" class="gz-nitem"><i class="fas fa-store"></i><span>Boutiques</span></a>
+  <a href="account.html" class="gz-nitem"><i class="fas fa-user"></i><span>Compte</span></a>
+</nav>
+
+<script src="js/annonces.js"></script>
+<script>
+// ── SLIDER ──
+let sIdx = 0;
+const sSlides = document.querySelectorAll('.gz-slide');
+function autoSlide() {
+  sSlides[sIdx].classList.remove('active');
+  sIdx = (sIdx + 1) % sSlides.length;
+  sSlides[sIdx].classList.add('active');
+}
+setInterval(autoSlide, 4000);
+
+// ── CART BADGE ──
+function updateBadge() {
+  const c = JSON.parse(localStorage.getItem('GM_CART')||'[]');
+  const q = c.reduce((a,i)=>a+i.qty,0);
+  const b = document.getElementById('cartBadge');
+  if(b) b.textContent = q||'0';
+}
+updateBadge();
+
+// ── TOAST ──
+window.gzToast = function(msg) {
+  const t = document.getElementById('gzToast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+};
+
+// ── ÉTAT ──
+let currentCat = '', currentTri = 'recent';
+
+window.filtrerCat = function(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.gz-cat').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderSections();
+};
+window.setTri = function(tri, el) {
+  currentTri = tri;
+  document.querySelectorAll('.gz-fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderSections();
+};
+
+// ── ABONNEMENT ──
+function getAbo(vendeurId) {
+  const abos = JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');
+  return abos.find(a=>a.vendeurId===vendeurId && a.statut==='actif')||null;
+}
+
+// ── TRI ──
+function trierAnns(anns) {
+  const P = {premium:4,pro:3,basic:2,gratuit:1};
+  return [...anns].sort((a,b) => {
+    if(b.boost!==a.boost) return (b.boost?1:0)-(a.boost?1:0);
+    const pa = P[getAbo(a.vendeurId)?.planId]||1;
+    const pb = P[getAbo(b.vendeurId)?.planId]||1;
+    if(pb!==pa) return pb-pa;
+    if(currentTri==='prix_asc') return a.prix-b.prix;
+    if(currentTri==='prix_desc') return b.prix-a.prix;
+    if(currentTri==='vues') return (b.vues||0)-(a.vues||0);
+    return new Date(b.date)-new Date(a.date);
+  });
+}
+
+// ── CARTE ──
+const EMOJI_MAP = {immobilier:'🏠',vehicules:'🚗',phones:'📱',informatique:'💻',mode:'👕',electromenager:'🔌',emploi:'💼',meubles:'🛋️',alimentation:'🍎',animaux:'🐾',sport:'⚽',bijoux:'💍',beaute:'💄',bebe:'👶',autres:'📦'};
+
+function makeCard(ann) {
+  const abo = getAbo(ann.vendeurId);
+  const forfait = abo?.planId||'gratuit';
+  const isPro = ['basic','pro','premium'].includes(forfait);
+  const isUrgent = ann.boost || forfait==='premium';
+  const isFlash  = !isUrgent && (ann.flash || forfait==='pro');
+  const emoji = EMOJI_MAP[ann.cat]||'📦';
+
+  const photo = ann.photos&&ann.photos[0]
+    ? `<img src="${ann.photos[0]}" alt="${ann.titre}">`
+    : `<div class="gz-card-emoji">${emoji}</div>`;
+
+  const prix = ann.prix>0
+    ? `<div class="gz-prix">${ann.prix.toLocaleString('fr-FR')} GNF</div>`
+    : `<div class="gz-prix gratuit">Gratuit</div>`;
+
+  const btn = ann.prix>0
+    ? `<button class="gz-btn-add" onclick="event.stopPropagation();gzAdd('${ann.id}')"><i class="fas fa-cart-plus"></i> Ajouter</button>`
+    : `<button class="gz-btn-voir" onclick="event.stopPropagation();ouvrirAnnonce('${ann.id}')"><i class="fas fa-eye"></i> Voir</button>`;
+
+  return `<div class="gz-card" onclick="ouvrirAnnonce('${ann.id}')">
+    <div class="gz-card-img">
+      ${photo}
+      ${isUrgent?'<div class="gz-bur">URGENTE</div>':''}
+      ${isFlash?'<div class="gz-bfl">VENTE FLASH</div>':''}
+      <button class="gz-fav" onclick="event.stopPropagation();gzFav('${ann.id}',this)"><i class="far fa-heart" style="color:#ccc"></i></button>
+    </div>
+    <div class="gz-body">
+      <div class="gz-titre">${ann.titre}</div>
+      <div class="gz-meta">
+        <span class="gz-ville"><i class="fas fa-map-marker-alt"></i> ${ann.ville}</span>
+        ${isPro?'<span class="gz-pro">Vendeur pro</span>':''}
+      </div>
+      ${prix}
+      ${btn}
+    </div>
+  </div>`;
+}
+
+// ── SECTIONS ──
+const SECTIONS = [
+  {key:'nouveautes',label:'🕐 Nouveautés',    cat:''},
+  {key:'vehicules', label:'🚗 Voitures',       cat:'vehicules'},
+  {key:'mode',      label:'👗 Vêtements',      cat:'mode'},
+  {key:'informatique',label:'💻 Informatique', cat:'informatique'},
+  {key:'phones',    label:'📱 Téléphonies',    cat:'phones'},
+  {key:'electromenager',label:'🔌 Électroménager',cat:'electromenager'},
+  {key:'meubles',   label:'🛋️ Ameublement',   cat:'meubles'},
+  {key:'immobilier',label:'🏠 Immo',           cat:'immobilier'},
+  {key:'bijoux',    label:'💍 Montres & Bijoux',cat:'bijoux'},
+  {key:'beaute',    label:'💄 Cosmétiques',    cat:'beaute'},
+  {key:'emploi',    label:'🔔 Services',       cat:'emploi'},
+  {key:'alimentation',label:'🍎 Alimentation', cat:'alimentation'},
+];
+
+window.renderSections = function() {
+  if(typeof getAnnonces!=='function') { setTimeout(renderSections,150); return; }
+  const all = getAnnonces();
+  const q = document.getElementById('annSearchInput')?.value.toLowerCase()||'';
+  const ville = document.getElementById('filtreVille')?.value||'';
+
+  let filtered = all.filter(a=>a.dispo!==false);
+  if(currentCat) filtered = filtered.filter(a=>a.cat===currentCat);
+  if(ville) filtered = filtered.filter(a=>a.ville===ville);
+  if(q) filtered = filtered.filter(a=>a.titre.toLowerCase().includes(q)||a.desc?.toLowerCase().includes(q));
+
+  const statEl = document.getElementById('statAnns');
+  if(statEl) statEl.textContent = filtered.length;
+
+  const container = document.getElementById('gzContent');
+  if(!container) return;
+
+  if(currentCat||q||ville) {
+    const sorted = trierAnns(filtered);
+    container.innerHTML = `<div class="gz-section">
+      <div class="gz-sec-hdr"><div class="gz-sec-title">🔍 ${filtered.length} résultat(s)</div></div>
+      <div class="gz-grid">${sorted.map(makeCard).join('')}</div>
+    </div>`;
+    document.getElementById('gzMore').style.display='none';
+    return;
+  }
+
+  let html = '';
+  SECTIONS.forEach(sec => {
+    let anns = sec.cat ? filtered.filter(a=>a.cat===sec.cat) : filtered;
+    anns = trierAnns(anns).slice(0,6);
+    if(!anns.length) return;
+    html += `<div class="gz-section">
+      <div class="gz-sec-hdr">
+        <div class="gz-sec-title">${sec.label}</div>
+        <a class="gz-voir-tout" href="#" onclick="event.preventDefault();filtrerCat('${sec.cat}',document.querySelector('.gz-cat'))">Voir tout <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="gz-grid">${anns.map(makeCard).join('')}</div>
+    </div>`;
+  });
+
+  container.innerHTML = html||`<div style="text-align:center;padding:40px;color:#6b5d4f"><i class="fas fa-search" style="font-size:40px;display:block;margin-bottom:12px"></i>Aucune annonce</div>`;
+  document.getElementById('gzMore').style.display='none';
+};
+
+// ── AJOUTER AU PANIER ──
+window.gzAdd = function(id) {
+  const ann = getAnnonces().find(a=>a.id===id);
+  if(!ann) return;
+  const cart = JSON.parse(localStorage.getItem('GM_CART')||'[]');
+  const ex = cart.find(i=>i.id===id);
+  if(ex) ex.qty++;
+  else cart.push({id,name:ann.titre,price:ann.prix,qty:1,em:EMOJI_MAP[ann.cat]||'📦'});
+  localStorage.setItem('GM_CART',JSON.stringify(cart));
+  updateBadge();
+  gzToast('✅ Ajouté au panier !');
+};
+
+// ── FAVORI ──
+window.gzFav = function(id, btn) {
+  const favs = JSON.parse(localStorage.getItem('GM_ANN_FAVS')||'[]');
+  const i = favs.indexOf(id);
+  if(i>=0){favs.splice(i,1);btn.innerHTML='<i class="far fa-heart" style="color:#ccc"></i>';}
+  else{favs.push(id);btn.innerHTML='<i class="fas fa-heart" style="color:#e53935"></i>';}
+  localStorage.setItem('GM_ANN_FAVS',JSON.stringify(favs));
+};
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function() {
+  if(typeof getAnnonces==='function') renderSections();
+  else {
+    const t = setInterval(()=>{
+      if(typeof getAnnonces==='function'){clearInterval(t);renderSections();}
+    },100);
+  }
+});
+</script>
+</body>
+</html>

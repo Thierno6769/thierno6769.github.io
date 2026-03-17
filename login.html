@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+<title>Galy Market — Connexion Employés</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+  --gold:#f68b1e;--gold-d:#d4780f;
+  --blue:#3498db;--purple:#9b59b6;--green:#22c55e;--red:#ef4444;
+  --dark:#0a0e1a;--dark2:#111827;--dark3:#1e293b;
+  --cream:#f8fafc;--muted:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:var(--cream);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── FOND ANIMÉ ── */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 8s ease-in-out infinite;}
+.orb1{width:400px;height:400px;background:var(--gold);top:-100px;left:-100px;animation-delay:0s;}
+.orb2{width:300px;height:300px;background:var(--blue);bottom:-80px;right:-80px;animation-delay:3s;}
+.orb3{width:200px;height:200px;background:var(--purple);top:50%;left:50%;animation-delay:5s;}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
+
+/* ── CARD ── */
+.login-wrap{position:relative;z-index:1;width:100%;max-width:420px;}
+.logo-area{text-align:center;margin-bottom:36px;}
+.logo-main{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:4px;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--gold) 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--muted);margin-top:4px;}
+.logo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(246,139,30,.12);border:1px solid rgba(246,139,30,.25);border-radius:50px;padding:5px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:12px;}
+
+.card{background:rgba(17,24,39,.9);border:1px solid rgba(246,139,30,.15);border-radius:24px;padding:36px;backdrop-filter:blur(20px);box-shadow:0 32px 80px rgba(0,0,0,.4);}
+.card-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px;}
+.card-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px;}
+
+/* ── INPUTS ── */
+.input-group{margin-bottom:16px;position:relative;}
+.input-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;display:block;}
+.input-wrap{position:relative;}
+.input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.input-field{
+  width:100%;
+  background:rgba(246,139,30,.05);
+  border:1.5px solid rgba(246,139,30,.12);
+  border-radius:12px;
+  padding:14px 14px 14px 42px;
+  font-size:15px;
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  transition:all .25s;
+}
+.input-field:focus{border-color:var(--gold);background:rgba(246,139,30,.08);}
+.input-field::placeholder{color:var(--muted);}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;}
+
+/* ── BOUTON CONNEXION ── */
+.btn-connect{
+  width:100%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  color:#1a0f00;
+  border:none;
+  border-radius:12px;
+  padding:16px;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  transition:all .25s;
+  letter-spacing:.3px;
+}
+.btn-connect:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(246,139,30,.35);}
+.btn-connect:active{transform:translateY(0);}
+.btn-connect:disabled{opacity:.6;cursor:default;transform:none;}
+
+/* ── ERREUR ── */
+.error-box{
+  background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.25);
+  border-radius:10px;
+  padding:11px 14px;
+  font-size:13px;
+  color:#fca5a5;
+  display:none;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+}
+.error-box.show{display:flex;}
+
+/* ── LOADING ── */
+.spinner{width:18px;height:18px;border:2px solid rgba(26,15,0,.3);border-top-color:#1a0f00;border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SUCCESS ── */
+.success-screen{display:none;text-align:center;padding:20px 0;}
+.success-screen.show{display:block;}
+.success-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;}
+.success-name{font-size:22px;font-weight:800;margin-bottom:4px;}
+.success-role{font-size:13px;margin-bottom:20px;}
+.redirect-bar{height:4px;border-radius:2px;background:rgba(246,139,30,.15);overflow:hidden;margin-bottom:12px;}
+.redirect-fill{height:100%;border-radius:2px;width:0%;transition:width 2s linear;}
+.redirect-text{font-size:12px;color:var(--muted);}
+
+/* ── RÔLE COLORS ── */
+.role-gc{background:rgba(52,152,219,.2);color:var(--blue);}
+.role-gs{background:rgba(155,89,182,.2);color:var(--purple);}
+.role-lv{background:rgba(246,139,30,.2);color:var(--gold);}
+.fill-gc{background:var(--blue);}
+.fill-gs{background:var(--purple);}
+.fill-lv{background:var(--gold);}
+
+/* ── NOTE BAS ── */
+.bottom-note{text-align:center;margin-top:20px;font-size:11px;color:var(--muted);}
+.bottom-note a{color:var(--gold);text-decoration:none;}
+</style>
+
+  <!-- ═══ PWA META ═══ -->
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Galy Market — Employés"/>
+  <meta name="theme-color" content="#f68b1e"/>
+  <meta name="application-name" content="Galy Market — Employés"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png"/>
+  <!-- ═══ FIN PWA META ═══ -->
+</head>
+<body>
+
+<!-- ORBES DE FOND -->
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<div class="login-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-area">
+    <div class="logo-main">GALY<br>MARKET</div>
+    <div class="logo-sub">E-commerce Guinée</div>
+    <div class="logo-badge"><i class="fas fa-users"></i> Espace Employés</div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- FORMULAIRE -->
+    <div id="formArea">
+      <div class="card-title">Bienvenue 👋</div>
+      <div class="card-sub">Connectez-vous avec vos identifiants personnels</div>
+
+      <!-- ERREUR -->
+      <div class="error-box" id="errorBox">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span id="errorMsg">Login ou mot de passe incorrect.</span>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="input-group">
+        <label class="input-label">Votre login</label>
+        <div class="input-wrap">
+          <i class="input-icon fas fa-user"></i>
+          <input type="text" id="loginInput" class="input-field" placeholder="ex: mamadou.diallo" autocomplete="username" onkeydown="if(event.key==='Enter')seConnecter()"/>
+        </div>
+      </div>
+
+      <!-- MOT DE PASSE -->
+      <div class="input-group">
+        <label class="input-label">Mot de passe</label>
+        <div class="input-wrap">
+          <i class="input-icon fas fa-lock"></i>
+          <input type="password" id="mdpInput" class="input-field" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')seConnecter()"/>
+          <button class="eye-btn" onclick="toggleMdp()" type="button"><i class="fas fa-eye" id="eyeIcon"></i></button>
+        </div>
+      </div>
+
+      <button class="btn-connect" id="btnConnect" onclick="seConnecter()">
+        <i class="fas fa-right-to-bracket"></i> Se connecter
+      </button>
+    </div>
+
+    <!-- ÉCRAN SUCCÈS -->
+    <div class="success-screen" id="successArea">
+      <div class="success-icon" id="successIcon"></div>
+      <div class="success-name" id="successName"></div>
+      <div class="success-role" id="successRole"></div>
+      <div class="redirect-bar"><div class="redirect-fill" id="redirectFill"></div></div>
+      <div class="redirect-text" id="redirectText">Redirection vers votre application…</div>
+    </div>
+
+  </div>
+
+  <div class="bottom-note">
+    Propriétaire ? <a href="admin-employes.html">Panneau d'administration →</a>
+  </div>
+
+</div>
+
+<script src="js/employes-core.js"></script>
+<script>
+const {AuthEmp, GM, EmployeManager} = window.GALY;
+
+// Mapping rôle → app + style
+const ROLE_CONFIG = {
+  GESTIONNAIRE_COMMANDES: {
+    app:   'app-commandes.html',
+    label: 'Gestionnaire de Commandes',
+    icon:  'fas fa-clipboard-list',
+    cls:   'role-gc',
+    fill:  'fill-gc',
+  },
+  GESTIONNAIRE_STOCK: {
+    app:   'app-stock.html',
+    label: 'Gestionnaire de Stock',
+    icon:  'fas fa-boxes-stacked',
+    cls:   'role-gs',
+    fill:  'fill-gs',
+  },
+  LIVREUR: {
+    app:   'app-livreur.html',
+    label: 'Livreur',
+    icon:  'fas fa-motorcycle',
+    cls:   'role-lv',
+    fill:  'fill-lv',
+  },
+};
+
+// ── Vérifier si session existante ──
+window.addEventListener('load', () => {
+  const session = AuthEmp.getSession();
+  if (session && ROLE_CONFIG[session.role]) {
+    // Déjà connecté → rediriger directement
+    window.location.href = ROLE_CONFIG[session.role].app;
+  }
+});
+
+// ── Toggle mot de passe ──
+function toggleMdp() {
+  const inp = document.getElementById('mdpInput');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+// ── Connexion ──
+function seConnecter() {
+  const login = document.getElementById('loginInput').value.trim();
+  const mdp   = document.getElementById('mdpInput').value.trim();
+  const btn   = document.getElementById('btnConnect');
+  const errBox = document.getElementById('errorBox');
+
+  // Reset erreur
+  errBox.classList.remove('show');
+
+  // Validation basique
+  if (!login || !mdp) {
+    showError('Veuillez saisir votre login et mot de passe.');
+    return;
+  }
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Connexion…';
+
+  // Simuler un léger délai (UX)
+  setTimeout(() => {
+    const session = AuthEmp.connecter(login, mdp);
+
+    if (!session) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Se connecter';
+      showError('Login ou mot de passe incorrect. Vérifiez vos identifiants.');
+      document.getElementById('mdpInput').value = '';
+      return;
+    }
+
+    const config = ROLE_CONFIG[session.role];
+    if (!config) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Se connecter';
+      showError('Rôle non reconnu. Contactez l\'administrateur.');
+      return;
+    }
+
+    // Afficher l'écran succès
+    afficherSucces(session, config);
+
+  }, 700);
+}
+
+// ── Affichage succès + redirection ──
+function afficherSucces(session, config) {
+  document.getElementById('formArea').style.display = 'none';
+
+  const successArea = document.getElementById('successArea');
+  const icon = document.getElementById('successIcon');
+  const name = document.getElementById('successName');
+  const role = document.getElementById('successRole');
+  const fill = document.getElementById('redirectFill');
+
+  icon.className = `success-icon ${config.cls}`;
+  icon.innerHTML = `<i class="${config.icon}"></i>`;
+  name.textContent = session.prenom + ' ' + session.nom;
+  role.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:50px;font-size:12px;font-weight:700" class="${config.cls}"><i class="${config.icon}"></i> ${config.label}</span>`;
+
+  successArea.classList.add('show');
+
+  // Barre de progression
+  setTimeout(() => {
+    fill.className = `redirect-fill ${config.fill}`;
+  }, 50);
+
+  // Redirection après 2.2s
+  setTimeout(() => {
+    window.location.href = config.app;
+  }, 2300);
+}
+
+// ── Erreur ──
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  document.getElementById('errorMsg').textContent = msg;
+  box.classList.add('show');
+  document.getElementById('loginInput').focus();
+}
+</script>
+
+  <!-- ═══ SERVICE WORKER ═══ -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[PWA] Service Worker enregistré ✅', reg.scope))
+          .catch(err => console.warn('[PWA] SW erreur:', err));
+      });
+    }
+  </script>
+  <!-- ═══ FIN SERVICE WORKER ═══ -->
+</body>
+</html>

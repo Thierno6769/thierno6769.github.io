@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique Vendeur — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:70px}
+    .gz-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+    .gz-back{background:rgba(255,255,255,.2);border:none;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;text-decoration:none}
+    .gz-header-title{color:#fff;font-size:16px;font-weight:800;flex:1}
+    /* PROFIL BOUTIQUE */
+    .gz-boutique-header{background:#1a1206;padding:20px 14px 0}
+    .gz-bout-banner{height:120px;background:linear-gradient(135deg,#f68b1e,#e07b0e);border-radius:12px;margin-bottom:0;position:relative}
+    .gz-bout-avatar{width:72px;height:72px;border-radius:50%;background:#1a1206;border:3px solid #fff;position:absolute;bottom:-36px;left:20px;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .gz-bout-avatar img{width:100%;height:100%;object-fit:cover}
+    .gz-bout-infos{padding:44px 14px 14px}
+    .gz-bout-nom{font-size:18px;font-weight:800;margin-bottom:2px}
+    .gz-bout-meta{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0}
+    .gz-bout-meta span{font-size:11px;color:#8a7560;display:flex;align-items:center;gap:4px}
+    .gz-bout-badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+    .gz-bout-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px}
+    .gz-bout-badge.premium{background:#fff8e1;color:#f59e0b;border:1px solid #fde68a}
+    .gz-bout-badge.pro{background:#f3e8ff;color:#7c3aed;border:1px solid #e9d5ff}
+    .gz-bout-badge.basic{background:#e3f2fd;color:#1565c0;border:1px solid #bbdefb}
+    .gz-bout-badge.verif{background:#fff3e0;color:#f68b1e;border:1px solid #fde8c0}
+    .gz-bout-stats{display:flex;gap:0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin:10px 0}
+    .gz-bout-stat{flex:1;text-align:center;padding:10px;border-right:1px solid #f0f0f0}
+    .gz-bout-stat:last-child{border:none}
+    .gz-bout-stat-val{font-size:18px;font-weight:800;color:#f68b1e}
+    .gz-bout-stat-lbl{font-size:10px;color:#8a7560}
+    .gz-bout-actions{display:flex;gap:8px;padding:0 14px 14px}
+    .gz-bout-btn-wa{flex:1;background:#25d366;color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+    .gz-bout-btn-follow{flex:1;background:rgba(246,139,30,.06);color:#fdf8f0;border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+    .gz-bout-btn-follow.following{background:#fff3e0;color:#f68b1e;border-color:#fde8c0}
+    /* DESC */
+    .gz-bout-desc{padding:0 14px 14px;font-size:13px;color:#8a7560;line-height:1.6}
+    /* TABS */
+    .gz-tabs{background:#1a1206;display:flex;border-bottom:2px solid rgba(246,139,30,.2);overflow-x:auto;scrollbar-width:none}
+    .gz-tabs::-webkit-scrollbar{display:none}
+    .gz-tab-btn{flex:1;padding:12px 8px;font-size:12px;font-weight:600;color:#8a7560;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+    .gz-tab-btn.active{color:#f68b1e;border-bottom-color:#f68b1e}
+    /* GRILLE */
+    .gz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:10px 10px 0}
+    @media(min-width:540px){.gz-grid{grid-template-columns:repeat(3,1fr)}}
+    .gz-card{background:#1a1206;border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .gz-card-img{height:130px;overflow:hidden;background:rgba(246,139,30,.06);display:flex;align-items:center;justify-content:center;font-size:44px}
+    .gz-card-img img{width:100%;height:100%;object-fit:cover}
+    .gz-card-body{padding:8px 10px 10px}
+    .gz-card-titre{font-size:12px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:30px;margin-bottom:4px}
+    .gz-card-prix{font-size:14px;font-weight:800;color:#f68b1e;margin-bottom:5px}
+    .gz-card-loc{font-size:10px;color:#e53935;display:flex;align-items:center;gap:2px}
+    /* ÉVALS */
+    .gz-eval-item{background:#1a1206;margin:8px 12px;border-radius:10px;padding:12px}
+    .gz-eval-hdr{display:flex;justify-content:space-between;margin-bottom:4px}
+    .gz-eval-auteur{font-size:13px;font-weight:700}
+    .gz-eval-stars{color:#f59e0b;font-size:12px}
+    .gz-eval-txt{font-size:12px;color:#8a7560;line-height:1.5}
+    .gz-eval-date{font-size:10px;color:#6b5d4f;margin-top:4px}
+    /* BOTTOM NAV */
+    .gz-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);display:flex;z-index:200;box-shadow:0 -2px 6px rgba(0,0,0,.06)}
+    .gz-nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;text-decoration:none;color:#999;font-size:9px;font-weight:600;gap:2px}
+    .gz-nitem i{font-size:19px}
+    .gz-npub{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none}
+    .gz-npub-icon{width:42px;height:42px;background:#f68b1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 3px 10px rgba(246,139,30,.4)}
+    .gz-npub-icon i{font-size:19px;color:#fff}
+    .gz-npub span{font-size:9px;font-weight:600;color:#f68b1e}
+    .gz-empty{text-align:center;padding:40px 20px;color:#6b5d4f}
+    .gz-empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.4}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<header class="gz-header">
+  <a href="boutiques.html" class="gz-back"><i class="fas fa-arrow-left"></i></a>
+  <span class="gz-header-title" id="headerNom">Boutique</span>
+  <a href="#" id="headerShare" onclick="partagerBoutique()" style="background:rgba(255,255,255,.2);border:none;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;text-decoration:none"><i class="fas fa-share-alt"></i></a>
+</header>
+
+<!-- PROFIL -->
+<div class="gz-boutique-header">
+  <div class="gz-bout-banner" id="boutBanner">
+    <div class="gz-bout-avatar" id="boutAvatar">👤</div>
+  </div>
+  <div class="gz-bout-infos">
+    <div class="gz-bout-nom" id="boutNom">Chargement...</div>
+    <div class="gz-bout-badges" id="boutBadges"></div>
+    <div class="gz-bout-meta" id="boutMeta"></div>
+    <div class="gz-bout-stats" id="boutStats"></div>
+  </div>
+  <div class="gz-bout-actions">
+    <button class="gz-bout-btn-wa" id="boutWaBtn" onclick="contacterWA()"><i class="fab fa-whatsapp"></i> Contacter</button>
+    <button class="gz-bout-btn-follow" id="followBtn" onclick="toggleFollow()"><i class="fas fa-user-plus"></i> Suivre</button>
+  </div>
+  <div class="gz-bout-desc" id="boutDesc" style="display:none"></div>
+</div>
+
+<!-- TABS -->
+<div class="gz-tabs">
+  <button class="gz-tab-btn active" onclick="showTab('annonces',this)">Annonces</button>
+  <button class="gz-tab-btn" onclick="showTab('evaluations',this)">Évaluations</button>
+  <button class="gz-tab-btn" onclick="showTab('infos',this)">Infos</button>
+</div>
+
+<div id="tab-annonces">
+  <div class="gz-grid" id="boutAnnsGrid"></div>
+</div>
+<div id="tab-evaluations" style="display:none">
+  <div style="text-align:center;padding:16px 20px;background:#1a1206;margin:8px 12px;border-radius:12px">
+    <div style="font-size:36px;font-weight:800;color:#f59e0b" id="evalNote">—</div>
+    <div style="color:#f59e0b;font-size:18px" id="evalStars">☆☆☆☆☆</div>
+    <div style="font-size:11px;color:#8a7560" id="evalNb">Pas encore d'évaluations</div>
+  </div>
+  <div id="evalsList"></div>
+</div>
+<div id="tab-infos" style="display:none;padding:12px">
+  <div style="background:#1a1206;border-radius:12px;padding:16px" id="infosContent"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="gz-nav">
+  <a href="index.html" class="gz-nitem"><i class="fas fa-home"></i><span>Accueil</span></a>
+  <a href="annonces.html" class="gz-nitem"><i class="fas fa-tag"></i><span>Offres</span></a>
+  <a href="publier-annonce.html" class="gz-npub"><div class="gz-npub-icon"><i class="fas fa-plus"></i></div><span>Publier</span></a>
+  <a href="boutiques.html" class="gz-nitem"><i class="fas fa-store"></i><span>Boutiques</span></a>
+  <a href="account.html" class="gz-nitem"><i class="fas fa-user"></i><span>Compte</span></a>
+</nav>
+
+<script src="js/annonces.js"></script>
+<script>
+const BANNER_COLORS={premium:'linear-gradient(135deg,#f59e0b,#d97706)',pro:'linear-gradient(135deg,#7c3aed,#6d28d9)',basic:'linear-gradient(135deg,#1565c0,#0d47a1)',gratuit:'linear-gradient(135deg,#f68b1e,#e07b0e)'};
+const fmt=n=>(n||0).toLocaleString('fr-FR')+' GNF';
+const EMOJI_MAP={immobilier:'🏠',vehicules:'🚗',phones:'📱',informatique:'💻',mode:'👕',electromenager:'🔌',emploi:'💼',meubles:'🛋️',bijoux:'💍',beaute:'💄',autres:'📦'};
+
+let vendeur={}, vendeurId='';
+
+function getAbo(vid){const abos=JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]');return abos.find(a=>a.vendeurId===vid&&a.statut==='actif')||null;}
+
+document.addEventListener('DOMContentLoaded',function(){
+  const params=new URLSearchParams(window.location.search);
+  vendeurId=params.get('id')||'';
+  const vends=typeof getVendeurs==='function'?getVendeurs():JSON.parse(localStorage.getItem('GM_VENDEURS')||'[]');
+  vendeur=vends.find(v=>v.id===vendeurId)||vends[0]||{};
+  if(!vendeur.id){document.body.innerHTML='<div style="text-align:center;padding:60px 20px"><h2>Boutique introuvable</h2></div>';return;}
+  chargerBoutique();
+});
+
+function chargerBoutique(){
+  const abo=getAbo(vendeur.id);
+  const forfait=abo?.planId||'gratuit';
+  document.getElementById('headerNom').textContent=vendeur.nom||'Boutique';
+  document.getElementById('boutBanner').style.background=BANNER_COLORS[forfait];
+  const av=document.getElementById('boutAvatar');
+  if(vendeur.avatar)av.innerHTML=`<img src="${vendeur.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  else av.textContent=vendeur.avatar||'👤';
+  document.getElementById('boutNom').textContent=vendeur.nom||'Vendeur';
+
+  // Badges
+  let badges='';
+  if(forfait==='premium')badges+=`<span class="gz-bout-badge premium">👑 Premium</span>`;
+  else if(forfait==='pro')badges+=`<span class="gz-bout-badge pro">⭐ Pro</span>`;
+  else if(forfait==='basic')badges+=`<span class="gz-bout-badge basic">📋 Basic</span>`;
+  if(vendeur.verifie)badges+=`<span class="gz-bout-badge verif">✅ Vérifié</span>`;
+  document.getElementById('boutBadges').innerHTML=badges;
+
+  // Meta
+  const anns=typeof getAnnonces==='function'?getAnnonces().filter(a=>a.vendeurId===vendeur.id&&a.dispo!==false):[];
+  document.getElementById('boutMeta').innerHTML=`
+    <span><i class="fas fa-map-marker-alt" style="color:#e53935"></i>${vendeur.ville||'Guinée'}</span>
+    <span><i class="fas fa-calendar"></i> Membre depuis ${vendeur.membre||'2025'}</span>`;
+  document.getElementById('boutStats').innerHTML=`
+    <div class="gz-bout-stat"><div class="gz-bout-stat-val">${anns.length}</div><div class="gz-bout-stat-lbl">Annonces</div></div>
+    <div class="gz-bout-stat"><div class="gz-bout-stat-val">${vendeur.ventes||0}</div><div class="gz-bout-stat-lbl">Ventes</div></div>
+    <div class="gz-bout-stat"><div class="gz-bout-stat-val">${vendeur.note||'—'}</div><div class="gz-bout-stat-lbl">Note</div></div>`;
+
+  if(vendeur.desc){document.getElementById('boutDesc').textContent=vendeur.desc;document.getElementById('boutDesc').style.display='block';}
+
+  // Follow
+  const favs=JSON.parse(localStorage.getItem('GM_FOLLOWS')||'[]');
+  if(favs.includes(vendeur.id)){const fb=document.getElementById('followBtn');fb.classList.add('following');fb.innerHTML='<i class="fas fa-user-check"></i> Suivi';}
+
+  // Annonces
+  const grid=document.getElementById('boutAnnsGrid');
+  if(!anns.length){grid.innerHTML='<div class="gz-empty" style="grid-column:1/-1"><i class="fas fa-tag"></i><p>Aucune annonce</p></div>';return;}
+  grid.innerHTML=anns.map(a=>`
+    <div class="gz-card" onclick="window.location.href='annonces.html?ann=${a.id}'">
+      <div class="gz-card-img">${a.photos&&a.photos[0]?`<img src="${a.photos[0]}" alt="${a.titre}">`:(EMOJI_MAP[a.cat]||'📦')}</div>
+      <div class="gz-card-body">
+        <div class="gz-card-titre">${a.titre}</div>
+        <div class="gz-card-prix">${a.prix>0?fmt(a.prix):'Gratuit'}</div>
+        <div class="gz-card-loc"><i class="fas fa-map-marker-alt"></i>${a.ville}</div>
+      </div>
+    </div>`).join('');
+
+  // Évals
+  if(vendeur.note){document.getElementById('evalNote').textContent=vendeur.note;document.getElementById('evalStars').textContent='★'.repeat(Math.round(vendeur.note))+'☆'.repeat(5-Math.round(vendeur.note));document.getElementById('evalNb').textContent=(vendeur.nbEvals||0)+' évaluation(s)';}
+  const evals=JSON.parse(localStorage.getItem('GM_EVALS_'+vendeur.id)||'[]');
+  document.getElementById('evalsList').innerHTML=evals.length?evals.map(e=>`<div class="gz-eval-item"><div class="gz-eval-hdr"><span class="gz-eval-auteur">${e.auteur||'Client'}</span><span class="gz-eval-stars">${'★'.repeat(e.note||5)}</span></div><div class="gz-eval-txt">${e.comment||''}</div><div class="gz-eval-date">${e.date||''}</div></div>`).join(''):'<div class="gz-empty"><i class="fas fa-star"></i><p>Pas encore d\'évaluations</p></div>';
+
+  // Infos
+  document.getElementById('infosContent').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+      <div style="display:flex;gap:10px"><i class="fas fa-user" style="color:#f68b1e;width:16px"></i><span><strong>${vendeur.nom||'—'}</strong></span></div>
+      <div style="display:flex;gap:10px"><i class="fas fa-map-marker-alt" style="color:#e53935;width:16px"></i><span>${vendeur.ville||'—'}</span></div>
+      <div style="display:flex;gap:10px"><i class="fas fa-phone" style="color:#f68b1e;width:16px"></i><span>${vendeur.tel||'—'}</span></div>
+      <div style="display:flex;gap:10px"><i class="fas fa-calendar" style="color:#8a7560;width:16px"></i><span>Membre depuis ${vendeur.membre||'2025'}</span></div>
+      ${vendeur.desc?`<div style="display:flex;gap:10px"><i class="fas fa-info-circle" style="color:#8a7560;width:16px"></i><span>${vendeur.desc}</span></div>`:''}
+    </div>`;
+}
+
+window.showTab=function(tab,btn){
+  ['annonces','evaluations','infos'].forEach(t=>{document.getElementById('tab-'+t).style.display=t===tab?'block':'none';});
+  document.querySelectorAll('.gz-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+};
+
+window.contacterWA=function(){
+  const tel=(vendeur.wa||vendeur.tel||'').replace(/[^0-9]/g,'');
+  if(!tel)return;
+  window.open(`https://wa.me/${tel}?text=${encodeURIComponent('Bonjour, je vous contacte depuis Galy Market !')}`, '_blank');
+};
+
+window.toggleFollow=function(){
+  const favs=JSON.parse(localStorage.getItem('GM_FOLLOWS')||'[]');
+  const btn=document.getElementById('followBtn');
+  const i=favs.indexOf(vendeur.id);
+  if(i>=0){favs.splice(i,1);btn.classList.remove('following');btn.innerHTML='<i class="fas fa-user-plus"></i> Suivre';}
+  else{favs.push(vendeur.id);btn.classList.add('following');btn.innerHTML='<i class="fas fa-user-check"></i> Suivi';}
+  localStorage.setItem('GM_FOLLOWS',JSON.stringify(favs));
+};
+
+window.partagerBoutique=function(){
+  const url=window.location.href;
+  if(navigator.share){navigator.share({title:vendeur.nom,url});}
+  else{navigator.clipboard?.writeText(url).then(()=>alert('Lien copié !'));}
+};
+</script>
+</body>
+</html>

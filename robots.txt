@@ -1,0 +1,14 @@
+# Galy Market — robots.txt
+User-agent: *
+Allow: /
+
+# Pages privées — ne pas indexer
+Disallow: /admin.html
+Disallow: /admin-employes.html
+Disallow: /app-commandes.html
+Disallow: /app-livreur.html
+Disallow: /app-stock.html
+Disallow: /login.html
+
+# Sitemap
+Sitemap: https://starlit-squirrel-7ab478.netlify.app/sitemap.xml

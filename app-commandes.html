@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+<title>Galy Market — App Commandes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{--blue:#3498db;--blue-d:#2980b9;--dark:#0a0e1a;--dark2:#111827;--dark3:#1e293b;--cream:#f8fafc;--muted:#64748b;--green:#22c55e;--red:#ef4444;--gold:#f68b1e;--radius:14px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--cream);min-height:100vh;max-width:480px;margin:0 auto;position:relative;}
+
+/* ── LOGIN ── */
+.login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:3px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.login-role{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:40px;}
+.login-card{background:var(--dark2);border:1px solid rgba(52,152,219,.2);border-radius:20px;padding:28px;width:100%;}
+.login-title{font-size:18px;font-weight:700;margin-bottom:20px;text-align:center;}
+.input-group{margin-bottom:14px;}
+.input-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.input-field{width:100%;background:rgba(52,152,219,.06);border:1px solid rgba(52,152,219,.15);border-radius:10px;padding:13px 16px;font-size:15px;color:var(--cream);font-family:'DM Sans',sans-serif;outline:none;}
+.input-field:focus{border-color:var(--blue);}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;}
+
+/* ── APP ── */
+.app{display:none;}
+.app.visible{display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── HEADER APP ── */
+.app-header{background:var(--dark2);border-bottom:1px solid rgba(52,152,219,.15);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.app-header-left{display:flex;align-items:center;gap:10px;}
+.app-logo-sm{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--blue);}
+.app-role-tag{font-size:10px;background:rgba(52,152,219,.15);color:var(--blue);padding:3px 10px;border-radius:50px;letter-spacing:1px;font-weight:600;}
+.app-header-right{display:flex;align-items:center;gap:12px;}
+.notif-btn{position:relative;width:36px;height:36px;border-radius:50%;background:rgba(52,152,219,.1);border:none;color:var(--blue);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.notif-dot{position:absolute;top:4px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--dark2);display:none;}
+.notif-dot.active{display:block;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.emp-name-tag{font-size:13px;font-weight:600;}
+.btn-decon{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--dark2);border-top:1px solid rgba(52,152,219,.12);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:50;}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:600;border:none;background:none;font-family:'DM Sans',sans-serif;transition:color .2s;position:relative;}
+.bn-item.active{color:var(--blue);}
+.bn-item i{font-size:20px;}
+.bn-badge{position:absolute;top:4px;right:calc(50% - 18px);background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:50px;padding:1px 5px;min-width:16px;text-align:center;}
+
+/* ── SCROLL CONTENT ── */
+.scroll-content{flex:1;overflow-y:auto;padding:16px 16px 80px;}
+
+/* ── STATS MINI ── */
+.stats-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.stat-mini{background:var(--dark2);border:1px solid rgba(52,152,219,.1);border-radius:14px;padding:16px;text-align:center;}
+.stat-mini-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--blue);line-height:1;}
+.stat-mini-l{font-size:10px;color:var(--muted);margin-top:2px;}
+.stat-mini.green .stat-mini-n{color:var(--green);}
+.stat-mini.gold .stat-mini-n{color:var(--gold);}
+
+/* ── NOTIF CARD ── */
+.section-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.notif-card{background:var(--dark2);border:1px solid rgba(52,152,219,.15);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;transition:all .3s;}
+.notif-card.urgent{border-color:rgba(246,139,30,.4);background:rgba(246,139,30,.04);}
+.notif-card.acceptee{border-color:rgba(34,197,94,.2);opacity:.6;}
+.notif-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;}
+.notif-type{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.notif-type.new{color:var(--gold);}
+.notif-type.stock{color:var(--green);}
+.notif-type.livr{color:var(--blue);}
+.notif-time{font-size:10px;color:var(--muted);}
+.notif-body{padding:0 16px 14px;}
+.notif-client{font-weight:700;font-size:15px;margin-bottom:4px;}
+.notif-detail{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.notif-produits{background:rgba(52,152,219,.05);border-radius:8px;padding:10px 12px;margin-bottom:12px;}
+.notif-produit-item{font-size:12px;padding:3px 0;border-bottom:1px solid rgba(52,152,219,.06);display:flex;justify-content:space-between;}
+.notif-produit-item:last-child{border:none;}
+.notif-total{font-size:13px;font-weight:700;color:var(--blue);}
+.btn-accepter{width:100%;background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;}
+.btn-accepter:active{transform:scale(.97);}
+.btn-accepter:disabled{background:var(--muted);cursor:default;}
+.btn-envoyer{width:100%;background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.3);color:var(--blue);border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+
+/* ── COMMANDES EN COURS ── */
+.cmd-card{background:var(--dark2);border:1px solid rgba(52,152,219,.1);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.cmd-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.cmd-ref{font-size:11px;color:var(--blue);font-weight:600;font-family:monospace;}
+.cmd-status-badge{font-size:10px;padding:3px 10px;border-radius:50px;font-weight:600;}
+.badge-attente{background:rgba(246,139,30,.15);color:var(--gold);}
+.badge-stock{background:rgba(155,89,182,.15);color:#9b59b6;}
+.badge-livr{background:rgba(52,152,219,.15);color:var(--blue);}
+.badge-ok{background:rgba(34,197,94,.15);color:var(--green);}
+.cmd-client-name{font-weight:700;font-size:14px;margin-bottom:2px;}
+.cmd-addr{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.cmd-timeline{display:flex;gap:0;margin-top:10px;}
+.tl-step{flex:1;text-align:center;position:relative;}
+.tl-step::after{content:'';position:absolute;top:8px;left:50%;width:100%;height:2px;background:rgba(52,152,219,.15);}
+.tl-step:last-child::after{display:none;}
+.tl-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(52,152,219,.2);background:var(--dark3);margin:0 auto 4px;position:relative;z-index:1;}
+.tl-dot.done{background:var(--green);border-color:var(--green);}
+.tl-dot.active{background:var(--blue);border-color:var(--blue);animation:pulse 1.5s infinite;}
+.tl-label{font-size:9px;color:var(--muted);}
+
+/* ── EMPTY ── */
+.empty-notifs{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-notifs i{font-size:48px;margin-bottom:16px;opacity:.3;display:block;}
+
+/* ── PERF TAB ── */
+.perf-period{display:flex;gap:6px;margin-bottom:20px;}
+.period-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(52,152,219,.15);background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.period-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.perf-big{background:var(--dark2);border:1px solid rgba(52,152,219,.15);border-radius:16px;padding:24px;text-align:center;margin-bottom:12px;}
+.perf-big-n{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--blue);line-height:1;}
+.perf-big-l{font-size:12px;color:var(--muted);margin-top:4px;}
+</style>
+
+  <!-- ═══ PWA META ═══ -->
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="GM Commandes"/>
+  <meta name="theme-color" content="#3498db"/>
+  <meta name="application-name" content="GM Commandes"/>
+  <link rel="manifest" href="manifest-commandes.json"/>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png"/>
+  <!-- ═══ FIN PWA META ═══ -->
+</head>
+<body>
+
+<!-- ═══ APP ═══ -->
+<div id="appScreen" class="app">
+  <div class="app-header">
+    <div class="app-header-left">
+      <div class="app-logo-sm">GALY</div>
+      <div class="app-role-tag"><i class="fas fa-clipboard-list"></i> Commandes</div>
+    </div>
+    <div class="app-header-right">
+      <button class="notif-btn" onclick="showSection('notifs')">
+        <i class="fas fa-bell"></i>
+        <div class="notif-dot" id="notifDot"></div>
+      </button>
+      <div>
+        <div class="emp-name-tag" id="empNameTag">—</div>
+        <button class="btn-decon" onclick="deconnecter()">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-content" id="mainContent"></div>
+
+  <nav class="bottom-nav">
+    <button class="bn-item active" onclick="showSection('notifs')" id="bnNotifs">
+      <i class="fas fa-bell"></i>
+      <span>Alertes</span>
+      <span class="bn-badge" id="bnBadge" style="display:none"></span>
+    </button>
+    <button class="bn-item" onclick="showSection('commandes')" id="bnCmds">
+      <i class="fas fa-list-check"></i>
+      <span>Commandes</span>
+    </button>
+    <button class="bn-item" onclick="showSection('perf')" id="bnPerf">
+      <i class="fas fa-chart-bar"></i>
+      <span>Mes perfs</span>
+    </button>
+  </nav>
+</div>
+
+<script src="js/employes-core.js"></script>
+<script>
+const {GM, AuthEmp, NotifSystem, Workflow, EmployeManager, Stats} = window.GALY;
+let session = null;
+let currentSection = 'notifs';
+let currentPeriode = 'jour';
+
+// Injecter des données démo si vide
+function injectDemo() {
+  // Commandes demo si aucune
+  const cmds = GM.getCommandesEmp();
+  if (cmds.length === 0) {
+    Workflow.nouvelleCommande({
+      id: 'CMD_DEMO_1',
+      client: { prenom:'Ibrahima', nom:'Bah', tel:'+224 620 11 22 33' },
+      produits: [{ nom:'iPhone 15 Pro Max 256GB', qte:1, prix:8500000 }],
+      total: 8500000,
+      adresse: { ville:'Conakry', quartier:'Ratoma Centre' },
+      paiement: 'cash',
+      coordonnees: '9.5370° N, 13.6773° W',
+    });
+    Workflow.nouvelleCommande({
+      id: 'CMD_DEMO_2',
+      client: { prenom:'Fatoumata', nom:'Camara', tel:'+224 628 44 55 66' },
+      produits: [{ nom:'Samsung Galaxy S24 Ultra', qte:1, prix:6800000 }],
+      total: 6800000,
+      adresse: { ville:'Conakry', quartier:'Kaloum Centre' },
+      paiement: 'orange',
+      coordonnees: '9.5095° N, 13.7122° W',
+    });
+  }
+}
+
+function seConnecter() { window.location.href = "login.html"; }
+
+function deconnecter() {
+  AuthEmp.deconnecter();
+  location.reload();
+}
+
+function startPolling() {
+  setInterval(refreshBadge, 3000);
+  refreshBadge();
+}
+
+function refreshBadge() {
+  const count = NotifSystem.countNonLues(session.empId, 'GESTIONNAIRE_COMMANDES');
+  const dot = document.getElementById('notifDot');
+  const badge = document.getElementById('bnBadge');
+  if (count > 0) {
+    dot.classList.add('active');
+    badge.style.display = 'block';
+    badge.textContent = count;
+  } else {
+    dot.classList.remove('active');
+    badge.style.display = 'none';
+  }
+}
+
+function showSection(s) {
+  currentSection = s;
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('bn'+s.charAt(0).toUpperCase()+s.slice(1)).classList.add('active');
+  if (s === 'notifs') renderNotifs();
+  else if (s === 'commandes') renderCommandes();
+  else if (s === 'perf') renderPerf();
+}
+
+// ── NOTIFS ──
+function renderNotifs() {
+  const notifs = NotifSystem.pourEmploye(session.empId, 'GESTIONNAIRE_COMMANDES');
+  const content = document.getElementById('mainContent');
+  if (!notifs.length) {
+    content.innerHTML = `<div class="empty-notifs"><i class="fas fa-bell-slash"></i>Aucune nouvelle commande<br><small>Les commandes clients apparaîtront ici en temps réel</small></div>`;
+    return;
+  }
+  content.innerHTML = `<div class="section-title"><i class="fas fa-bell" style="color:var(--gold)"></i> Nouvelles commandes (${notifs.length})</div>
+    ${notifs.map(n => {
+      const p = n.payload;
+      const isStock = n.type === 'confirmation_stock';
+      const isNew = n.type === 'nouvelle_commande';
+      return `<div class="notif-card ${isNew?'urgent':''}">
+        <div class="notif-header">
+          <div class="notif-type ${isNew?'new':isStock?'stock':'livr'}">
+            <i class="fas fa-${isNew?'bag-shopping':isStock?'boxes-stacked':'truck'}"></i>
+            ${isNew?'NOUVELLE COMMANDE':isStock?'STOCK CONFIRMÉ':'MISE À JOUR'}
+          </div>
+          <div class="notif-time">${timeAgo(n.timestamp)}</div>
+        </div>
+        <div class="notif-body">
+          <div class="notif-client">${p.client?.prenom || ''} ${p.client?.nom || ''}</div>
+          <div class="notif-detail">📞 ${p.client?.tel || '—'}<br>📍 ${p.adresse?.quartier||''}, ${p.adresse?.ville||''}</div>
+          ${p.produits?.length ? `<div class="notif-produits">
+            ${p.produits.map(pr=>`<div class="notif-produit-item"><span>${pr.nom}</span><span>×${pr.qte}</span></div>`).join('')}
+            <div class="notif-total" style="margin-top:6px">Total : ${fmtGNF(p.total)}</div>
+          </div>` : ''}
+          ${isNew ? `<button class="btn-accepter" onclick="accepterCommande('${n.id}')">
+            <i class="fas fa-check-circle"></i> Accepter cette commande
+          </button>` : ''}
+          ${isStock && p.disponible ? `<button class="btn-envoyer" onclick="demanderLivreur('${n.payload.wfId}')">
+            <i class="fas fa-motorcycle"></i> Envoyer aux livreurs
+          </button>` : ''}
+        </div>
+      </div>`;
+    }).join('')}`;
+}
+
+function accepterCommande(notifId) {
+  const result = Workflow.gcAccepteCommande(notifId, session.empId);
+  if (!result) { alert('Cette commande a déjà été prise par un autre gestionnaire.'); renderNotifs(); return; }
+  showToast('Commande acceptée ! Demande envoyée au stock ✅');
+  renderNotifs();
+  refreshBadge();
+}
+
+function demanderLivreur(wfId) {
+  // Trouver la notif correspondante et passer à l'étape livraison est géré automatiquement par le GS
+  showToast('Les livreurs ont été notifiés ✅');
+}
+
+// ── COMMANDES EN COURS ──
+function renderCommandes() {
+  const all = GM.getCommandesEmp().filter(c => c.gcId === session.empId);
+  const content = document.getElementById('mainContent');
+  if (!all.length) {
+    content.innerHTML = `<div class="empty-notifs"><i class="fas fa-list-check"></i>Aucune commande acceptée pour l'instant</div>`;
+    return;
+  }
+  const statuts = {
+    en_attente_gc:['En attente GC','badge-attente'], en_attente_gs:['Vérif. stock','badge-stock'],
+    stock_indisponible:['Stock indispo','badge-attente'], en_attente_livreur:['Cherche livreur','badge-livr'],
+    en_livraison:['En livraison','badge-livr'], livree:['Livrée ✓','badge-ok']
+  };
+  content.innerHTML = `<div class="section-title"><i class="fas fa-list-check" style="color:var(--blue)"></i> Mes commandes (${all.length})</div>
+    ${all.reverse().map(c => {
+      const [sl, sc] = statuts[c.wfStatut] || ['—','badge-attente'];
+      return `<div class="cmd-card">
+        <div class="cmd-card-header">
+          <div class="cmd-ref">${c.wfId}</div>
+          <div class="cmd-status-badge ${sc}">${sl}</div>
+        </div>
+        <div class="cmd-client-name">${c.client?.prenom} ${c.client?.nom}</div>
+        <div class="cmd-addr">📍 ${c.adresse?.quartier||''}, ${c.adresse?.ville||''} · 📞 ${c.client?.tel}</div>
+        <div style="font-size:12px;color:var(--blue);font-weight:700">${fmtGNF(c.total)}</div>
+        <div class="cmd-timeline">
+          ${['GC','Stock','Livreur','Livré'].map((lbl,i) => {
+            const steps = ['en_attente_gs','en_attente_livreur','en_livraison','livree'];
+            const idx = steps.indexOf(c.wfStatut);
+            const done = i <= idx;
+            const active = i === idx+1;
+            return `<div class="tl-step"><div class="tl-dot ${done?'done':active?'active':''}"></div><div class="tl-label">${lbl}</div></div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }).join('')}`;
+}
+
+// ── PERFORMANCES ──
+function renderPerf() {
+  const content = document.getElementById('mainContent');
+  const periodes = ['jour','semaine','mois'];
+  const stats = Stats.gcStats(session.empId, currentPeriode);
+  content.innerHTML = `
+    <div class="perf-period">
+      ${periodes.map(p=>`<button class="period-btn ${p===currentPeriode?'active':''}" onclick="setPeriode('${p}')">${p.charAt(0).toUpperCase()+p.slice(1)}</button>`).join('')}
+    </div>
+    <div class="perf-big">
+      <div class="perf-big-n">${stats.commandes}</div>
+      <div class="perf-big-l">Commandes acceptées ce ${currentPeriode}</div>
+    </div>
+    <div class="perf-big" style="border-color:rgba(246,139,30,.2)">
+      <div class="perf-big-n" style="color:var(--gold)">${fmtGNF(stats.ca)}</div>
+      <div class="perf-big-l">Chiffre d'affaires traité</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+      ${['jour','semaine','mois'].map(p=>{const s=Stats.gcStats(session.empId,p);return`<div class="stat-mini"><div class="stat-mini-n">${s.commandes}</div><div class="stat-mini-l">Ce ${p}</div></div>`;}).join('')}
+      <div class="stat-mini gold"><div class="stat-mini-n">${fmtGNF(Stats.gcStats(session.empId,'mois').ca)}</div><div class="stat-mini-l">CA ce mois</div></div>
+    </div>`;
+}
+
+function setPeriode(p) { currentPeriode = p; renderPerf(); }
+
+// ── HELPERS ──
+function fmtGNF(n) { return (Number(n)||0).toLocaleString('fr-FR') + ' GNF'; }
+function timeAgo(ts) {
+  const d = Math.floor((Date.now()-new Date(ts))/1000);
+  if(d<60) return 'il y a '+d+'s';
+  if(d<3600) return 'il y a '+Math.floor(d/60)+'min';
+  return 'il y a '+Math.floor(d/3600)+'h';
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(34,197,94,.35)';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+// Auto-check session
+const existingSession = AuthEmp.getSession();
+if (!existingSession || existingSession.role !== 'GESTIONNAIRE_COMMANDES') {
+  window.location.href = 'login.html';
+}
+if (existingSession && existingSession.role === 'GESTIONNAIRE_COMMANDES') {
+  session = existingSession;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').className='app visible';
+  document.getElementById('empNameTag').textContent = existingSession.prenom+' '+existingSession.nom;
+  injectDemo(); showSection('notifs'); startPolling();
+}
+</script>
+
+  <!-- ═══ SERVICE WORKER ═══ -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[PWA] Service Worker enregistré ✅', reg.scope))
+          .catch(err => console.warn('[PWA] SW erreur:', err));
+      });
+    }
+  </script>
+  <!-- ═══ FIN SERVICE WORKER ═══ -->
+</body>
+</html>

@@ -1,0 +1,397 @@
+/* ═══════════════════════════════════════════
+   GALY MARKET — animations.css
+   Étape 8 : Animations complètes style Jumia
+═══════════════════════════════════════════ */
+
+/* ══════════════════════════════
+   1. LOADER / SPLASH SCREEN
+══════════════════════════════ */
+#gm-loader {
+  position: fixed; inset: 0; z-index: 99999;
+  background: #0f0c08;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .5s ease, visibility .5s ease;
+}
+#gm-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.loader-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 52px; letter-spacing: 6px;
+  color: white; margin-bottom: 6px;
+  animation: logoReveal .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+.loader-logo span { color: #f68b1e; }
+
+.loader-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,.35);
+  margin-bottom: 48px;
+  animation: fadeUp .8s ease .3s both;
+}
+
+.loader-bar-wrap {
+  width: 200px; height: 3px;
+  background: rgba(255,255,255,.1); border-radius: 2px;
+  overflow: hidden; margin-bottom: 20px;
+}
+.loader-bar {
+  height: 100%; width: 0%; border-radius: 2px;
+  background: linear-gradient(90deg, #f68b1e, #ffb347, #f68b1e);
+  background-size: 200% 100%;
+  animation: loaderFill 1.8s ease forwards, shimmer 1s linear .4s infinite;
+}
+@keyframes loaderFill {
+  0%   { width: 0%; }
+  40%  { width: 60%; }
+  80%  { width: 85%; }
+  100% { width: 100%; }
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loader-pct {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 700; color: #f68b1e;
+  animation: fadeUp .6s ease .4s both;
+}
+
+.loader-dots {
+  display: flex; gap: 8px; margin-top: 36px;
+}
+.loader-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(246,139,30,.3);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.loader-dot:nth-child(1) { animation-delay: 0s; }
+.loader-dot:nth-child(2) { animation-delay: .2s; }
+.loader-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes dotPulse {
+  0%,80%,100% { background: rgba(246,139,30,.25); transform: scale(1); }
+  40%          { background: #f68b1e;               transform: scale(1.4); }
+}
+
+@keyframes logoReveal {
+  from { opacity:0; transform: scale(.7) translateY(20px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════
+   2. PAGE TRANSITION
+══════════════════════════════ */
+#gm-transition {
+  position: fixed; inset: 0; z-index: 9998;
+  pointer-events: none;
+}
+.gm-curtain {
+  position: absolute; inset: 0;
+  background: #f68b1e;
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform .4s cubic-bezier(.77,0,.18,1);
+}
+#gm-transition.enter  .gm-curtain { transform: scaleY(1); transform-origin: bottom; }
+#gm-transition.exit   .gm-curtain { transform: scaleY(0); transform-origin: top; transition-delay: .1s; }
+
+/* ══════════════════════════════
+   3. SCROLL REVEAL
+══════════════════════════════ */
+.sr {
+  opacity: 0;
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);
+}
+.sr.sr-up     { transform: translateY(40px); }
+.sr.sr-left   { transform: translateX(-40px); }
+.sr.sr-right  { transform: translateX(40px); }
+.sr.sr-scale  { transform: scale(.88); }
+.sr.sr-flip   { transform: rotateX(-25deg); transform-origin: top; }
+
+.sr.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Délais en cascade */
+.sr-d1  { transition-delay: .05s; }
+.sr-d2  { transition-delay: .12s; }
+.sr-d3  { transition-delay: .19s; }
+.sr-d4  { transition-delay: .26s; }
+.sr-d5  { transition-delay: .33s; }
+.sr-d6  { transition-delay: .40s; }
+
+/* ══════════════════════════════
+   4. MICRO-ANIMATIONS BOUTONS
+══════════════════════════════ */
+
+/* Ripple effect */
+.ripple-btn { position: relative; overflow: hidden; }
+.gm-ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  transform: scale(0);
+  animation: rippleAnim .6s linear;
+  pointer-events: none;
+}
+@keyframes rippleAnim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* Bounce sur les CTA */
+.btn-bounce:hover {
+  animation: btnBounce .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes btnBounce {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ══════════════════════════════
+   5. CARTES PRODUIT
+══════════════════════════════ */
+.prod-card {
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1),
+              box-shadow .3s ease, border-color .3s ease !important;
+}
+.prod-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,.13) !important;
+}
+
+/* Image zoom */
+.card-img { overflow: hidden !important; }
+.card-img img, .card-emoji {
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1) !important;
+}
+.prod-card:hover .card-img img,
+.prod-card:hover .card-emoji {
+  transform: scale(1.08) !important;
+}
+
+/* Badge flash pulse */
+.card-disc {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%,100% { box-shadow: none; }
+  50%      { box-shadow: 0 0 0 4px rgba(231,76,60,.25); }
+}
+
+/* ══════════════════════════════
+   6. BADGE PANIER ANIMATION
+══════════════════════════════ */
+@keyframes badgePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.6); }
+  70%  { transform: scale(.85); }
+  100% { transform: scale(1); }
+}
+.badge-pop { animation: badgePop .45s cubic-bezier(.34,1.56,.64,1) !important; }
+
+/* ══════════════════════════════
+   7. AJOUT AU PANIER — FLYING ITEM
+══════════════════════════════ */
+.flying-item {
+  position: fixed; z-index: 9000;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: white; border: 2px solid #f68b1e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 8px 24px rgba(246,139,30,.4);
+  pointer-events: none;
+  transition: none;
+  animation: none;
+}
+
+/* ══════════════════════════════
+   8. CONFETTIS
+══════════════════════════════ */
+.gm-confetti-canvas {
+  position: fixed; inset: 0; z-index: 9990;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════
+   9. TOAST AMÉLIORÉ
+══════════════════════════════ */
+.toast {
+  position: fixed !important;
+  bottom: 90px !important; right: 24px !important;
+  left: auto !important; transform: none !important;
+  background: var(--dark, #0f0c08) !important;
+  color: white !important;
+  padding: 14px 22px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important; font-weight: 600 !important;
+  z-index: 9500 !important;
+  display: flex !important; align-items: center !important; gap: 10px !important;
+  max-width: 320px !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,.28) !important;
+  border: 1px solid rgba(246,139,30,.2) !important;
+  transform: translateX(120%) !important;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1) !important;
+}
+.toast.show {
+  transform: translateX(0) !important;
+}
+.toast i { color: #f68b1e; font-size: 16px; }
+
+/* Progress bar sous le toast */
+.toast::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  height: 3px; background: #f68b1e; border-radius: 0 0 14px 14px;
+  width: 100%;
+  animation: toastProgress 3.2s linear forwards;
+}
+@keyframes toastProgress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ══════════════════════════════
+   10. SKELETON LOADING
+══════════════════════════════ */
+.skeleton {
+  background: linear-gradient(90deg, #f0ede8 25%, #e5e0d8 50%, #f0ede8 75%);
+  background-size: 200% 100%;
+  animation: skeletonWave 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes skeletonWave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.sk-card {
+  background: white; border-radius: 16px; overflow: hidden;
+  border: 1.5px solid #ede8e0; padding: 0 0 16px;
+}
+.sk-img   { height: 200px; margin-bottom: 14px; }
+.sk-title { height: 14px; margin: 0 16px 8px; }
+.sk-price { height: 18px; margin: 0 16px 6px; width: 60%; }
+.sk-tag   { height: 11px; margin: 0 16px; width: 40%; }
+
+/* ══════════════════════════════
+   11. HEADER SCROLL FX
+══════════════════════════════ */
+#header {
+  transition: box-shadow .3s ease, background .3s ease, padding .3s ease !important;
+}
+#header.scrolled {
+  box-shadow: 0 4px 28px rgba(0,0,0,.12) !important;
+}
+
+/* ══════════════════════════════
+   12. WISHLIST HEART BEAT
+══════════════════════════════ */
+@keyframes heartBeat {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.35); }
+  50%  { transform: scale(.9); }
+  75%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.heart-beat { animation: heartBeat .5s cubic-bezier(.34,1.56,.64,1) !important; }
+
+/* ══════════════════════════════
+   13. COUNTDOWN FLASH SALE
+══════════════════════════════ */
+.countdown-digit {
+  animation: digitFlip .3s ease;
+}
+@keyframes digitFlip {
+  from { transform: rotateX(90deg); opacity:0; }
+  to   { transform: rotateX(0deg);  opacity:1; }
+}
+
+/* ══════════════════════════════
+   14. PRIX BARRÉ ANIMATION
+══════════════════════════════ */
+@keyframes strikeThrough {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+.price-old::after {
+  content: '';
+  position: absolute; top: 50%; left: 0;
+  height: 1.5px; background: currentColor;
+  width: 0%;
+  animation: strikeThrough .5s ease .3s forwards;
+}
+.price-old { position: relative !important; }
+
+/* ══════════════════════════════
+   15. SCROLL INDICATOR (Hero)
+══════════════════════════════ */
+.scroll-indicator {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+.scroll-indicator span {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: rgba(255,255,255,.4);
+}
+.scroll-indicator i { color: rgba(255,255,255,.4); font-size: 18px; }
+@keyframes scrollBounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ══════════════════════════════
+   16. NUMBER COUNTER ANIMATION
+══════════════════════════════ */
+.count-up { transition: all .1s ease; }
+
+/* ══════════════════════════════
+   17. NOTIFICATION SLIDE-IN
+══════════════════════════════ */
+.gm-notif {
+  position: fixed; bottom: 100px; left: 16px; z-index: 9400;
+  background: #1a1206; border-radius: 14px;
+  padding: 12px 14px; max-width: 260px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  border: 1px solid rgba(246,139,30,.2);
+  display: flex; align-items: center; gap: 10px;
+  transform: translateX(-120%);
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+.gm-notif.show { transform: translateX(0); }
+.gm-notif-icon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(246,139,30,.1); color: #f68b1e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.gm-notif-body strong { display: block; font-size: 12px; font-weight: 800; color: #fdf8f0; margin-bottom: 2px; }
+.gm-notif-body span   { font-size: 11px; color: #8a7560; }
+@media (max-width: 480px) {
+  .gm-notif { bottom: 110px; left: 12px; max-width: 220px; padding: 10px 12px; }
+}
+
+/* ══════════════════════════════
+   18. PANIER DRAWER AMÉLIORÉ
+══════════════════════════════ */
+.cart-drawer {
+  transition: transform .4s cubic-bezier(.77,0,.18,1) !important;
+}
+
+/* ══════════════════════════════
+   19. REDUCED MOTION
+══════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  #gm-loader { display: none !important; }
+}

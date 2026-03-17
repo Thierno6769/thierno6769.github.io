@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Galy Market — Gestion Employés</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+  --gold:#f68b1e;--gold-d:#d4780f;--gold-ll:rgba(246,139,30,.10);
+  --dark:#0f0c08;--dark2:#1a1206;--dark3:#241a0d;
+  --cream:#fdf8f0;--cream2:#f5ede0;
+  --red:#e74c3c;--green:#22c55e;--blue:#3498db;--purple:#9b59b6;--muted:#8a7a6a;
+  --font-display:'Cormorant Garamond';--font-body:'DM Sans';--font-title:'Bebas Neue';
+  --radius:12px;--radius-lg:18px;
+  --shadow:0 4px 24px rgba(0,0,0,.1);--shadow-lg:0 12px 48px rgba(0,0,0,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-body);background:var(--dark);color:var(--cream);min-height:100vh;}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:260px;background:var(--dark2);border-right:1px solid rgba(246,139,30,.12);flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+.main{flex:1;overflow-x:hidden;}
+
+/* ── SIDEBAR ── */
+.sb-logo{padding:24px 20px;border-bottom:1px solid rgba(246,139,30,.12);}
+.sb-logo-text{font-family:var(--font-title);font-size:26px;letter-spacing:2px;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sb-logo-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.sb-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.sb-section{padding:8px 16px 4px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;border-radius:0;transition:all .2s;color:rgba(253,248,240,.6);font-size:13px;font-weight:500;text-decoration:none;border-left:3px solid transparent;}
+.sb-item:hover{background:rgba(246,139,30,.06);color:var(--cream);}
+.sb-item.active{background:rgba(246,139,30,.12);color:var(--gold);border-left-color:var(--gold);}
+.sb-item i{width:18px;text-align:center;}
+.sb-badge{margin-left:auto;background:var(--gold);color:var(--dark);font-size:10px;font-weight:700;border-radius:50px;padding:2px 7px;min-width:20px;text-align:center;}
+.sb-footer{padding:16px 20px;border-top:1px solid rgba(246,139,30,.12);}
+.btn-retour{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(246,139,30,.08);border:1px solid rgba(246,139,30,.2);border-radius:8px;color:var(--gold);font-size:12px;cursor:pointer;text-decoration:none;width:100%;font-family:var(--font-body);}
+.btn-retour:hover{background:rgba(246,139,30,.15);}
+
+/* ── TOPBAR ── */
+.topbar{padding:20px 32px;border-bottom:1px solid rgba(246,139,30,.1);display:flex;align-items:center;justify-content:space-between;background:rgba(15,12,8,.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:var(--font-title);font-size:26px;letter-spacing:1px;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .25s;font-family:var(--font-body);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(246,139,30,.35);}
+.btn-outline{background:transparent;border:1px solid rgba(246,139,30,.25);color:var(--gold);}
+.btn-outline:hover{background:rgba(246,139,30,.08);}
+.btn-red{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:var(--red);}
+.btn-red:hover{background:rgba(231,76,60,.25);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* ── CONTENU ── */
+.content{padding:32px;}
+
+/* ── STATS BANNER ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--dark2);border:1px solid rgba(246,139,30,.12);border-radius:var(--radius-lg);padding:20px 24px;display:flex;align-items:center;gap:16px;}
+.stat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.stat-icon.gold{background:rgba(246,139,30,.15);color:var(--gold);}
+.stat-icon.blue{background:rgba(52,152,219,.15);color:var(--blue);}
+.stat-icon.purple{background:rgba(155,89,182,.15);color:var(--purple);}
+.stat-icon.green{background:rgba(34,197,94,.15);color:var(--green);}
+.stat-n{font-family:var(--font-title);font-size:32px;line-height:1;}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── ONGLETS RÔLES ── */
+.role-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--dark2);padding:6px;border-radius:var(--radius);border:1px solid rgba(246,139,30,.1);}
+.role-tab{flex:1;padding:10px;border-radius:8px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:600;transition:all .2s;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:6px;}
+.role-tab.active{color:var(--dark);}
+.role-tab.gc.active{background:var(--blue);}
+.role-tab.gs.active{background:var(--purple);}
+.role-tab.lv.active{background:var(--gold);}
+.role-tab:hover{color:var(--cream);}
+
+/* ── GRILLE EMPLOYÉS ── */
+.employes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.emp-card{background:var(--dark2);border:1px solid rgba(246,139,30,.1);border-radius:var(--radius-lg);overflow:hidden;transition:all .3s;}
+.emp-card:hover{border-color:rgba(246,139,30,.3);box-shadow:var(--shadow-lg);}
+.emp-card-header{padding:20px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(246,139,30,.07);}
+.emp-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-family:var(--font-title);letter-spacing:0;flex-shrink:0;font-weight:700;}
+.emp-avatar.gc{background:rgba(52,152,219,.2);color:var(--blue);}
+.emp-avatar.gs{background:rgba(155,89,182,.2);color:var(--purple);}
+.emp-avatar.lv{background:rgba(246,139,30,.2);color:var(--gold);}
+.emp-info{flex:1;min-width:0;}
+.emp-name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.emp-role-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:2px 10px;border-radius:50px;margin-top:4px;font-weight:600;}
+.emp-role-badge.gc{background:rgba(52,152,219,.15);color:var(--blue);}
+.emp-role-badge.gs{background:rgba(155,89,182,.15);color:var(--purple);}
+.emp-role-badge.lv{background:rgba(246,139,30,.15);color:var(--gold);}
+.emp-status{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.emp-status.actif{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.4);}
+.emp-status.inactif{background:var(--muted);}
+.emp-body{padding:14px 20px;}
+.emp-tel{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.emp-domaines{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.emp-domaine-tag{font-size:10px;padding:3px 8px;border-radius:50px;background:rgba(246,139,30,.07);border:1px solid rgba(246,139,30,.12);color:rgba(253,248,240,.6);}
+.emp-login-info{background:rgba(246,139,30,.06);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.emp-login-info strong{color:var(--cream);}
+.emp-actions{display:flex;gap:8px;}
+.emp-actions .btn{flex:1;justify-content:center;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--dark2);border:1px solid rgba(246,139,30,.2);border-radius:var(--radius-lg);width:100%;max-width:680px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px);transition:transform .3s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-header{padding:24px 28px;border-bottom:1px solid rgba(246,139,30,.1);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:var(--font-title);font-size:24px;letter-spacing:.5px;}
+.modal-close{width:36px;height:36px;border-radius:50%;background:rgba(246,139,30,.08);border:none;cursor:pointer;color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{background:rgba(231,76,60,.15);color:var(--red);}
+.modal-body{padding:28px;overflow-y:auto;flex:1;}
+.modal-footer{padding:20px 28px;border-top:1px solid rgba(246,139,30,.1);display:flex;gap:12px;justify-content:flex-end;}
+
+/* ── FORMULAIRE ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-grid.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.form-label span{color:var(--gold);}
+.form-input{background:rgba(246,139,30,.04);border:1px solid rgba(246,139,30,.15);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--cream);font-family:var(--font-body);transition:all .2s;outline:none;}
+.form-input:focus{border-color:var(--gold);background:rgba(246,139,30,.08);}
+.form-input::placeholder{color:var(--muted);}
+select.form-input option{background:var(--dark2);color:var(--cream);}
+
+/* ── ROLE SELECTOR ── */
+.role-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+.role-option{border:2px solid rgba(246,139,30,.12);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .25s;}
+.role-option:hover{border-color:rgba(246,139,30,.3);}
+.role-option.selected-gc{border-color:var(--blue);background:rgba(52,152,219,.1);}
+.role-option.selected-gs{border-color:var(--purple);background:rgba(155,89,182,.1);}
+.role-option.selected-lv{border-color:var(--gold);background:rgba(246,139,30,.1);}
+.role-option-icon{font-size:22px;margin-bottom:6px;}
+.role-option-label{font-size:11px;font-weight:600;line-height:1.3;}
+input[type=radio]{display:none;}
+
+/* ── DOMAINES CHECKBOXES ── */
+.domaines-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;}
+.domaine-cb{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(246,139,30,.1);border-radius:6px;cursor:pointer;transition:all .2s;font-size:12px;}
+.domaine-cb input{accent-color:var(--gold);}
+.domaine-cb:hover{background:rgba(246,139,30,.04);}
+
+/* ── SECTION CONNEXION ── */
+.login-section{background:rgba(246,139,30,.05);border:1px solid rgba(246,139,30,.12);border-radius:10px;padding:16px;margin-top:4px;}
+.login-section-title{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+
+/* ── PHOTO UPLOAD ── */
+.upload-zone{border:2px dashed rgba(246,139,30,.2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;}
+.upload-zone:hover{border-color:rgba(246,139,30,.4);background:rgba(246,139,30,.03);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-icon{font-size:24px;color:var(--gold);margin-bottom:8px;}
+.upload-text{font-size:12px;color:var(--muted);}
+.upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.upload-thumb{width:60px;height:60px;border-radius:6px;object-fit:cover;border:1px solid rgba(246,139,30,.2);}
+
+/* ── DOSSIER EMPLOYÉ ── */
+.dossier-alert{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.2);border-radius:8px;padding:12px 16px;font-size:12px;color:rgba(231,76,60,.9);display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:80px 40px;}
+.empty-icon{font-size:56px;margin-bottom:16px;opacity:.3;}
+.empty-title{font-family:var(--font-display);font-size:22px;color:var(--muted);margin-bottom:8px;}
+.empty-sub{font-size:13px;color:var(--muted);opacity:.7;}
+
+/* ── SEARCH ── */
+.search-bar{display:flex;align-items:center;gap:12px;background:var(--dark2);border:1px solid rgba(246,139,30,.1);border-radius:var(--radius);padding:10px 16px;margin-bottom:24px;}
+.search-bar i{color:var(--muted);}
+.search-bar input{background:none;border:none;outline:none;color:var(--cream);font-family:var(--font-body);font-size:14px;flex:1;}
+.search-bar input::placeholder{color:var(--muted);}
+
+/* ── CONN INFO ── */
+.conn-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:12px 16px;font-size:12px;color:rgba(34,197,94,.9);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+
+/* ── APP LINKS ── */
+.app-links{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.app-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;transition:all .2s;}
+.app-link.gc{background:rgba(52,152,219,.15);color:var(--blue);border:1px solid rgba(52,152,219,.2);}
+.app-link.gs{background:rgba(155,89,182,.15);color:var(--purple);border:1px solid rgba(155,89,182,.2);}
+.app-link.lv{background:rgba(246,139,30,.15);color:var(--gold);border:1px solid rgba(246,139,30,.2);}
+.app-link:hover{opacity:.8;}
+
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .role-selector{grid-template-columns:1fr;}
+}
+</style>
+
+  <!-- ═══ PWA META ═══ -->
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Galy Market — Admin Employés"/>
+  <meta name="theme-color" content="#f68b1e"/>
+  <meta name="application-name" content="Galy Market — Admin Employés"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png"/>
+  <!-- ═══ FIN PWA META ═══ -->
+</head>
+<body>
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-text">GALY MARKET</div>
+    <div class="sb-logo-sub">Gestion Employés</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Employés</div>
+    <a class="sb-item active" onclick="showTab('tous')">
+      <i class="fas fa-users"></i> Tous les employés
+      <span class="sb-badge" id="badgeTotal">0</span>
+    </a>
+    <a class="sb-item" onclick="showTab('gc')">
+      <i class="fas fa-clipboard-list" style="color:var(--blue)"></i> Gestionnaires Commandes
+      <span class="sb-badge" id="badgeGC" style="background:var(--blue)">0</span>
+    </a>
+    <a class="sb-item" onclick="showTab('gs')">
+      <i class="fas fa-boxes-stacked" style="color:var(--purple)"></i> Gestionnaires Stock
+      <span class="sb-badge" id="badgeGS" style="background:var(--purple)">0</span>
+    </a>
+    <a class="sb-item" onclick="showTab('lv')">
+      <i class="fas fa-motorcycle" style="color:var(--gold)"></i> Livreurs
+      <span class="sb-badge" id="badgeLV">0</span>
+    </a>
+    <div class="sb-section">Données Privées</div>
+    <a class="sb-item" onclick="showTab('dossiers')">
+      <i class="fas fa-folder-lock"></i> Dossiers Employés
+    </a>
+    <div class="sb-section">Applications</div>
+    <a class="sb-item" href="app-commandes.html" target="_blank">
+      <i class="fas fa-mobile-screen" style="color:var(--blue)"></i> App Commandes
+    </a>
+    <a class="sb-item" href="app-stock.html" target="_blank">
+      <i class="fas fa-mobile-screen" style="color:var(--purple)"></i> App Stock
+    </a>
+    <a class="sb-item" href="app-livreur.html" target="_blank">
+      <i class="fas fa-mobile-screen" style="color:var(--gold)"></i> App Livreur
+    </a>
+    <div class="sb-section">Tableaux de bord</div>
+    <a class="sb-item" onclick="showTab('tableaux')">
+      <i class="fas fa-chart-bar"></i> Performances
+    </a>
+  </nav>
+  <div class="sb-footer">
+    <a href="../admin.html" class="btn-retour"><i class="fas fa-arrow-left"></i> Retour Admin</a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Tous les Employés</div>
+    <div class="topbar-right">
+      <button class="btn btn-outline btn-sm" onclick="showTab('dossiers')"><i class="fas fa-folder-lock"></i> Dossiers</button>
+      <button class="btn btn-gold" onclick="openModal()"><i class="fas fa-plus"></i> Ajouter un employé</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon gold"><i class="fas fa-users"></i></div>
+        <div><div class="stat-n" id="statTotal">0</div><div class="stat-l">Total employés</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-clipboard-list"></i></div>
+        <div><div class="stat-n" id="statGC">0</div><div class="stat-l">Gest. Commandes</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="fas fa-boxes-stacked"></i></div>
+        <div><div class="stat-n" id="statGS">0</div><div class="stat-l">Gest. Stock</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-motorcycle"></i></div>
+        <div><div class="stat-n" id="statLV">0</div><div class="stat-l">Livreurs</div></div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher un employé par nom, prénom, téléphone…" oninput="renderEmployes()"/>
+    </div>
+
+    <!-- CONTENU DYNAMIQUE -->
+    <div id="tabContent"></div>
+  </div>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL AJOUT EMPLOYÉ
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <div class="modal-title" id="modalTitle">Nouvel Employé</div>
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="form-grid">
+
+      <!-- PRÉNOM / NOM -->
+      <div class="form-group">
+        <label class="form-label">Prénom <span>*</span></label>
+        <input type="text" id="empPrenom" class="form-input" placeholder="Mamadou"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nom <span>*</span></label>
+        <input type="text" id="empNom" class="form-input" placeholder="Diallo"/>
+      </div>
+
+      <!-- TÉLÉPHONE -->
+      <div class="form-group full">
+        <label class="form-label">Téléphone <span>*</span></label>
+        <input type="tel" id="empTel" class="form-input" placeholder="620 00 00 00 (sans +224)"/>
+      </div>
+
+      <!-- RÔLE -->
+      <div class="form-group full">
+        <label class="form-label">Rôle <span>*</span></label>
+        <div class="role-selector">
+          <label class="role-option" id="opt-gc" onclick="selectRole('GESTIONNAIRE_COMMANDES')">
+            <input type="radio" name="role" value="GESTIONNAIRE_COMMANDES"/>
+            <div class="role-option-icon" style="color:var(--blue)"><i class="fas fa-clipboard-list"></i></div>
+            <div class="role-option-label">Gestionnaire<br>Commandes</div>
+          </label>
+          <label class="role-option" id="opt-gs" onclick="selectRole('GESTIONNAIRE_STOCK')">
+            <input type="radio" name="role" value="GESTIONNAIRE_STOCK"/>
+            <div class="role-option-icon" style="color:var(--purple)"><i class="fas fa-boxes-stacked"></i></div>
+            <div class="role-option-label">Gestionnaire<br>Stock</div>
+          </label>
+          <label class="role-option" id="opt-lv" onclick="selectRole('LIVREUR')">
+            <input type="radio" name="role" value="LIVREUR"/>
+            <div class="role-option-icon" style="color:var(--gold)"><i class="fas fa-motorcycle"></i></div>
+            <div class="role-option-label">Livreur</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- DOMAINES -->
+      <div class="form-group full">
+        <label class="form-label">Domaines de travail assignés</label>
+        <div class="domaines-grid" id="domainesGrid"></div>
+      </div>
+
+      <!-- CONNEXION -->
+      <div class="form-group full">
+        <label class="form-label">Identifiants de connexion <span>*</span></label>
+        <div class="login-section">
+          <div class="login-section-title"><i class="fas fa-key"></i> Accès application mobile</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <input type="text" id="empLogin" class="form-input" placeholder="Login (ex: mamadou.diallo)"/>
+            </div>
+            <div class="form-group">
+              <input type="password" id="empMdp" class="form-input" placeholder="Mot de passe"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NOTE DOSSIER -->
+    <div class="dossier-alert" style="margin-top:20px;">
+      <i class="fas fa-info-circle"></i>
+      Les documents personnels (photos, pièce d'identité, CV, certificat de résidence) se téléversent dans <strong>Dossiers Employés</strong> après création du compte.
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal()">Annuler</button>
+    <button class="btn btn-gold" onclick="sauvegarderEmploye()"><i class="fas fa-save"></i> Créer l'employé</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL DOSSIER EMPLOYÉ
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="dossierOverlay">
+<div class="modal" style="max-width:720px">
+  <div class="modal-header">
+    <div class="modal-title"><i class="fas fa-folder-lock" style="color:var(--gold);margin-right:10px"></i> Dossier Employé</div>
+    <button class="modal-close" onclick="closeDossier()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="conn-box"><i class="fas fa-lock"></i> Données confidentielles — Accès réservé au propriétaire uniquement</div>
+    <div id="dossierContent"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeDossier()">Fermer</button>
+    <button class="btn btn-gold" onclick="sauvegarderDossier()"><i class="fas fa-save"></i> Enregistrer le dossier</button>
+  </div>
+</div>
+</div>
+
+<script src="js/employes-core.js"></script>
+<script>
+const {ROLES, DOMAINES, GM, EmployeManager, AuthEmp, Stats} = window.GALY;
+
+let currentTab = 'tous';
+let editingEmpId = null;
+let currentDossierEmpId = null;
+let selectedRole = null;
+
+// ── INIT ──
+window.onload = () => {
+  initDomainesGrid();
+  renderAll();
+};
+
+function renderAll() {
+  updateStats();
+  updateBadges();
+  showTab(currentTab);
+}
+
+function updateStats() {
+  const all = GM.getEmployes();
+  document.getElementById('statTotal').textContent = all.filter(e=>e.actif).length;
+  document.getElementById('statGC').textContent = all.filter(e=>e.role==='GESTIONNAIRE_COMMANDES'&&e.actif).length;
+  document.getElementById('statGS').textContent = all.filter(e=>e.role==='GESTIONNAIRE_STOCK'&&e.actif).length;
+  document.getElementById('statLV').textContent = all.filter(e=>e.role==='LIVREUR'&&e.actif).length;
+}
+
+function updateBadges() {
+  const all = GM.getEmployes().filter(e=>e.actif);
+  document.getElementById('badgeTotal').textContent = all.length;
+  document.getElementById('badgeGC').textContent = all.filter(e=>e.role==='GESTIONNAIRE_COMMANDES').length;
+  document.getElementById('badgeGS').textContent = all.filter(e=>e.role==='GESTIONNAIRE_STOCK').length;
+  document.getElementById('badgeLV').textContent = all.filter(e=>e.role==='LIVREUR').length;
+}
+
+// ── TABS ──
+function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+
+  const titles = {
+    tous:'Tous les Employés', gc:'Gestionnaires de Commandes',
+    gs:'Gestionnaires de Stock', lv:'Livreurs',
+    dossiers:'Dossiers Employés', tableaux:'Tableaux de Bord'
+  };
+  document.getElementById('pageTitle').textContent = titles[tab] || '';
+
+  if (tab === 'dossiers') { renderDossiersTab(); return; }
+  if (tab === 'tableaux') { renderTableauxTab(); return; }
+
+  const filtres = { tous: null, gc:'GESTIONNAIRE_COMMANDES', gs:'GESTIONNAIRE_STOCK', lv:'LIVREUR' };
+  renderEmployes(filtres[tab]);
+}
+
+// ── RENDER EMPLOYÉS ──
+function renderEmployes(roleFilter = null) {
+  const q = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  let list = GM.getEmployes();
+  if (roleFilter) list = list.filter(e => e.role === roleFilter);
+  if (q) list = list.filter(e =>
+    e.nom.toLowerCase().includes(q) ||
+    e.prenom.toLowerCase().includes(q) ||
+    e.tel.includes(q)
+  );
+
+  if (!list.length) {
+    document.getElementById('tabContent').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-user-plus"></i></div>
+        <div class="empty-title">Aucun employé trouvé</div>
+        <div class="empty-sub">Ajoutez votre premier employé avec le bouton en haut à droite.</div>
+      </div>`;
+    return;
+  }
+
+  const roleClass = { GESTIONNAIRE_COMMANDES:'gc', GESTIONNAIRE_STOCK:'gs', LIVREUR:'lv' };
+  const roleLabel = { GESTIONNAIRE_COMMANDES:'Gest. Commandes', GESTIONNAIRE_STOCK:'Gest. Stock', LIVREUR:'Livreur' };
+  const roleApp   = { GESTIONNAIRE_COMMANDES:'app-commandes.html', GESTIONNAIRE_STOCK:'app-stock.html', LIVREUR:'app-livreur.html' };
+  const roleAppLabel = { GESTIONNAIRE_COMMANDES:'App Commandes', GESTIONNAIRE_STOCK:'App Stock', LIVREUR:'App Livreur' };
+
+  document.getElementById('tabContent').innerHTML = `
+    <div class="employes-grid">
+      ${list.map(e => {
+        const rc = roleClass[e.role];
+        const tb = EmployeManager.getTB(e.id);
+        const stats = e.role === 'GESTIONNAIRE_COMMANDES' ? Stats.gcStats(e.id,'mois') :
+                      e.role === 'GESTIONNAIRE_STOCK'    ? Stats.gsStats(e.id,'mois') :
+                      Stats.livreurStats(e.id,'mois');
+        const statsHTML = e.role === 'GESTIONNAIRE_COMMANDES'
+          ? `<span style="font-size:11px;color:var(--muted)">${stats.commandes} cmd ce mois · ${formatGNF(stats.ca)}</span>`
+          : e.role === 'GESTIONNAIRE_STOCK'
+          ? `<span style="font-size:11px;color:var(--muted)">${stats.verifications} vérif. ce mois</span>`
+          : `<span style="font-size:11px;color:var(--muted)">${stats.livraisons} livr. ce mois · ${formatGNF(stats.ca)}</span>`;
+
+        return `
+        <div class="emp-card">
+          <div class="emp-card-header">
+            <div class="emp-avatar ${rc}">${e.prenom[0]}${e.nom[0]}</div>
+            <div class="emp-info">
+              <div class="emp-name">${e.prenom} ${e.nom}</div>
+              <div class="emp-role-badge ${rc}"><i class="${ROLES[e.role]?.icon||'fas fa-user'}"></i> ${roleLabel[e.role]}</div>
+            </div>
+            <div class="emp-status ${e.actif?'actif':'inactif'}" title="${e.actif?'Actif':'Inactif'}"></div>
+          </div>
+          <div class="emp-body">
+            <div class="emp-tel"><i class="fas fa-phone"></i> +224 ${e.tel}</div>
+            ${e.domaines?.length ? `<div class="emp-domaines">${e.domaines.map(d=>`<span class="emp-domaine-tag">${d}</span>`).join('')}</div>` : ''}
+            <div class="emp-login-info">
+              <i class="fas fa-key"></i>
+              Login : <strong>${e.login}</strong>
+            </div>
+            <div style="margin-bottom:12px">${statsHTML}</div>
+            <div class="app-links">
+              <a href="${roleApp[e.role]}" class="app-link ${rc}" target="_blank">
+                <i class="fas fa-mobile-screen"></i> ${roleAppLabel[e.role]}
+              </a>
+              <a href="#" class="app-link ${rc}" onclick="ouvrirDossier('${e.id}'); return false;">
+                <i class="fas fa-folder"></i> Dossier
+              </a>
+              <a href="#" class="app-link ${rc}" onclick="voirTableauBord('${e.id}'); return false;">
+                <i class="fas fa-chart-bar"></i> Dashboard
+              </a>
+            </div>
+            <div class="emp-actions" style="margin-top:12px">
+              <button class="btn btn-outline btn-sm" onclick="editEmploye('${e.id}')"><i class="fas fa-pen"></i> Modifier</button>
+              <button class="btn btn-red btn-sm" onclick="toggleEmploye('${e.id}',${e.actif})">
+                <i class="fas fa-${e.actif?'ban':'check'}"></i> ${e.actif?'Désactiver':'Activer'}
+              </button>
+            </div>
+          </div>
+        </div>`; }).join('')}
+    </div>`;
+}
+
+// ── DOSSIERS ──
+function renderDossiersTab() {
+  const list = GM.getEmployes();
+  document.getElementById('tabContent').innerHTML = `
+    <div style="background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.2);border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+      <i class="fas fa-shield-halved" style="color:var(--red);font-size:20px"></i>
+      <div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">Zone Privée — Propriétaire uniquement</div>
+        <div style="font-size:12px;color:var(--muted)">Ces données sont cryptées dans le localStorage et accessibles uniquement depuis ce panneau admin sécurisé.</div>
+      </div>
+    </div>
+    <div class="employes-grid">
+      ${list.map(e => `
+        <div class="emp-card">
+          <div class="emp-card-header">
+            <div class="emp-avatar ${e.role==='GESTIONNAIRE_COMMANDES'?'gc':e.role==='GESTIONNAIRE_STOCK'?'gs':'lv'}">${e.prenom[0]}${e.nom[0]}</div>
+            <div class="emp-info">
+              <div class="emp-name">${e.prenom} ${e.nom}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">Créé le ${new Date(e.dateCreation).toLocaleDateString('fr-FR')}</div>
+            </div>
+          </div>
+          <div class="emp-body">
+            <button class="btn btn-gold" style="width:100%" onclick="ouvrirDossier('${e.id}')">
+              <i class="fas fa-folder-open"></i> Voir / Compléter le dossier
+            </button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── TABLEAUX DE BORD ──
+function renderTableauxTab() {
+  const all = GM.getEmployes().filter(e=>e.actif);
+  const periodes = ['jour','semaine','mois'];
+
+  document.getElementById('tabContent').innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:24px;">
+      ${periodes.map(p=>`<button class="btn btn-outline btn-sm" onclick="renderTableauxTab()" id="p_${p}">${p.charAt(0).toUpperCase()+p.slice(1)}</button>`).join('')}
+    </div>
+    ${['GESTIONNAIRE_COMMANDES','GESTIONNAIRE_STOCK','LIVREUR'].map(role => {
+      const emps = all.filter(e=>e.role===role);
+      if (!emps.length) return '';
+      const roleLabel = {GESTIONNAIRE_COMMANDES:'Gestionnaires de Commandes',GESTIONNAIRE_STOCK:'Gestionnaires de Stock',LIVREUR:'Livreurs'};
+      const roleColor = {GESTIONNAIRE_COMMANDES:'var(--blue)',GESTIONNAIRE_STOCK:'var(--purple)',LIVREUR:'var(--gold)'};
+      return `
+        <div style="margin-bottom:36px;">
+          <div style="font-family:var(--font-title);font-size:22px;letter-spacing:.5px;color:${roleColor[role]};margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid rgba(246,139,30,.1)">
+            ${roleLabel[role]}
+          </div>
+          <div class="employes-grid">
+            ${emps.map(e => voirTBCard(e)).join('')}
+          </div>
+        </div>`;
+    }).join('')}`;
+}
+
+function voirTBCard(e) {
+  const sm = Stats.gcStats(e.id,'mois');
+  const ss = Stats.gsStats(e.id,'mois');
+  const sl = Stats.livreurStats(e.id,'mois');
+  const rc = e.role==='GESTIONNAIRE_COMMANDES'?'gc':e.role==='GESTIONNAIRE_STOCK'?'gs':'lv';
+
+  return `<div class="emp-card">
+    <div class="emp-card-header">
+      <div class="emp-avatar ${rc}">${e.prenom[0]}${e.nom[0]}</div>
+      <div class="emp-info">
+        <div class="emp-name">${e.prenom} ${e.nom}</div>
+        <div class="emp-role-badge ${rc}">${e.role==='GESTIONNAIRE_COMMANDES'?'Gest. Commandes':e.role==='GESTIONNAIRE_STOCK'?'Gest. Stock':'Livreur'}</div>
+      </div>
+    </div>
+    <div class="emp-body">
+      ${e.role==='GESTIONNAIRE_COMMANDES' ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          ${tbStat('Cmd/Jour', Stats.gcStats(e.id,'jour').commandes, 'fas fa-clipboard-check')}
+          ${tbStat('Cmd/Semaine', Stats.gcStats(e.id,'semaine').commandes, 'fas fa-clipboard-check')}
+          ${tbStat('Cmd/Mois', sm.commandes, 'fas fa-clipboard-check')}
+          ${tbStat('CA Mois', formatGNF(sm.ca), 'fas fa-coins')}
+        </div>` : ''}
+      ${e.role==='GESTIONNAIRE_STOCK' ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          ${tbStat('Vérif/Jour', Stats.gsStats(e.id,'jour').verifications, 'fas fa-box-open')}
+          ${tbStat('Vérif/Semaine', Stats.gsStats(e.id,'semaine').verifications, 'fas fa-box-open')}
+          ${tbStat('Vérif/Mois', ss.verifications, 'fas fa-box-open')}
+          ${tbStat('Disponibles', ss.disponibles, 'fas fa-check-circle')}
+        </div>` : ''}
+      ${e.role==='LIVREUR' ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          ${tbStat('Livr/Jour', Stats.livreurStats(e.id,'jour').livraisons, 'fas fa-motorcycle')}
+          ${tbStat('Livr/Semaine', Stats.livreurStats(e.id,'semaine').livraisons, 'fas fa-motorcycle')}
+          ${tbStat('Livr/Mois', sl.livraisons, 'fas fa-motorcycle')}
+          ${tbStat('CA Collecté', formatGNF(sl.ca), 'fas fa-hand-holding-dollar')}
+        </div>
+        ${sl.lieux.slice(-3).map(l=>`<div style="font-size:11px;color:var(--muted);padding:4px 0;border-bottom:1px solid rgba(246,139,30,.05)"><i class="fas fa-location-dot" style="color:var(--gold);margin-right:4px"></i>${l.adresse?.ville||'Conakry'} — ${formatGNF(l.montant)}</div>`).join('')}` : ''}
+    </div>
+  </div>`;
+}
+
+function tbStat(label, val, icon) {
+  return `<div style="background:rgba(246,139,30,.06);border:1px solid rgba(246,139,30,.1);border-radius:8px;padding:10px;text-align:center">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:4px"><i class="${icon}" style="margin-right:4px"></i>${label}</div>
+    <div style="font-family:var(--font-title);font-size:20px;color:var(--gold)">${val}</div>
+  </div>`;
+}
+
+// ── MODAL DOSSIER ──
+function ouvrirDossier(empId) {
+  currentDossierEmpId = empId;
+  const e = EmployeManager.getById(empId);
+  const dossiers = GM.getDossiersEmployes();
+  const d = dossiers[empId] || {};
+
+  document.getElementById('dossierContent').innerHTML = `
+    <div style="font-family:var(--font-title);font-size:20px;margin-bottom:20px">${e.prenom} ${e.nom}</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Certificat de résidence <span>*</span></label>
+        <div class="upload-zone">
+          <input type="file" id="dCertif" accept=".pdf,.jpg,.jpeg,.png" onchange="previewFile(this,'prevCertif')"/>
+          <div class="upload-icon"><i class="fas fa-file-shield"></i></div>
+          <div class="upload-text">${d.certifNom || 'Cliquer pour téléverser le certificat de résidence (PDF ou image)'}</div>
+          <div class="upload-preview" id="prevCertif"></div>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">3 Photos fond rouge <span>*</span></label>
+        <div class="upload-zone">
+          <input type="file" id="dPhotos" accept=".jpg,.jpeg,.png" multiple onchange="previewMulti(this,'prevPhotos',3)"/>
+          <div class="upload-icon"><i class="fas fa-camera"></i></div>
+          <div class="upload-text">${d.photosNom || 'Sélectionner exactement 3 photos (fond rouge)'}</div>
+          <div class="upload-preview" id="prevPhotos"></div>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Pièce d'identité biométrique <span>*</span></label>
+        <div class="upload-zone">
+          <input type="file" id="dCNI" accept=".pdf,.jpg,.jpeg,.png" onchange="previewFile(this,'prevCNI')"/>
+          <div class="upload-icon"><i class="fas fa-id-card"></i></div>
+          <div class="upload-text">${d.cniNom || 'Recto et verso de la pièce biométrique'}</div>
+          <div class="upload-preview" id="prevCNI"></div>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">CV <span>*</span></label>
+        <div class="upload-zone">
+          <input type="file" id="dCV" accept=".pdf,.doc,.docx" onchange="previewFile(this,'prevCV')"/>
+          <div class="upload-icon"><i class="fas fa-file-user"></i></div>
+          <div class="upload-text">${d.cvNom || 'Curriculum Vitae (PDF ou Word)'}</div>
+          <div class="upload-preview" id="prevCV"></div>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Notes supplémentaires</label>
+        <textarea id="dNotes" class="form-input" rows="3" placeholder="Observations, remarques…">${d.notes||''}</textarea>
+      </div>
+    </div>`;
+
+  document.getElementById('dossierOverlay').classList.add('open');
+}
+
+function previewFile(input, previewId) {
+  const container = document.getElementById(previewId);
+  container.innerHTML = '';
+  if (input.files[0]) {
+    const f = input.files[0];
+    if (f.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.className = 'upload-thumb';
+      img.src = URL.createObjectURL(f);
+      container.appendChild(img);
+    } else {
+      container.innerHTML = `<span style="font-size:11px;color:var(--green)"><i class="fas fa-check"></i> ${f.name}</span>`;
+    }
+    input.parentElement.querySelector('.upload-text').textContent = f.name;
+  }
+}
+
+function previewMulti(input, previewId, max) {
+  const container = document.getElementById(previewId);
+  container.innerHTML = '';
+  const files = Array.from(input.files).slice(0, max);
+  files.forEach(f => {
+    const img = document.createElement('img');
+    img.className = 'upload-thumb';
+    img.src = URL.createObjectURL(f);
+    container.appendChild(img);
+  });
+  if (files.length) input.parentElement.querySelector('.upload-text').textContent = `${files.length} photo(s) sélectionnée(s)`;
+}
+
+function sauvegarderDossier() {
+  const dossiers = GM.getDossiersEmployes();
+  dossiers[currentDossierEmpId] = {
+    notes: document.getElementById('dNotes')?.value || '',
+    certifNom: document.getElementById('dCertif')?.files[0]?.name || dossiers[currentDossierEmpId]?.certifNom || '',
+    cniNom: document.getElementById('dCNI')?.files[0]?.name || dossiers[currentDossierEmpId]?.cniNom || '',
+    cvNom: document.getElementById('dCV')?.files[0]?.name || dossiers[currentDossierEmpId]?.cvNom || '',
+    photosNom: document.getElementById('dPhotos')?.files?.length ? `${document.getElementById('dPhotos').files.length} photo(s)` : dossiers[currentDossierEmpId]?.photosNom || '',
+    updatedAt: new Date().toISOString(),
+  };
+  GM.saveDossiersEmployes(dossiers);
+  closeDossier();
+  showToast('Dossier sauvegardé ✅');
+}
+
+function closeDossier() { document.getElementById('dossierOverlay').classList.remove('open'); }
+
+// ── MODAL AJOUT ──
+function initDomainesGrid() {
+  document.getElementById('domainesGrid').innerHTML = DOMAINES.map(d => `
+    <label class="domaine-cb">
+      <input type="checkbox" value="${d}" class="dom-cb"/> ${d}
+    </label>`).join('');
+}
+
+function selectRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-option').forEach(o => {
+    o.classList.remove('selected-gc','selected-gs','selected-lv');
+  });
+  const map = { GESTIONNAIRE_COMMANDES:['opt-gc','selected-gc'], GESTIONNAIRE_STOCK:['opt-gs','selected-gs'], LIVREUR:['opt-lv','selected-lv'] };
+  if (map[role]) document.getElementById(map[role][0]).classList.add(map[role][1]);
+}
+
+function openModal(empId = null) {
+  editingEmpId = empId;
+  if (empId) {
+    const e = EmployeManager.getById(empId);
+    document.getElementById('empPrenom').value = e.prenom;
+    document.getElementById('empNom').value = e.nom;
+    document.getElementById('empTel').value = e.tel;
+    document.getElementById('empLogin').value = e.login;
+    document.getElementById('empMdp').value = e.mdp;
+    selectRole(e.role);
+    document.querySelectorAll('.dom-cb').forEach(cb => cb.checked = e.domaines?.includes(cb.value));
+    document.getElementById('modalTitle').textContent = 'Modifier l\'employé';
+  } else {
+    ['empPrenom','empNom','empTel','empLogin','empMdp'].forEach(id => document.getElementById(id).value = '');
+    document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected-gc','selected-gs','selected-lv'));
+    document.querySelectorAll('.dom-cb').forEach(cb => cb.checked = false);
+    selectedRole = null;
+    document.getElementById('modalTitle').textContent = 'Nouvel Employé';
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); editingEmpId = null; }
+
+function sauvegarderEmploye() {
+  const prenom = document.getElementById('empPrenom').value.trim();
+  const nom = document.getElementById('empNom').value.trim();
+  const tel = document.getElementById('empTel').value.trim();
+  const login = document.getElementById('empLogin').value.trim();
+  const mdp = document.getElementById('empMdp').value.trim();
+  const domaines = [...document.querySelectorAll('.dom-cb:checked')].map(cb => cb.value);
+
+  if (!prenom || !nom || !tel || !login || !mdp || !selectedRole) {
+    showToast('Veuillez remplir tous les champs obligatoires', 'error'); return;
+  }
+
+  if (editingEmpId) {
+    EmployeManager.modifier(editingEmpId, {prenom,nom,tel,role:selectedRole,domaines,login,mdp});
+    showToast(`${prenom} ${nom} modifié ✅`);
+  } else {
+    EmployeManager.creer({prenom,nom,tel,role:selectedRole,domaines,login,mdp});
+    showToast(`${prenom} ${nom} ajouté ✅`);
+  }
+  closeModal();
+  renderAll();
+}
+
+function editEmploye(id) { openModal(id); }
+function toggleEmploye(id, actif) {
+  actif ? EmployeManager.desactiver(id) : EmployeManager.activer(id);
+  renderAll();
+}
+function voirTableauBord(empId) { showTab('tableaux'); }
+
+// ── HELPERS ──
+function formatGNF(n) {
+  return (Number(n)||0).toLocaleString('fr-FR') + ' GNF';
+}
+function showToast(msg, type='success') {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;background:${type==='error'?'var(--red)':'var(--green)'};color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:var(--shadow-lg)`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+</script>
+
+  <!-- ═══ SERVICE WORKER ═══ -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[PWA] Service Worker enregistré ✅', reg.scope))
+          .catch(err => console.warn('[PWA] SW erreur:', err));
+      });
+    }
+  </script>
+  <!-- ═══ FIN SERVICE WORKER ═══ -->
+</body>
+</html>

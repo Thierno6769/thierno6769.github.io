@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gérez votre compte Galy Market. Historique commandes, favoris, profil personnel."/>
+  <meta name="keywords" content="Galy Market, boutique en ligne Guinée, Conakry, shopping, téléphones, mode, beauté, livraison"/>
+  <meta name="author" content="Galy Market"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Mon Compte — Galy Market"/>
+  <meta property="og:description" content="Gérez votre compte Galy Market. Historique commandes, favoris, profil personnel."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://starlit-squirrel-7ab478.netlify.app/account.html"/>
+  <meta property="og:site_name" content="Galy Market"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Mon Compte — Galy Market"/>
+  <meta name="twitter:description" content="Gérez votre compte Galy Market. Historique commandes, favoris, profil personnel."/>
+  <title>Mon Compte — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#0f0c08;color:#fdf8f0;padding-bottom:70px}
+    .gz-header{background:linear-gradient(135deg,#0f0c08,#1a1206);border-bottom:2px solid #f68b1e;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+    .gz-header-title{color:#fff;font-size:16px;font-weight:800;flex:1}
+    /* PROFIL HEADER */
+    .gz-profil-band{background:linear-gradient(135deg,#f68b1e,#e07b0e);padding:24px 14px 16px;text-align:center}
+    .gz-profil-avatar{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.5);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden;cursor:pointer}
+    .gz-profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .gz-profil-nom{color:#fff;font-size:18px;font-weight:800;margin-bottom:3px}
+    .gz-profil-tel{color:rgba(255,255,255,.8);font-size:12px;margin-bottom:10px}
+    .gz-profil-badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+    .gz-profil-badge{background:rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px}
+    /* STATS */
+    .gz-compte-stats{background:#1a1206;display:flex;border-bottom:1px solid #eee}
+    .gz-cstat{flex:1;text-align:center;padding:12px;border-right:1px solid #eee}
+    .gz-cstat:last-child{border:none}
+    .gz-cstat-val{font-size:18px;font-weight:800;color:#f68b1e}
+    .gz-cstat-lbl{font-size:9px;color:#8a7560}
+    /* LOGIN */
+    .gz-login{min-height:100vh;background:#0f0c08;display:flex;align-items:center;justify-content:center;padding:20px}
+    .gz-login-card{background:#1a1206;border-radius:20px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+    .gz-login-logo{text-align:center;margin-bottom:24px}
+    .gz-login-icon{width:64px;height:64px;background:#f68b1e;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 12px}
+    .gz-login-tabs{display:flex;background:rgba(246,139,30,.06);border-radius:10px;padding:3px;margin-bottom:20px}
+    .gz-login-tab{flex:1;padding:9px;font-size:13px;font-weight:700;border:none;background:none;cursor:pointer;border-radius:8px;color:#8a7560;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .gz-login-tab.active{background:#1a1206;color:#f68b1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+    .gz-label{font-size:11px;font-weight:700;color:#8a7560;text-transform:uppercase;display:block;margin-bottom:5px}
+    .gz-input{width:100%;background:rgba(246,139,30,.06);border:1.5px solid rgba(246,139,30,.2);border-radius:10px;padding:12px 14px;font-size:14px;color:#fdf8f0;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:10px}
+    .gz-input:focus{border-color:#f68b1e}
+    .gz-btn-primary{width:100%;background:linear-gradient(135deg,#f68b1e,#e07b0e);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+    /* MENUS */
+    .gz-menu-section{background:#1a1206;margin:8px 12px;border-radius:12px;overflow:hidden}
+    .gz-menu-title{font-size:11px;font-weight:700;color:#8a7560;text-transform:uppercase;padding:10px 14px 6px;letter-spacing:.5px}
+    .gz-menu-item{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid #f5f5f5;cursor:pointer;text-decoration:none;color:#fdf8f0;transition:background .15s}
+    .gz-menu-item:last-child{border:none}
+    .gz-menu-item:active{background:rgba(246,139,30,.04)}
+    .gz-menu-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .gz-menu-info{flex:1}
+    .gz-menu-name{font-size:14px;font-weight:600}
+    .gz-menu-sub{font-size:11px;color:#8a7560;margin-top:1px}
+    .gz-menu-arrow{color:#ccc;font-size:14px}
+    .gz-menu-badge{background:#e53935;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;margin-left:auto;margin-right:6px}
+    /* BOTTOM NAV */
+    .gz-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0c08;border-top:1px solid rgba(246,139,30,.2);display:flex;z-index:200;box-shadow:0 -2px 6px rgba(0,0,0,.06)}
+    .gz-nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;text-decoration:none;color:#999;font-size:9px;font-weight:600;gap:2px}
+    .gz-nitem.active{color:#f68b1e}
+    .gz-nitem i{font-size:19px}
+    .gz-npub{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none}
+    .gz-npub-icon{width:42px;height:42px;background:#f68b1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-14px;box-shadow:0 3px 10px rgba(246,139,30,.4)}
+    .gz-npub-icon i{font-size:19px;color:#fff}
+    .gz-npub span{font-size:9px;font-weight:600;color:#f68b1e}
+    .gz-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,.8);color:#fff;padding:9px 18px;border-radius:18px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap}
+    .gz-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+</div>
+  </div>
+
+
+<header class="gz-header">
+  <span class="gz-header-title">Mon Compte</span>
+  <a href="panier.html" style="color:#fff;font-size:20px;text-decoration:none;position:relative">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cartBadge" style="position:absolute;top:-5px;right:-5px;background:#e53935;color:#fff;font-size:9px;font-weight:800;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center">0</span>
+  </a>
+</header>
+
+<!-- PAGE LOGIN -->
+<div id="loginPage" style="display:flex">
+  <div class="gz-login">
+    <div class="gz-login-card">
+      <div class="gz-login-logo">
+        <div class="gz-login-icon">🛍️</div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:4px">Bienvenue</h2>
+        <p style="font-size:12px;color:#8a7560">Connectez-vous pour accéder à votre compte</p>
+      </div>
+      <div class="gz-login-tabs">
+        <button class="gz-login-tab active" id="tabConnBtn" onclick="switchTab('conn')">Connexion</button>
+        <button class="gz-login-tab" id="tabRegBtn" onclick="switchTab('reg')">S'inscrire</button>
+      </div>
+      <!-- CONNEXION -->
+      <div id="formConn">
+        <label class="gz-label">Téléphone</label>
+        <input class="gz-input" type="tel" id="loginTel" placeholder="620 00 00 00">
+        <label class="gz-label">Mot de passe</label>
+        <div style="position:relative;margin-bottom:10px">
+          <input class="gz-input" type="password" id="loginPass" placeholder="••••••••" style="margin:0;padding-right:42px" onkeydown="if(event.key==='Enter')connexion()">
+          <button onclick="togglePass('loginPass','loginPassIcon')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b5d4f;cursor:pointer"><i class="fas fa-eye" id="loginPassIcon"></i></button>
+        </div>
+        <p id="loginErr" style="color:#e53935;font-size:12px;text-align:center;margin-bottom:10px;display:none"></p>
+        <button class="gz-btn-primary" onclick="connexion()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+        <div style="text-align:center;margin-top:12px">
+          <a href="annonces.html" style="font-size:12px;color:#8a7560;text-decoration:none">Continuer sans compte →</a>
+        </div>
+      </div>
+      <!-- INSCRIPTION -->
+      <div id="formReg" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label class="gz-label">Prénom</label><input class="gz-input" type="text" id="regPrenom" placeholder="Mamadou"></div>
+          <div><label class="gz-label">Nom</label><input class="gz-input" type="text" id="regNom" placeholder="Diallo"></div>
+        </div>
+        <label class="gz-label">Téléphone</label>
+        <input class="gz-input" type="tel" id="regTel" placeholder="620 00 00 00">
+        <label class="gz-label">Mot de passe</label>
+        <div style="position:relative;margin-bottom:10px">
+          <input class="gz-input" type="password" id="regPass" placeholder="Min 6 caractères" style="margin:0;padding-right:42px">
+          <button onclick="togglePass('regPass','regPassIcon')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b5d4f;cursor:pointer"><i class="fas fa-eye" id="regPassIcon"></i></button>
+        </div>
+        <p id="regErr" style="color:#e53935;font-size:12px;text-align:center;margin-bottom:10px;display:none"></p>
+        <button class="gz-btn-primary" onclick="inscription()"><i class="fas fa-user-plus"></i> Créer mon compte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE COMPTE -->
+<div id="accountPage" style="display:none">
+  <!-- Profil -->
+  <div class="gz-profil-band">
+    <div class="gz-profil-avatar" id="profilAvatar" onclick="choisirPhoto()">👤</div>
+    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="chargerPhoto(this)">
+    <div class="gz-profil-nom" id="profilNom">Chargement...</div>
+    <div class="gz-profil-tel" id="profilTel"></div>
+    <div class="gz-profil-badges" id="profilBadges"></div>
+  </div>
+  <!-- Stats -->
+  <div class="gz-compte-stats">
+    <div class="gz-cstat"><div class="gz-cstat-val" id="statCommandes">0</div><div class="gz-cstat-lbl">Commandes</div></div>
+    <div class="gz-cstat"><div class="gz-cstat-val" id="statFavoris">0</div><div class="gz-cstat-lbl">Favoris</div></div>
+    <div class="gz-cstat"><div class="gz-cstat-val" id="statAvis">0</div><div class="gz-cstat-lbl">Avis</div></div>
+  </div>
+  <!-- Menus -->
+  <div class="gz-menu-section">
+    <div class="gz-menu-title">Mes achats</div>
+    <a href="commande.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#fff3e0"><i class="fas fa-shopping-bag" style="color:#f68b1e"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Mes commandes</div><div class="gz-menu-sub">Suivre et gérer mes achats</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <a href="panier.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#e3f2fd"><i class="fas fa-shopping-cart" style="color:#1565c0"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Mon panier</div><div class="gz-menu-sub" id="panierSub">0 article</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <a href="wishlist.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#ffebee"><i class="fas fa-heart" style="color:#e53935"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Mes favoris</div><div class="gz-menu-sub">Articles sauvegardés</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <a href="messagerie.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#f3e8ff"><i class="fas fa-comment-dots" style="color:#7c3aed"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Messagerie</div><div class="gz-menu-sub">Vos conversations</div></div>
+      <span class="gz-menu-badge" id="msgBadge" style="display:none">0</span>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+  </div>
+  <div class="gz-menu-section">
+    <div class="gz-menu-title">Vendre</div>
+    <a href="dashboard-vendeur.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#fff3e0"><i class="fas fa-store" style="color:#f68b1e"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Espace vendeur</div><div class="gz-menu-sub">Dashboard, annonces, stats</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <a href="publier-annonce.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#fff8e1"><i class="fas fa-plus-circle" style="color:#f59e0b"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Publier une annonce</div><div class="gz-menu-sub">Vendre un article</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <a href="abonnements.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:#fff3e0"><i class="fas fa-crown" style="color:#f59e0b"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Abonnements vendeur</div><div class="gz-menu-sub">Booster mes ventes</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+  </div>
+  <div class="gz-menu-section">
+    <div class="gz-menu-title">Mon profil</div>
+    <div class="gz-menu-item" onclick="showEditProfil()">
+      <div class="gz-menu-icon" style="background:#e3f2fd"><i class="fas fa-user-edit" style="color:#1565c0"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Modifier mon profil</div><div class="gz-menu-sub">Nom, téléphone, photo</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </div>
+    <a href="contact.html" class="gz-menu-item">
+      <div class="gz-menu-icon" style="background:rgba(246,139,30,.06)"><i class="fas fa-headset" style="color:#8a7560"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name">Aide & Support</div><div class="gz-menu-sub">Nous contacter</div></div>
+      <i class="fas fa-chevron-right gz-menu-arrow"></i>
+    </a>
+    <div class="gz-menu-item" onclick="deconnexion()">
+      <div class="gz-menu-icon" style="background:#ffebee"><i class="fas fa-sign-out-alt" style="color:#e53935"></i></div>
+      <div class="gz-menu-info"><div class="gz-menu-name" style="color:#e53935">Se déconnecter</div></div>
+    </div>
+  </div>
+  <!-- EDIT PROFIL (caché) -->
+  <div id="editProfilSection" style="display:none">
+    <div class="gz-menu-section" style="padding:16px">
+      <div class="gz-menu-title" style="padding:0 0 10px">Modifier mon profil</div>
+      <label class="gz-label">Nom complet</label>
+      <input class="gz-input" type="text" id="editNom" placeholder="Votre nom">
+      <label class="gz-label">Téléphone</label>
+      <input class="gz-input" type="tel" id="editTelInput" placeholder="620 00 00 00">
+      <label class="gz-label">Nouveau mot de passe</label>
+      <input class="gz-input" type="password" id="editPass" placeholder="Laisser vide pour ne pas changer">
+      <button class="gz-btn-primary" onclick="sauvegarderProfil()"><i class="fas fa-save"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="gz-nav">
+  <a href="index.html" class="gz-nitem"><i class="fas fa-home"></i><span>Accueil</span></a>
+  <a href="annonces.html" class="gz-nitem"><i class="fas fa-tag"></i><span>Offres</span></a>
+  <a href="publier-annonce.html" class="gz-npub"><div class="gz-npub-icon"><i class="fas fa-plus"></i></div><span>Publier</span></a>
+  <a href="boutiques.html" class="gz-nitem"><i class="fas fa-store"></i><span>Boutiques</span></a>
+  <a href="account.html" class="gz-nitem active"><i class="fas fa-user"></i><span>Compte</span></a>
+</nav>
+
+<div class="gz-toast" id="gzToast"></div>
+
+<script>
+const USR_KEY='GM_SESSION';
+function gzToast(msg){const t=document.getElementById('gzToast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function switchTab(t){
+  document.getElementById('formConn').style.display=t==='conn'?'block':'none';
+  document.getElementById('formReg').style.display=t==='reg'?'block':'none';
+  document.getElementById('tabConnBtn').classList.toggle('active',t==='conn');
+  document.getElementById('tabRegBtn').classList.toggle('active',t==='reg');
+}
+function togglePass(id,ico){const i=document.getElementById(id);const ic=document.getElementById(ico);if(!i)return;i.type=i.type==='password'?'text':'password';if(ic)ic.className=i.type==='password'?'fas fa-eye':'fas fa-eye-slash';}
+
+function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}}
+
+function connexion(){
+  const tel=document.getElementById('loginTel')?.value.trim().replace(/[^0-9]/g,'');
+  const pass=document.getElementById('loginPass')?.value.trim();
+  if(!tel||tel.length<8){showErr('loginErr','⚠️ Numéro invalide');return;}
+  if(!pass){showErr('loginErr','⚠️ Entrez votre mot de passe');return;}
+  const users=JSON.parse(localStorage.getItem('GM_USERS')||'[]');
+  const user=users.find(u=>(u.tel||'').replace(/[^0-9]/g,'')=== tel);
+  if(!user){showErr('loginErr','❌ Aucun compte trouvé');return;}
+  if(user.password&&user.password!==pass){showErr('loginErr','❌ Mot de passe incorrect');return;}
+  localStorage.setItem(USR_KEY,JSON.stringify({id:user.id,nom:user.nom,tel:user.tel,avatar:user.avatar||''}));
+  location.reload();
+}
+
+function inscription(){
+  const prenom=document.getElementById('regPrenom')?.value.trim();
+  const nom=document.getElementById('regNom')?.value.trim();
+  const tel=document.getElementById('regTel')?.value.trim().replace(/[^0-9]/g,'');
+  const pass=document.getElementById('regPass')?.value.trim();
+  if(!prenom){showErr('regErr','⚠️ Entrez votre prénom');return;}
+  if(!nom){showErr('regErr','⚠️ Entrez votre nom');return;}
+  if(!tel||tel.length<8){showErr('regErr','⚠️ Numéro invalide');return;}
+  if(!pass||pass.length<6){showErr('regErr','⚠️ Mot de passe min 6 caractères');return;}
+  const users=JSON.parse(localStorage.getItem('GM_USERS')||'[]');
+  if(users.find(u=>(u.tel||'').replace(/[^0-9]/g,'')=== tel)){showErr('regErr','❌ Numéro déjà utilisé');return;}
+  const nu={id:'u'+Date.now(),nom:prenom+' '+nom,tel,password:pass,avatar:'',date:new Date().toISOString()};
+  users.push(nu);
+  localStorage.setItem('GM_USERS',JSON.stringify(users));
+  localStorage.setItem(USR_KEY,JSON.stringify({id:nu.id,nom:nu.nom,tel:nu.tel,avatar:''}));
+  location.reload();
+}
+
+function deconnexion(){localStorage.removeItem(USR_KEY);location.reload();}
+
+function choisirPhoto(){document.getElementById('avatarInput')?.click();}
+function chargerPhoto(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const b64=e.target.result;
+    const session=JSON.parse(localStorage.getItem(USR_KEY)||'{}');
+    session.avatar=b64;localStorage.setItem(USR_KEY,JSON.stringify(session));
+    const av=document.getElementById('profilAvatar');
+    if(av)av.innerHTML=`<img src="${b64}">`;
+    gzToast('✅ Photo mise à jour !');
+  };r.readAsDataURL(file);
+}
+
+function showEditProfil(){
+  const section=document.getElementById('editProfilSection');
+  section.style.display=section.style.display==='none'?'block':'none';
+  const session=JSON.parse(localStorage.getItem(USR_KEY)||'{}');
+  if(document.getElementById('editNom'))document.getElementById('editNom').value=session.nom||'';
+  if(document.getElementById('editTelInput'))document.getElementById('editTelInput').value=session.tel||'';
+}
+
+function sauvegarderProfil(){
+  const session=JSON.parse(localStorage.getItem(USR_KEY)||'{}');
+  const users=JSON.parse(localStorage.getItem('GM_USERS')||'[]');
+  const idx=users.findIndex(u=>u.id===session.id);
+  if(idx<0)return;
+  const newNom=document.getElementById('editNom')?.value.trim()||users[idx].nom;
+  const newTel=document.getElementById('editTelInput')?.value.trim()||users[idx].tel;
+  const newPass=document.getElementById('editPass')?.value.trim();
+  users[idx].nom=newNom;users[idx].tel=newTel;
+  if(newPass&&newPass.length>=6)users[idx].password=newPass;
+  localStorage.setItem('GM_USERS',JSON.stringify(users));
+  session.nom=newNom;session.tel=newTel;
+  localStorage.setItem(USR_KEY,JSON.stringify(session));
+  gzToast('✅ Profil mis à jour !');
+  document.getElementById('profilNom').textContent=newNom;
+  document.getElementById('editProfilSection').style.display='none';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  const session=JSON.parse(localStorage.getItem(USR_KEY)||'{}');
+  const cart=JSON.parse(localStorage.getItem('GM_CART')||'[]');
+  const qty=cart.reduce((a,i)=>a+i.qty,0);
+  const badge=document.getElementById('cartBadge');
+  if(badge)badge.textContent=qty||'0';
+
+  if(!session.id){
+    document.getElementById('loginPage').style.display='flex';
+    document.getElementById('accountPage').style.display='none';
+    return;
+  }
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('accountPage').style.display='block';
+
+  // Profil
+  const av=document.getElementById('profilAvatar');
+  if(session.avatar)av.innerHTML=`<img src="${session.avatar}">`;
+  document.getElementById('profilNom').textContent=session.nom||'Client';
+  document.getElementById('profilTel').textContent=session.tel||'';
+
+  // Badges
+  const abo=JSON.parse(localStorage.getItem('GM_ABONNEMENTS')||'[]').find(a=>a.vendeurId===session.id&&a.statut==='actif');
+  if(abo)document.getElementById('profilBadges').innerHTML=`<span class="gz-profil-badge">⭐ Plan ${abo.planId}</span>`;
+
+  // Stats
+  const orders=JSON.parse(localStorage.getItem('GM_ORDERS')||'[]').filter(o=>o.client?.tel===session.tel);
+  const favs=JSON.parse(localStorage.getItem('GM_WISHLIST')||'[]');
+  document.getElementById('statCommandes').textContent=orders.length;
+  document.getElementById('statFavoris').textContent=favs.length;
+  document.getElementById('panierSub').textContent=qty+' article'+(qty>1?'s':'');
+});
+</script>
+</body>
+</html>

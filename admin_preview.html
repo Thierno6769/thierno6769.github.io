@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Preview — Galy Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --gold:#f68b1e; --gold-d:#d4780f; --gold-l:rgba(246,139,30,.12);
+      --gold-ll:rgba(246,139,30,.06); --dark:#0f0c08; --dark2:#1a1206;
+      --dark3:#2a1c0a; --cream:#fdf8f0; --muted:#8a7560;
+      --border:rgba(246,139,30,.15); --border2:rgba(246,139,30,.08);
+      --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --purple:#8b5cf6;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--cream);display:flex;height:100vh;overflow:hidden}
+    ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--dark)} ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+    /* SIDEBAR */
+    .sidebar{width:220px;background:var(--dark2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+    .sidebar-logo{padding:18px 16px 12px;border-bottom:1px solid var(--border2);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px}
+    .sidebar-logo em{color:var(--gold);font-style:normal}
+    .sidebar-user{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border2)}
+    .s-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold-l);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px}
+    .s-name{font-size:12px;font-weight:700} .s-role{font-size:10px;color:var(--gold)}
+    .nav-sep{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:10px 16px 3px}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:12px;font-weight:600;color:var(--muted);border-left:3px solid transparent;cursor:pointer;transition:all .2s}
+    .nav-item:hover{color:var(--cream);background:var(--gold-ll)}
+    .nav-item.active{color:var(--gold);background:var(--gold-l);border-left-color:var(--gold)}
+    .nav-item i{width:14px;text-align:center;font-size:13px}
+    .nav-badge{margin-left:auto;background:var(--gold-l);color:var(--gold);font-size:9px;font-weight:800;padding:1px 6px;border-radius:6px}
+    .nav-badge.green{background:rgba(34,197,94,.15);color:var(--green)}
+    .logout-btn{margin:10px 12px 14px;padding:9px;background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif}
+
+    /* MAIN */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .topbar{background:var(--dark2);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;gap:10px}
+    .topbar-title{font-size:15px;font-weight:800;flex:1}
+    .search-box{display:flex;align-items:center;gap:8px;background:var(--gold-ll);border:1px solid var(--border);border-radius:7px;padding:6px 11px}
+    .search-box i{color:var(--muted);font-size:12px}
+    .search-box input{background:none;border:none;outline:none;color:var(--cream);font-size:12px;width:150px;font-family:'DM Sans',sans-serif}
+    .topbar-bell{background:var(--gold-ll);border:1px solid var(--border);border-radius:7px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+    .bell-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--gold);border-radius:50%;border:2px solid var(--dark2)}
+
+    /* CONTENT */
+    .content{flex:1;overflow-y:auto;padding:18px}
+
+    /* KPIs */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+    .kpi{background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:14px;display:flex;gap:12px}
+    .kpi-icon{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .kpi-lbl{font-size:10px;color:var(--muted);margin-bottom:3px}
+    .kpi-val{font-size:20px;font-weight:800}
+    .kpi-trend{font-size:10px;margin-top:2px;display:flex;align-items:center;gap:3px}
+    .up{color:var(--green)} .down{color:var(--red)}
+
+    /* CHARTS ROW */
+    .charts-row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:18px}
+    .chart-card{background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:16px}
+    .chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .chart-hdr h4{font-size:13px;font-weight:700}
+    .chart-select{background:var(--gold-ll);border:1px solid var(--border);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--cream);outline:none}
+
+    /* BAR CHART */
+    .bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px;padding-top:10px}
+    .bar{flex:1;border-radius:4px 4px 0 0;min-width:0;transition:opacity .2s;cursor:pointer;position:relative}
+    .bar:hover{opacity:.8}
+    .bar-label{text-align:center;font-size:9px;color:var(--muted);margin-top:5px}
+    .bar-val{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--cream);white-space:nowrap}
+
+    /* PIE placeholder */
+    .pie-placeholder{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .pie-item{display:flex;align-items:center;gap:8px;font-size:11px}
+    .pie-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .pie-bar-track{flex:1;height:6px;background:var(--dark3);border-radius:3px;overflow:hidden}
+    .pie-bar-fill{height:100%;border-radius:3px}
+
+    /* TABLES ROW */
+    .tables-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .table-card{background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:14px}
+    .table-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .table-hdr h4{font-size:12px;font-weight:700}
+    .see-all{font-size:10px;color:var(--gold);background:none;border:none;cursor:pointer;font-weight:600}
+    table{width:100%;border-collapse:collapse;font-size:11px}
+    th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)}
+    td{padding:8px 10px;border-bottom:1px solid var(--border2);color:var(--cream)}
+    tr:last-child td{border:none}
+    tr:hover td{background:var(--gold-ll)}
+    .status{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;display:inline-block}
+    .s-new{background:rgba(59,130,246,.15);color:#60a5fa}
+    .s-ok{background:rgba(34,197,94,.15);color:var(--green)}
+    .s-enc{background:rgba(251,191,36,.15);color:#fbbf24}
+    .s-liv{background:rgba(246,139,30,.15);color:var(--gold)}
+
+    /* TOP PROD */
+    .top-prod{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border2)}
+    .top-prod:last-child{border:none}
+    .tp-emoji{font-size:22px;width:36px;text-align:center}
+    .tp-name{font-size:11px;font-weight:600;flex:1}
+    .tp-ventes{font-size:10px;color:var(--muted)}
+    .tp-prix{font-size:11px;font-weight:800;color:var(--gold)}
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">GALY<em>MARKET</em></div>
+  <div class="sidebar-user">
+    <div class="s-avatar"><i class="fas fa-user-shield"></i></div>
+    <div><div class="s-name">Administrateur</div><div class="s-role">Super Admin</div></div>
+  </div>
+  <div class="nav-sep">Principal</div>
+  <div class="nav-item active"><i class="fas fa-chart-line"></i> Dashboard</div>
+  <div class="nav-item"><i class="fas fa-bag-shopping"></i> Commandes <span class="nav-badge">12</span></div>
+  <div class="nav-item"><i class="fas fa-box-open"></i> Produits <span class="nav-badge">20</span></div>
+  <div class="nav-item"><i class="fas fa-ticket"></i> Coupons</div>
+  <div class="nav-item"><i class="fas fa-users"></i> Clients</div>
+  <div class="nav-item"><i class="fas fa-truck-fast"></i> Livraison</div>
+  <div class="nav-sep">Marketing</div>
+  <div class="nav-item"><i class="fas fa-bullhorn"></i> Marketing <span class="nav-badge green">NEW</span></div>
+  <div class="nav-sep">Équipe</div>
+  <div class="nav-item"><i class="fas fa-id-badge"></i> Employés <span class="nav-badge">4</span></div>
+  <div class="nav-sep">Partenaires</div>
+  <div class="nav-item"><i class="fas fa-handshake"></i> Affiliation <span class="nav-badge green">3</span></div>
+  <div class="nav-item"><i class="fas fa-store-alt"></i> Vendeurs <span class="nav-badge">8</span></div>
+  <div class="nav-sep">Paramètres</div>
+  <div class="nav-item"><i class="fas fa-gear"></i> Réglages</div>
+  <div class="nav-item"><i class="fas fa-store"></i> Voir la boutique</div>
+  <button class="logout-btn"><i class="fas fa-right-from-bracket"></i> Déconnexion</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Tableau de bord</div>
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Rechercher...">
+    </div>
+    <div class="topbar-bell">
+      <i class="fas fa-bell" style="font-size:14px"></i>
+      <div class="bell-dot"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600">
+      <div class="s-avatar" style="width:28px;height:28px;font-size:12px"><i class="fas fa-user-shield"></i></div>
+      Admin
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#f68b1e,#ffb347)"><i class="fas fa-coins" style="color:#fff"></i></div>
+        <div>
+          <div class="kpi-lbl">Chiffre d'affaires</div>
+          <div class="kpi-val" style="color:var(--gold)">12,5M GNF</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +18%</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)"><i class="fas fa-bag-shopping" style="color:#fff"></i></div>
+        <div>
+          <div class="kpi-lbl">Commandes</div>
+          <div class="kpi-val" style="color:var(--green)">47</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +12</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb)"><i class="fas fa-users" style="color:#fff"></i></div>
+        <div>
+          <div class="kpi-lbl">Clients</div>
+          <div class="kpi-val" style="color:#60a5fa">234</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +8</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)"><i class="fas fa-box-open" style="color:#fff"></i></div>
+        <div>
+          <div class="kpi-lbl">Produits actifs</div>
+          <div class="kpi-val" style="color:#a78bfa">20</div>
+          <div class="kpi-trend" style="color:var(--muted)"><i class="fas fa-minus"></i> stable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-hdr">
+          <h4>📈 Ventes des 7 derniers jours</h4>
+          <select class="chart-select"><option>7 jours</option><option>30 jours</option></select>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+        <div style="display:flex;gap:0" id="barLabels"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-hdr"><h4>🏷️ Par catégorie</h4></div>
+        <div class="pie-placeholder" id="pieChart"></div>
+      </div>
+    </div>
+
+    <!-- TABLES -->
+    <div class="tables-row">
+      <div class="table-card">
+        <div class="table-hdr">
+          <h4>📋 Dernières commandes</h4>
+          <button class="see-all">Voir tout →</button>
+        </div>
+        <table>
+          <thead><tr><th>Réf</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--gold)">GM-001</td><td>Mamadou D.</td><td style="color:var(--gold);font-weight:700">850 000 GNF</td><td><span class="status s-new">Nouvelle</span></td></tr>
+            <tr><td style="color:var(--gold)">GM-002</td><td>Fatoumata C.</td><td style="color:var(--gold);font-weight:700">2 200 000 GNF</td><td><span class="status s-enc">En cours</span></td></tr>
+            <tr><td style="color:var(--gold)">GM-003</td><td>Ibrahim B.</td><td style="color:var(--gold);font-weight:700">450 000 GNF</td><td><span class="status s-ok">Livrée</span></td></tr>
+            <tr><td style="color:var(--gold)">GM-004</td><td>Aissatou S.</td><td style="color:var(--gold);font-weight:700">1 500 000 GNF</td><td><span class="status s-liv">Confirmée</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-card">
+        <div class="table-hdr">
+          <h4>🏆 Meilleurs produits</h4>
+          <button class="see-all">Voir tout →</button>
+        </div>
+        <div id="topProds"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Bar chart
+const data = [3,7,5,12,8,15,10];
+const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const max = Math.max(...data);
+const colors = ['#f68b1e','#e07b0e','#f68b1e','#ffb347','#f68b1e','#ff9933','#f68b1e'];
+const bc = document.getElementById('barChart');
+const bl = document.getElementById('barLabels');
+bc.innerHTML = data.map((v,i)=>`
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+    <div class="bar" style="height:${Math.round(v/max*100)}%;background:linear-gradient(to top,${colors[i]},${colors[i]}99);width:100%">
+      <span class="bar-val">${v}</span>
+    </div>
+  </div>`).join('');
+bl.innerHTML = `<div style="display:flex;gap:6px;width:100%;padding-top:4px">${days.map(d=>`<div style="flex:1;text-align:center;font-size:9px;color:var(--muted)">${d}</div>`).join('')}</div>`;
+
+// Pie
+const cats = [
+  {label:'Téléphones',pct:35,color:'#f68b1e'},
+  {label:'Mode',pct:22,color:'#8b5cf6'},
+  {label:'Maison',pct:18,color:'#3b82f6'},
+  {label:'Beauté',pct:14,color:'#ec4899'},
+  {label:'Sport',pct:11,color:'#22c55e'},
+];
+document.getElementById('pieChart').innerHTML = cats.map(c=>`
+  <div class="pie-item">
+    <div class="pie-dot" style="background:${c.color}"></div>
+    <span style="min-width:70px;font-size:11px">${c.label}</span>
+    <div class="pie-bar-track"><div class="pie-bar-fill" style="width:${c.pct}%;background:${c.color}"></div></div>
+    <span style="font-size:10px;color:var(--muted);min-width:28px;text-align:right">${c.pct}%</span>
+  </div>`).join('');
+
+// Top prods
+const prods = [
+  {em:'📱',name:'iPhone 14 Pro',ventes:'12 ventes',prix:'5 000 000 GNF'},
+  {em:'👗',name:'Robe Bazin Premium',ventes:'8 ventes',prix:'850 000 GNF'},
+  {em:'⌚',name:'Montre Sport',ventes:'6 ventes',prix:'200 000 GNF'},
+  {em:'💻',name:'Laptop HP',ventes:'4 ventes',prix:'4 500 000 GNF'},
+];
+document.getElementById('topProds').innerHTML = prods.map(p=>`
+  <div class="top-prod">
+    <div class="tp-emoji">${p.em}</div>
+    <div style="flex:1"><div class="tp-name">${p.name}</div><div class="tp-ventes">${p.ventes}</div></div>
+    <div class="tp-prix">${p.prix}</div>
+  </div>`).join('');
+</script>
+</body>
+</html>
